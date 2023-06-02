@@ -13,7 +13,7 @@ public enum Direction { N, NE, E, SE, S, SW, W, NW }
 
 public class Node : MonoBehaviour
 {
-    public int numberOfPotentialTilesLeft { get { return potentialTiles.Count; } }
+    public int entropy { get { return potentialTiles.Count; } }  //< "The entropy of a cell / node.", previously named "numberOfRemainingPotentialTiles"
     public Vector2Int gridPosition
     {
         get

@@ -8,6 +8,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class NodeManager : MonoBehaviour
 {
@@ -15,13 +16,16 @@ public class NodeManager : MonoBehaviour
     //# Public Variables 
     public static NodeManager instance { get; set; }
     public Dictionary<Vector2Int, Node> nodeGrid { get; private set; }
-    public List<Tile> allTiles;
+    public List<Tile> allTiles; //< Would be static if that did not prevent adding the tiles in the editor
 
     //# Private Variables 
     [SerializeField]
     private Vector2Int nodeGridSize = new Vector2Int(8, 8);  //< Number of tiles in x/z axis
     private readonly Vector2 tileExtends = new Vector2(3, 3);    //< in Meters
     private readonly float tileSpacerThickness = 0.0f;
+    [SerializeField]
+    [Tooltip("For visualization only.")]
+    private List<Node> unresolvedNodes;  //< Contains all unresolved nodes
 
     //# Monobehaviour Events 
     private void Awake()
@@ -35,6 +39,12 @@ public class NodeManager : MonoBehaviour
     private void Start()
     {
         GenerateNodeGrid();
+
+        foreach (KeyValuePair<Vector2Int, Node> pair in nodeGrid)
+        {
+            Node node = pair.Value;
+            unresolvedNodes.Add(node);
+        }
     }
 
     private void Update()   //! DEBUG
@@ -57,7 +67,7 @@ public class NodeManager : MonoBehaviour
         return success;
     }
 
-    public void RemoveNodeFromGrid(Vector2Int position)
+    public void UnregisterNodeFromGrid(Vector2Int position)
     {
         nodeGrid.Remove(position);
     }
@@ -88,11 +98,15 @@ public class NodeManager : MonoBehaviour
 
     private void ResolveNodes()
     {
-        foreach (KeyValuePair<Vector2Int, Node> pair in nodeGrid)
+        while (unresolvedNodes.Count > 0)
         {
-            Node node = pair.Value;
-            node.Resolve();
-            new WaitForSeconds(1);
+            unresolvedNodes = unresolvedNodes.OrderBy(n => n.entropy).ToList();
+            List<Node> nodesWithLowestEntropy = new List<Node>(unresolvedNodes.FindAll(n => n.entropy == unresolvedNodes[0].entropy));
+            Debug.Log($"Resolving entries with an entropy of {unresolvedNodes[0].entropy} / {nodesWithLowestEntropy[0].entropy}");
+
+            Node randomlyChosenNode = nodesWithLowestEntropy[Random.Range(0, nodesWithLowestEntropy.Count)];
+            randomlyChosenNode.Resolve();
+            unresolvedNodes.Remove(randomlyChosenNode);
         }
     }
 }
