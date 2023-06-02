@@ -23,7 +23,7 @@ public class Node : MonoBehaviour
         set
         {
             if (_gridPosition.HasValue)
-                UnregisterFromManager(_gridPosition.Value);
+                UnregisterFromManager();
             _gridPosition = value;
             RegisterInManager();
         }
@@ -56,8 +56,8 @@ public class Node : MonoBehaviour
         NodeManager.instance.RegisterNodeToGrid(gridPosition, this);
     }
 
-    private void UnregisterFromManager(Vector2Int position)
+    private void UnregisterFromManager()
     {
-        NodeManager.instance.RemoveNodeFromGrid(gridPosition);
+        NodeManager.instance.UnregisterNodeFromGrid(gridPosition);
     }
 }
