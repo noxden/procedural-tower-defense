@@ -400,11 +400,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e25bf8f2a49b2b144a750a67c4913793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSizeX: 10
-  gridSizeY: 10
-  pathLength: 12
-  startPosX: 6
+  gridSizeX: 16
+  gridSizeY: 16
+  pathLength: 19
+  startPosX: 3
   startPosY: 0
-  endPosX: 2
+  endPosX: 7
   endPosY: 8
   stepDelayInSeconds: 0.01

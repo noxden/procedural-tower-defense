@@ -171,6 +171,26 @@ public class MyRandomWalk : MonoBehaviour
 
         endPosX = Mathf.Clamp(endPosX, 0, gridSizeX - 1);
         endPosY = Mathf.Clamp(endPosY, 0, gridSizeY - 1);
+
+        int shortestDistance = (Mathf.Abs(endPosX - startPosX) + Mathf.Abs(endPosY - startPosY)) + 1;
+
+        if (pathLength % 2 != shortestDistance % 2)
+        {
+            pathLength++;
+            Debug.LogWarning("Path cannot end, setting it to an " + (shortestDistance % 2 == 0 ? "even" : "uneven") + " number");
+        }
+
+        if (pathLength < shortestDistance)
+        {
+            pathLength = shortestDistance;
+            Debug.LogWarning("Path length is too short, setting to shortest distance");
+        }
+
+        if (pathLength > gridSizeX * gridSizeY)
+        {
+            pathLength = gridSizeX * gridSizeY;
+            Debug.LogWarning("Path length is too long, setting to max length");
+        }
     }
 
     private void OnDrawGizmos()
