@@ -6,6 +6,7 @@ public class Node
 {
     public int posX;
     public int posY;
+    public bool visited = false;
 
     public List<Vector2> possibleDirections = new List<Vector2>
     {

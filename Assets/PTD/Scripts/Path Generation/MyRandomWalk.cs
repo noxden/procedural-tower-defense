@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
@@ -15,17 +16,28 @@ public class MyRandomWalk : MonoBehaviour
     [SerializeField] private int endPosX;
     [SerializeField] private int endPosY;
 
-    [SerializeField] private int stepDelayInSeconds = 0;
+    [SerializeField] private float stepDelayInSeconds = 0;
 
     private Node[,] grid;
+    private Node[,] currentGrid;
     private List<Node> path = new List<Node>();
+    private List<Node> currentPath;
 
-    private List<GameObject> pathCubes = new List<GameObject>();
+    //private List<GameObject> pathCubes = new List<GameObject>();
 
     private void Awake()
     {
         GenerateGrid();
         StartCoroutine(GeneratePath());
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            StopAllCoroutines();
+            StartCoroutine(GeneratePath());
+        }
     }
 
     private void GenerateGrid()
@@ -50,16 +62,34 @@ public class MyRandomWalk : MonoBehaviour
         }
     }
 
+    private void CloneGrid()
+    {
+        currentGrid = new Node[gridSizeX, gridSizeY];
+        for (int x = 0; x < gridSizeX; x++)
+        {
+            for (int y = 0; y < gridSizeY; y++)
+            {
+                Node originalNode = grid[x, y];
+                Node clonedNode = new Node(originalNode.posX, originalNode.posY, new List<Vector2>(originalNode.possibleDirections));
+                clonedNode.visited = originalNode.visited;
+                currentGrid[x, y] = clonedNode;
+            }
+        }
+    }
+
     private IEnumerator GeneratePath()
     {
-        Node[,] currentGrid = grid;
-        List<Node> currentPath = new List<Node>();
+        CloneGrid();
+
+        currentPath = new List<Node>();
         Node currentNode = currentGrid[(int)startPosX, (int)startPosY];
 
+        currentNode.visited = true;
         currentPath.Add(currentNode);
-        CreateCube(currentNode);
-        Debug.Break();
-        while (currentPath.Count != pathLength && currentPath[currentPath.Count -1].Position != new Vector2(endPosX, endPosY))
+
+        //CreateCube(currentNode);
+        //Debug.Break();
+        while (currentPath.Count != pathLength || currentPath[currentPath.Count -1].Position != new Vector2(endPosX, endPosY))
         {
             yield return new WaitForSeconds(stepDelayInSeconds);
             if(currentNode.possibleDirections.Count == 0)
@@ -70,26 +100,26 @@ public class MyRandomWalk : MonoBehaviour
                     yield break;
                 }
 
+                currentNode.visited = false;
+                currentNode.possibleDirections = grid[currentNode.posX, currentNode.posY].possibleDirections;
                 currentPath.Remove(currentNode);
-                pathCubes.Remove(pathCubes[pathCubes.Count - 1]);
-                currentGrid[currentNode.posX, currentNode.posY] = grid[currentNode.posX, currentNode.posY];
+
                 currentNode = currentPath[currentPath.Count - 1];
             }
             else
             {
-                Vector2 direction = currentNode.possibleDirections[Random.Range(0, currentNode.possibleDirections.Count)];
+                Vector2 direction = currentNode.possibleDirections[UnityEngine.Random.Range(0, currentNode.possibleDirections.Count)];
                 currentNode.possibleDirections.Remove(direction);
 
                 Node nextNode = currentGrid[(int)(currentNode.posX + direction.x), (int)(currentNode.posY + direction.y)];
                 nextNode.possibleDirections.Remove(-direction);
 
-                if(CanVisitNode(nextNode, currentPath))
+                if(!CanVisitNode(nextNode, currentPath))
                 {
-                    currentNode.possibleDirections.Remove(direction);
                     continue;
                 }
+                currentNode.visited = true;
                 currentPath.Add(nextNode);
-                CreateCube(nextNode);
                 currentNode = nextNode;
             }
         }
@@ -98,16 +128,9 @@ public class MyRandomWalk : MonoBehaviour
         path = currentPath;
     }
 
-    private void CreateCube(Node node)
-    {
-        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube.transform.position = new Vector3(node.posX, 0f, node.posY);
-        pathCubes.Add(cube);
-    }
-
     private bool CanVisitNode(Node nextNode, List<Node> currentPath)
     {
-        if (HasVisitedNode(nextNode, currentPath))
+        if (HasVisitedNode(nextNode))
             return false;
 
         if (!CanReachEnd(nextNode, currentPath))
@@ -116,25 +139,26 @@ public class MyRandomWalk : MonoBehaviour
         return true;
     }
 
-    private bool HasVisitedNode(Node nextNode, List<Node> currentPath)
+    private bool HasVisitedNode(Node nextNode)
     {
-        foreach (Node node in currentPath)
-        {
-            if (node.posX == nextNode.posX && node.posY == nextNode.posY)
-                return true;
-        }
-        return false;
+        return nextNode.visited;
+        //foreach (Node node in currentPath)
+        //{
+        //    if (node.posX == nextNode.posX && node.posY == nextNode.posY)
+        //        return true;
+        //}
+        //return false;
     }
 
     private bool CanReachEnd(Node nextNode, List<Node> currentPath)
     {
         int shortestDistance = (Mathf.Abs(endPosX - nextNode.posX) + Mathf.Abs(endPosY - nextNode.posY));
-        int pathLengthleft = pathLength - currentPath.Count;
+        int pathLengthleft = pathLength - (currentPath.Count + 1);
 
-        if (shortestDistance < pathLengthleft)
-            return false;
+        if (shortestDistance <= pathLengthleft)
+            return true;
 
-        return true;
+        return false;
     }
 
     #region Editor
@@ -149,5 +173,26 @@ public class MyRandomWalk : MonoBehaviour
         endPosY = Mathf.Clamp(endPosY, 0, gridSizeY - 1);
     }
 
+    private void OnDrawGizmos()
+    {
+        if (currentGrid == null)
+            return;
+
+        foreach (Node node in currentGrid)
+        {
+            Gizmos.color = node.visited ? Color.red : Color.gray;
+            Gizmos.DrawCube(new Vector3(node.posX, 0f, node.posY), Vector3.one * 0.5f);
+        }
+
+        if (currentPath != null)
+        {
+            for (int i = 0; i < currentPath.Count; i++)
+            {
+                float greyScale = (float)i / currentPath.Count;
+                Gizmos.color = new Color(0, greyScale, 0, 1f);
+                Gizmos.DrawCube(new Vector3(currentPath[i].posX, 0f, currentPath[i].posY), Vector3.one * 0.5f);
+            }
+        }
+    }
     #endregion
 }
