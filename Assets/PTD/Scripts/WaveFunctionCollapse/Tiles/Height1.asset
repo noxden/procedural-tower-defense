@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a18a4b63df8da47937d38df62326a6, type: 3}
+  m_Name: Height1
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 8574089104529907636, guid: 5dd6857a8ff60d94289d86959fdaafd8, type: 3}
+  ValidTilesN:
+  - {fileID: 11400000}
+  - {fileID: 11400000, guid: 3c923dfb7e4262d4e97024a72b447c93, type: 2}
+  ValidTilesNE:
+  - {fileID: 11400000}
+  - {fileID: 11400000, guid: 3c923dfb7e4262d4e97024a72b447c93, type: 2}
+  ValidTilesE:
+  - {fileID: 11400000}
+  - {fileID: 11400000, guid: 3c923dfb7e4262d4e97024a72b447c93, type: 2}
+  ValidTilesSE:
+  - {fileID: 11400000}
+  - {fileID: 11400000, guid: 3c923dfb7e4262d4e97024a72b447c93, type: 2}
+  ValidTilesS:
+  - {fileID: 11400000}
+  - {fileID: 11400000, guid: 3c923dfb7e4262d4e97024a72b447c93, type: 2}
+  ValidTilesSW:
+  - {fileID: 11400000}
+  - {fileID: 11400000, guid: 3c923dfb7e4262d4e97024a72b447c93, type: 2}
+  ValidTilesW:
+  - {fileID: 11400000}
+  - {fileID: 11400000, guid: 3c923dfb7e4262d4e97024a72b447c93, type: 2}
+  ValidTilesNW:
+  - {fileID: 11400000}
+  - {fileID: 11400000, guid: 3c923dfb7e4262d4e97024a72b447c93, type: 2}
+  addToAllDirections: {fileID: 0}
