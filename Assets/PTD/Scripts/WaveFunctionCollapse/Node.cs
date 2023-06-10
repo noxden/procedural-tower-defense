@@ -31,14 +31,17 @@ public class Node : MonoBehaviour
     private Vector2Int? _gridPosition;
     [SerializeField]
     private List<Tile> potentialTiles;  //< Defines this node's superposition
+    private GameObject debugVisualizer;
 
     private void Start()
     {
         potentialTiles = new List<Tile>(NodeManager.instance.allTiles);
+        CreateNodePositionVisualizer();
     }
 
     public void Resolve()
     {
+        RemoveNodePositionVisualizer();
         if (potentialTiles.Count == 1)
             Instantiate(potentialTiles[0].prefab, this.transform, false);
         else if (potentialTiles.Count > 1)
@@ -59,5 +62,17 @@ public class Node : MonoBehaviour
     private void UnregisterFromManager()
     {
         NodeManager.instance.UnregisterNodeFromGrid(gridPosition);
+    }
+
+    private void CreateNodePositionVisualizer()
+    {
+        debugVisualizer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        debugVisualizer.transform.SetParent(this.transform, false);
+        debugVisualizer.transform.localScale = Vector3.one * 0.75f;
+    }
+
+    private void RemoveNodePositionVisualizer()
+    {
+        Destroy(debugVisualizer);
     }
 }
