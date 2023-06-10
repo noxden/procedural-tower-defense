@@ -8,11 +8,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using System.Linq;
 
 public class NodeManager : MonoBehaviour
 {
-    public bool RESOLVE = false; //! DEBUG
+    //# Debug "Button" Variables 
+    [SerializeField] private bool RESOLVE = false; //! DEBUG
+    [SerializeField] private bool REGENERATE = false; //! DEBUG
     //# Public Variables 
     public static NodeManager instance { get; set; }
     public Dictionary<Vector2Int, Node> nodeGrid { get; private set; }
@@ -54,6 +57,15 @@ public class NodeManager : MonoBehaviour
             ResolveNodes();
             RESOLVE = false;
         }
+
+        if (REGENERATE)
+        {
+            Destroy(GameObject.Find("Node Grid"));
+            nodeGrid.Clear();
+            unresolvedNodes.Clear();
+            Start();
+            REGENERATE = false;
+        }
     }
 
     //# Public Methods 
@@ -66,19 +78,13 @@ public class NodeManager : MonoBehaviour
         if (!success) Debug.Log($"NodeGrid already carries an entry for position \"{position}\". Adding new node \"{node.name}\" failed.");
         return success;
     }
-
-    public void UnregisterNodeFromGrid(Vector2Int position)
-    {
-        nodeGrid.Remove(position);
-    }
+    public void UnregisterNodeFromGrid(Vector2Int position) => nodeGrid.Remove(position);
 
     //# Private Methods 
     private void GenerateNodeGrid()
     {
-        GameObject nodeGridGO = new GameObject(name: "Node Grid");
-
-
         nodeGrid = new Dictionary<Vector2Int, Node>();
+        GameObject nodeGridGO = new GameObject(name: "Node Grid");
 
         for (int x = 0; x < nodeGridSize.x; x++)  //< gridOffset could already be applied here, but it would probably just make the for-loop more calculation-heavy.
         {
