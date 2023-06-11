@@ -8,14 +8,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
-using System.Linq;
 
 public class NodeManager : MonoBehaviour
 {
     //# Debug "Button" Variables 
-    [SerializeField] private bool RESOLVE = false; //! DEBUG
-    [SerializeField] private bool REGENERATE = false; //! DEBUG
+    [SerializeField] private bool REGENERATE = false;    //! FOR DEBUG PURPOSES ONLY
     //# Public Variables 
     public static NodeManager instance { get; set; }
     public Dictionary<Vector2Int, Node> nodeGrid { get; private set; }
@@ -27,8 +24,6 @@ public class NodeManager : MonoBehaviour
     private readonly Vector2 tileExtends = new Vector2(3, 3);    //< in Meters
     private readonly float tileSpacerThickness = 0.0f;
     [SerializeField]
-    [Tooltip("For visualization only.")]
-    private List<Node> unresolvedNodes;  //< Contains all unresolved nodes
 
     //# Monobehaviour Events 
     private void Awake()
@@ -42,29 +37,18 @@ public class NodeManager : MonoBehaviour
     private void Start()
     {
         GenerateNodeGrid();
-
-        foreach (KeyValuePair<Vector2Int, Node> pair in nodeGrid)
-        {
-            Node node = pair.Value;
-            unresolvedNodes.Add(node);
-        }
     }
 
-    private void Update()   //! DEBUG
+    private void Update()    //! FOR DEBUG PURPOSES ONLY
     {
-        if (RESOLVE)
-        {
-            ResolveNodes();
-            RESOLVE = false;
-        }
-
         if (REGENERATE)
         {
+            REGENERATE = false;
             Destroy(GameObject.Find("Node Grid"));
             nodeGrid.Clear();
-            unresolvedNodes.Clear();
+            Destroy(GetComponent<WaveFunctionSolver>());
             Start();
-            REGENERATE = false;
+            gameObject.AddComponent<WaveFunctionSolver>();
         }
     }
 
@@ -80,6 +64,12 @@ public class NodeManager : MonoBehaviour
     }
     public void UnregisterNode(Vector2Int position) => nodeGrid.Remove(position);
 
+    public Node GetNodeByPosition(Vector2Int position)
+    {
+        nodeGrid.TryGetValue(position, out Node node);
+        return node;
+    }
+
     //# Private Methods 
     private void GenerateNodeGrid()
     {
@@ -94,25 +84,12 @@ public class NodeManager : MonoBehaviour
                 nodeGO.transform.SetParent(nodeGridGO.transform);
                 nodeGO.transform.localPosition = new Vector3(x * (tileExtends.x + tileSpacerThickness), 0, y * (tileExtends.y + tileSpacerThickness));
                 Node newNode = nodeGO.AddComponent<Node>();
+                newNode.potentialTiles = new List<Tile>(allTiles);  //< Fill this node's potential tiles
 
                 Vector2Int gridPosition = new Vector2Int(x, y);
                 newNode.gridPosition = gridPosition;
                 nodeGO.name = $"Node {gridPosition}";
             }
-        }
-    }
-
-    private void ResolveNodes()
-    {
-        while (unresolvedNodes.Count > 0)
-        {
-            unresolvedNodes = unresolvedNodes.OrderBy(n => n.entropy).ToList();
-            List<Node> nodesWithLowestEntropy = new List<Node>(unresolvedNodes.FindAll(n => n.entropy == unresolvedNodes[0].entropy));
-            Debug.Log($"Resolving entries with an entropy of {unresolvedNodes[0].entropy} / {nodesWithLowestEntropy[0].entropy}");
-
-            Node randomlyChosenNode = nodesWithLowestEntropy[Random.Range(0, nodesWithLowestEntropy.Count)];
-            randomlyChosenNode.Resolve();
-            unresolvedNodes.Remove(randomlyChosenNode);
         }
     }
 }

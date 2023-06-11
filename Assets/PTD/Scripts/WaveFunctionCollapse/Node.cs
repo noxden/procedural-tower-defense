@@ -30,28 +30,35 @@ public class Node : MonoBehaviour
     }
     private Vector2Int? _gridPosition;
     [SerializeField]
-    private List<Tile> potentialTiles;  //< Defines this node's superposition
+    public List<Tile> potentialTiles;  //< Defines this node's superposition
     private GameObject debugVisualizer;
 
     private void Start()
     {
-        potentialTiles = new List<Tile>(NodeManager.instance.allTiles);
+        // potentialTiles = new List<Tile>(NodeManager.instance.allTiles);  //< This filling task is now handled by the nodemanager
         CreateNodePositionVisualizer();
     }
 
-    public void Resolve()
+    /// <summary>
+    /// This function causes one of the potential tiles to be instantiated, thereby collapsing the superposition. It returns true if collapse was successful, false if entropy was 0.
+    /// </summary>
+    public bool Collapse()  //< Returns true if collapse was successful
     {
-        RemoveNodePositionVisualizer();
-        if (potentialTiles.Count == 1)
+        if (entropy == 1)
             Instantiate(potentialTiles[0].prefab, this.transform, false);
-        else if (potentialTiles.Count > 1)
+        else if (entropy > 1)
         {
             Tile randomlyChosenTile = potentialTiles[Random.Range(0, potentialTiles.Count)];
             potentialTiles.RemoveAll(x => x != randomlyChosenTile); //< Removes every entry but randomlyChosenTile from potentialTiles list
             Instantiate(randomlyChosenTile.prefab, this.transform, false);
         }
         else
+        {
             Debug.LogError($"Tile {this.name} does not have any potential tiles left.");
+            return false;
+    }
+        RemoveNodePositionVisualizer();    //< Only remove visualizer if collapsing was successful
+        return true;
     }
 
     /// <summary>
