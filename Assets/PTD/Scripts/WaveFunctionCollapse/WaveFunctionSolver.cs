@@ -61,7 +61,7 @@ public class WaveFunctionSolver : MonoBehaviour
         Node node = GetNodeWithLowestEntropy();
         Debug.Log($"Iterating over {node.name}.");
         CollapseNode(node);
-        Propagate(node.gridPosition);
+        Propagate(node);
     }
 
     private void CollapseNode(Node node)
@@ -69,11 +69,46 @@ public class WaveFunctionSolver : MonoBehaviour
         if (!node.Collapse())
             Debug.LogError($"Could not collapse {node.name} properly!");
         uncollapsedNodes.Remove(node);  //< Needs to be called even if node could not be collapsed, otherwise the while-loop in Solve() will go on indefinitely, causing the game to freeze.
+        // TODO: Fix the issue stated above. 
     }
 
-    private void Propagate(Vector2Int position)
+    private void Propagate(Node sourceNode)
     {
+        //! This only propagates to node north of source for now.        
+        //#> Generate lists of valid tiles for the different directions
+        List<Tile> validTilesN = new List<Tile>();
+        foreach (Tile tile in sourceNode.potentialTiles)
+        {
+            foreach (Tile validTile in tile.validTilesN)
+            {
+                if (!validTilesN.Contains(validTile))
+                    validTilesN.Add(validTile);
+            }
+        }
 
+        List<string> debugStringList = new List<string>();
+        foreach (var item in validTilesN)
+        {
+            debugStringList.Add(item.ToString());
+        }
+        Debug.Log($"Generated list of valid tiles NORTH of {sourceNode}: {string.Join(", ", debugStringList)}");
+
+        //#> Check for node in that direction and apply the list generated above as a limiting factor
+        Node nodeToPropagateTo = NodeManager.instance.GetNodeByPosition(sourceNode.gridPosition + Vector2Int.up);
+        if (nodeToPropagateTo != null)
+        {
+            string potentialTilesBefore = string.Join(", ", nodeToPropagateTo.potentialTiles);
+            if (nodeToPropagateTo.ReducePotentialTilesByLimiter(validTilesN))
+            {
+                // nodesToPropagateFrom.Add(nodeToPropagateTo);
+            }
+            string potentialTilesAfter = string.Join(", ", nodeToPropagateTo.potentialTiles);
+            Debug.Log($"Reduced potential tiles of node {nodeToPropagateTo}:\nfrom {potentialTilesBefore} \nto      {potentialTilesAfter}");
+        }
+        else
+        {
+            Debug.Log($"Could not reach node at position {sourceNode.gridPosition + Vector2Int.up}.");
+        }
     }
 
     private Node GetNodeWithLowestEntropy()
@@ -90,6 +125,9 @@ public class WaveFunctionSolver : MonoBehaviour
             }
             return uncollapsedNodesSortedByEntropy[0];
         }
-        return uncollapsedNodes[0];
+        else if (uncollapsedNodes.Count == 1)
+            return uncollapsedNodes[0];
+        else
+            return null;
     }
 }

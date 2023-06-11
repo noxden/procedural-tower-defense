@@ -40,6 +40,15 @@ public class Node : MonoBehaviour
     }
 
     /// <summary>
+    /// This function is called when the MonoBehaviour will be destroyed.
+    /// </summary>
+    private void OnDestroy()
+    {
+        UnregisterFromManager();
+    }
+
+    //# Public Methods 
+    /// <summary>
     /// This function causes one of the potential tiles to be instantiated, thereby collapsing the superposition. It returns true if collapse was successful, false if entropy was 0.
     /// </summary>
     public bool Collapse()  //< Returns true if collapse was successful
@@ -56,22 +65,39 @@ public class Node : MonoBehaviour
         {
             Debug.LogError($"Tile {this.name} does not have any potential tiles left.");
             return false;
-    }
+        }
         RemoveNodePositionVisualizer();    //< Only remove visualizer if collapsing was successful
         return true;
     }
 
     /// <summary>
-    /// This function is called when the MonoBehaviour will be destroyed.
+    /// Returns true if potentialTiles were reduced by limiter, false if not.
     /// </summary>
-    private void OnDestroy()
+    public bool ReducePotentialTilesByLimiter(List<Tile> limiter)
     {
-        UnregisterFromManager();
+        List<Tile> reducedPotentialTiles = new List<Tile>(potentialTiles);
+        foreach (Tile entry in potentialTiles)
+        {
+            if (!limiter.Contains(entry))
+                reducedPotentialTiles.Remove(entry);
+        }
+        if (reducedPotentialTiles == potentialTiles)
+        {
+            Debug.Log($"PotentialTiles of {this} have not been changed by the limiter");
+            return false;
+        }
+        else
+        {
+            potentialTiles = reducedPotentialTiles;
+            return true;
+        }
     }
 
+    //# Private Methods 
     private void RegisterInManager()
     {
         NodeManager.instance.RegisterNode(gridPosition, this);
+        // Debug.Log($"Registering {name} at position {gridPosition}.");
     }
 
     private void UnregisterFromManager()
