@@ -11,19 +11,19 @@ using UnityEngine;
 
 // TODO: There has to be a way to make it more performance-friendly / take up less memory
 [ExecuteInEditMode]
-[CreateAssetMenu(fileName = "Tile", menuName = "Wave Function Collapse Tile")]
+[CreateAssetMenu(fileName = "Tile", menuName = "Wave Function Collapse/Tile")]
 public class Tile : ScriptableObject
 {
     public GameObject prefab;
 
-    public List<Tile> ValidTilesN;
-    public List<Tile> ValidTilesNE;
-    public List<Tile> ValidTilesE;
-    public List<Tile> ValidTilesSE;
-    public List<Tile> ValidTilesS;
-    public List<Tile> ValidTilesSW;
-    public List<Tile> ValidTilesW;
-    public List<Tile> ValidTilesNW;
+    public List<Tile> validTilesN;
+    public List<Tile> validTilesNE;
+    public List<Tile> validTilesE;
+    public List<Tile> validTilesSE;
+    public List<Tile> validTilesS;
+    public List<Tile> validTilesSW;
+    public List<Tile> validTilesW;
+    public List<Tile> validTilesNW;
 
     [Header("In-Editor Tile Setup")]
     [SerializeField]
@@ -39,27 +39,27 @@ public class Tile : ScriptableObject
     {
         if (addToAllDirections != null)
         {
-            TryAddTileToList(addToAllDirections, ValidTilesN);
-            TryAddTileToList(addToAllDirections, ValidTilesNE);
-            TryAddTileToList(addToAllDirections, ValidTilesE);
-            TryAddTileToList(addToAllDirections, ValidTilesSE);
-            TryAddTileToList(addToAllDirections, ValidTilesS);
-            TryAddTileToList(addToAllDirections, ValidTilesSW);
-            TryAddTileToList(addToAllDirections, ValidTilesW);
-            TryAddTileToList(addToAllDirections, ValidTilesNW);
+            TryAddTileToList(addToAllDirections, validTilesN);
+            TryAddTileToList(addToAllDirections, validTilesNE);
+            TryAddTileToList(addToAllDirections, validTilesE);
+            TryAddTileToList(addToAllDirections, validTilesSE);
+            TryAddTileToList(addToAllDirections, validTilesS);
+            TryAddTileToList(addToAllDirections, validTilesSW);
+            TryAddTileToList(addToAllDirections, validTilesW);
+            TryAddTileToList(addToAllDirections, validTilesNW);
         }
         addToAllDirections = null;
 
         if (removeFromAllDirections != null)
         {
-            TryRemoveTileFromList(removeFromAllDirections, ValidTilesN);
-            TryRemoveTileFromList(removeFromAllDirections, ValidTilesNE);
-            TryRemoveTileFromList(removeFromAllDirections, ValidTilesE);
-            TryRemoveTileFromList(removeFromAllDirections, ValidTilesSE);
-            TryRemoveTileFromList(removeFromAllDirections, ValidTilesS);
-            TryRemoveTileFromList(removeFromAllDirections, ValidTilesSW);
-            TryRemoveTileFromList(removeFromAllDirections, ValidTilesW);
-            TryRemoveTileFromList(removeFromAllDirections, ValidTilesNW);
+            TryRemoveTileFromList(removeFromAllDirections, validTilesN);
+            TryRemoveTileFromList(removeFromAllDirections, validTilesNE);
+            TryRemoveTileFromList(removeFromAllDirections, validTilesE);
+            TryRemoveTileFromList(removeFromAllDirections, validTilesSE);
+            TryRemoveTileFromList(removeFromAllDirections, validTilesS);
+            TryRemoveTileFromList(removeFromAllDirections, validTilesSW);
+            TryRemoveTileFromList(removeFromAllDirections, validTilesW);
+            TryRemoveTileFromList(removeFromAllDirections, validTilesNW);
         }
         removeFromAllDirections = null;
     }

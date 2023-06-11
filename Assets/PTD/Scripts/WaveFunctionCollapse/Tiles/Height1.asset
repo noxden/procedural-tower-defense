@@ -13,28 +13,29 @@ MonoBehaviour:
   m_Name: Height1
   m_EditorClassIdentifier: 
   prefab: {fileID: 8574089104529907636, guid: 5dd6857a8ff60d94289d86959fdaafd8, type: 3}
-  ValidTilesN:
+  validTilesN:
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 3c923dfb7e4262d4e97024a72b447c93, type: 2}
-  ValidTilesNE:
+  validTilesNE:
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 3c923dfb7e4262d4e97024a72b447c93, type: 2}
-  ValidTilesE:
+  validTilesE:
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 3c923dfb7e4262d4e97024a72b447c93, type: 2}
-  ValidTilesSE:
+  validTilesSE:
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 3c923dfb7e4262d4e97024a72b447c93, type: 2}
-  ValidTilesS:
+  validTilesS:
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 3c923dfb7e4262d4e97024a72b447c93, type: 2}
-  ValidTilesSW:
+  validTilesSW:
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 3c923dfb7e4262d4e97024a72b447c93, type: 2}
-  ValidTilesW:
+  validTilesW:
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 3c923dfb7e4262d4e97024a72b447c93, type: 2}
-  ValidTilesNW:
+  validTilesNW:
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 3c923dfb7e4262d4e97024a72b447c93, type: 2}
   addToAllDirections: {fileID: 0}
+  removeFromAllDirections: {fileID: 0}

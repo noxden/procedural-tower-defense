@@ -13,36 +13,37 @@ MonoBehaviour:
   m_Name: Height2
   m_EditorClassIdentifier: 
   prefab: {fileID: 3129978291001841730, guid: decf724d63bfda34a8dd27ba8afa25b6, type: 3}
-  ValidTilesN:
+  validTilesN:
   - {fileID: 11400000, guid: 6f983dd132fe3094ba9a7f3afb1e47fa, type: 2}
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 55370cff172b7ad41a2030a6862e7e3e, type: 2}
-  ValidTilesNE:
+  validTilesNE:
   - {fileID: 11400000, guid: 6f983dd132fe3094ba9a7f3afb1e47fa, type: 2}
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 55370cff172b7ad41a2030a6862e7e3e, type: 2}
-  ValidTilesE:
+  validTilesE:
   - {fileID: 11400000, guid: 6f983dd132fe3094ba9a7f3afb1e47fa, type: 2}
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 55370cff172b7ad41a2030a6862e7e3e, type: 2}
-  ValidTilesSE:
+  validTilesSE:
   - {fileID: 11400000, guid: 6f983dd132fe3094ba9a7f3afb1e47fa, type: 2}
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 55370cff172b7ad41a2030a6862e7e3e, type: 2}
-  ValidTilesS:
+  validTilesS:
   - {fileID: 11400000, guid: 6f983dd132fe3094ba9a7f3afb1e47fa, type: 2}
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 55370cff172b7ad41a2030a6862e7e3e, type: 2}
-  ValidTilesSW:
+  validTilesSW:
   - {fileID: 11400000, guid: 6f983dd132fe3094ba9a7f3afb1e47fa, type: 2}
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 55370cff172b7ad41a2030a6862e7e3e, type: 2}
-  ValidTilesW:
+  validTilesW:
   - {fileID: 11400000, guid: 6f983dd132fe3094ba9a7f3afb1e47fa, type: 2}
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 55370cff172b7ad41a2030a6862e7e3e, type: 2}
-  ValidTilesNW:
+  validTilesNW:
   - {fileID: 11400000, guid: 6f983dd132fe3094ba9a7f3afb1e47fa, type: 2}
   - {fileID: 11400000}
   - {fileID: 11400000, guid: 55370cff172b7ad41a2030a6862e7e3e, type: 2}
   addToAllDirections: {fileID: 0}
+  removeFromAllDirections: {fileID: 0}
