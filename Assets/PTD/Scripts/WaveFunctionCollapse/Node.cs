@@ -54,14 +54,22 @@ public class Node : MonoBehaviour
             Debug.LogError($"Tile {this.name} does not have any potential tiles left.");
     }
 
+    /// <summary>
+    /// This function is called when the MonoBehaviour will be destroyed.
+    /// </summary>
+    private void OnDestroy()
+    {
+        UnregisterFromManager();
+    }
+
     private void RegisterInManager()
     {
-        NodeManager.instance.RegisterNodeToGrid(gridPosition, this);
+        NodeManager.instance.RegisterNode(gridPosition, this);
     }
 
     private void UnregisterFromManager()
     {
-        NodeManager.instance.UnregisterNodeFromGrid(gridPosition);
+        NodeManager.instance.UnregisterNode(gridPosition);
     }
 
     private void CreateNodePositionVisualizer()

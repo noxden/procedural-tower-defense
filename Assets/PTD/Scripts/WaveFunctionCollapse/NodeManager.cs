@@ -72,13 +72,13 @@ public class NodeManager : MonoBehaviour
     /// <summary>
     /// Tries to add node and returns false if it was not possible.
     /// </summary>
-    public bool RegisterNodeToGrid(Vector2Int position, Node node)
+    public bool RegisterNode(Vector2Int position, Node node)
     {
         bool success = nodeGrid.TryAdd(position, node);
-        if (!success) Debug.Log($"NodeGrid already carries an entry for position \"{position}\". Adding new node \"{node.name}\" failed.");
+        if (!success) Debug.Log($"NodeGrid already carries an entry for position \"{position}\". Adding new node \"{node.name}\" failed.", node);
         return success;
     }
-    public void UnregisterNodeFromGrid(Vector2Int position) => nodeGrid.Remove(position);
+    public void UnregisterNode(Vector2Int position) => nodeGrid.Remove(position);
 
     //# Private Methods 
     private void GenerateNodeGrid()
