@@ -24,8 +24,6 @@ public class Tile : ScriptableObject
     public List<Tile> validTilesW;
     public List<Tile> validTilesNW;
 
-    private Vector2Int North = new Vector2Int(0, 1);
-
     [Header("In-Editor Tile Setup")]
     [SerializeField]
     private Tile addToAllDirections;
@@ -38,28 +36,28 @@ public class Tile : ScriptableObject
         switch (direction)
         {
             case Vector2Int v when v.Equals(Vector2Int.up):
-                Debug.Log($"Return validTilesN");
+                // Debug.Log($"Return validTilesN");
                 return validTilesN;
             case Vector2Int v when v.Equals(Vector2Int.up + Vector2Int.right):
-                Debug.Log($"Return validTilesNE");
+                // Debug.Log($"Return validTilesNE");
                 return validTilesNE;
             case Vector2Int v when v.Equals(Vector2Int.right):
-                Debug.Log($"Return validTilesE");
+                // Debug.Log($"Return validTilesE");
                 return validTilesE;
             case Vector2Int v when v.Equals(Vector2Int.right + Vector2Int.down):
-                Debug.Log($"Return validTilesSE");
+                // Debug.Log($"Return validTilesSE");
                 return validTilesSE;
             case Vector2Int v when v.Equals(Vector2Int.down):
-                Debug.Log($"Return validTilesS");
+                // Debug.Log($"Return validTilesS");
                 return validTilesS;
             case Vector2Int v when v.Equals(Vector2Int.down + Vector2Int.left):
-                Debug.Log($"Return validTilesSW");
+                // Debug.Log($"Return validTilesSW");
                 return validTilesSW;
             case Vector2Int v when v.Equals(Vector2Int.left):
-                Debug.Log($"Return validTilesW");
+                // Debug.Log($"Return validTilesW");
                 return validTilesW;
             case Vector2Int v when v.Equals(Vector2Int.left + Vector2Int.up):
-                Debug.Log($"Return validTilesNW");
+                // Debug.Log($"Return validTilesNW");
                 return validTilesNW;
         }
         Debug.Log($"R{direction} is not registered as a valid direction.");

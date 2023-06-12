@@ -86,7 +86,7 @@ public class Node : MonoBehaviour
         }
         else
         {
-            Debug.Log($"Reduced potential tiles of {this}:\nfrom {string.Join(", ", potentialTiles)} \nto      {string.Join(", ", reducedPotentialTiles)}");
+            Debug.Log($"Reduced potential tiles of {this}:\nfrom {string.Join(", ", potentialTiles)} \nto      {string.Join(", ", reducedPotentialTiles)}", this);
             potentialTiles = reducedPotentialTiles;
             return true;
         }
