@@ -421,7 +421,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SOLVE: 0
-  SOLVEBySTEP: 0
+  SOLVE_STEPWISE: 0
+  stepwiseSolvingSpeedInSeconds: 5
   ITERATE: 0
   directionsToPropagateTo: []
   uncollapsedNodes: []

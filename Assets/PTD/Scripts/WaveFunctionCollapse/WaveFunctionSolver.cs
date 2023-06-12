@@ -13,11 +13,15 @@ using System.Linq;
 public class WaveFunctionSolver : MonoBehaviour
 {
     //# Debug "Button" Variables 
+    [Header("Debug Section")]
     [SerializeField] private bool SOLVE = false;    //! FOR DEBUG PURPOSES ONLY
-    [SerializeField] private bool SOLVEBySTEP = false;    //! FOR DEBUG PURPOSES ONLY
+    [SerializeField] private bool SOLVE_STEPWISE = false;    //! FOR DEBUG PURPOSES ONLY
+    [SerializeField] private float stepwiseSolvingSpeedInSeconds = 1f;    //! FOR DEBUG PURPOSES ONLY
     [SerializeField] private bool ITERATE = false;    //! FOR DEBUG PURPOSES ONLY
 
     //# Private Variables 
+    [Header("List Visualization Section")]
+    [Tooltip("For visualization purposes only.")]
     [SerializeField] private List<Vector2Int> directionsToPropagateTo = new List<Vector2Int>();
     [Tooltip("For visualization purposes only.")]
     [SerializeField] private List<Node> uncollapsedNodes = new List<Node>();
@@ -43,10 +47,10 @@ public class WaveFunctionSolver : MonoBehaviour
             SOLVE = false;
             Solve();
         }
-        if (SOLVEBySTEP)  //! FOR DEBUG PURPOSES ONLY
+        if (SOLVE_STEPWISE)  //! FOR DEBUG PURPOSES ONLY
         {
             StopAllCoroutines();
-            SOLVEBySTEP = false;
+            SOLVE_STEPWISE = false;
             StartCoroutine(SolveStepByStep());
         }
         if (ITERATE)  //! FOR DEBUG PURPOSES ONLY
@@ -74,10 +78,11 @@ public class WaveFunctionSolver : MonoBehaviour
 
     private IEnumerator SolveStepByStep()
     {
+        float waitTimeBetweenIterations = stepwiseSolvingSpeedInSeconds / uncollapsedNodes.Count;   //< Takes a snapshot of the "uncollapsedNodes.Count" at the time of starting the coroutine.
         while (!isCollapsed)
         {
             Iterate();
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(waitTimeBetweenIterations);
         }
 
         Debug.Log($"Wave Function is collapsed!");
@@ -139,6 +144,7 @@ public class WaveFunctionSolver : MonoBehaviour
         }
     }
 
+    //> Replace sorting implementation with a simple loop that takes the node with the lowest entropy.
     private Node GetNodeWithLowestEntropy()
     {
         if (uncollapsedNodes.Count > 1)

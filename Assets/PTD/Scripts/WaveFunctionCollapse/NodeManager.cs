@@ -23,7 +23,6 @@ public class NodeManager : MonoBehaviour
     private Vector2Int nodeGridSize = new Vector2Int(8, 8);  //< Number of tiles in x/z axis
     private readonly Vector2 tileExtends = new Vector2(3, 3);    //< in Meters
     private readonly float tileSpacerThickness = 0.0f;
-    [SerializeField]
 
     //# Monobehaviour Events 
     private void Awake()
