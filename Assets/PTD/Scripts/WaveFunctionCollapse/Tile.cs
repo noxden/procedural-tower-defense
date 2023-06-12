@@ -15,7 +15,6 @@ using UnityEngine;
 public class Tile : ScriptableObject
 {
     public GameObject prefab;
-
     public List<Tile> validTilesN;
     public List<Tile> validTilesNE;
     public List<Tile> validTilesE;
@@ -25,12 +24,49 @@ public class Tile : ScriptableObject
     public List<Tile> validTilesW;
     public List<Tile> validTilesNW;
 
+    private Vector2Int North = new Vector2Int(0, 1);
+
     [Header("In-Editor Tile Setup")]
     [SerializeField]
     private Tile addToAllDirections;
     [SerializeField]
     private Tile removeFromAllDirections;
 
+    //# Public Methods 
+    public List<Tile> GetValidTilesInDirection(Vector2Int direction)
+    {
+        switch (direction)
+        {
+            case Vector2Int v when v.Equals(Vector2Int.up):
+                Debug.Log($"Return validTilesN");
+                return validTilesN;
+            case Vector2Int v when v.Equals(Vector2Int.up + Vector2Int.right):
+                Debug.Log($"Return validTilesNE");
+                return validTilesNE;
+            case Vector2Int v when v.Equals(Vector2Int.right):
+                Debug.Log($"Return validTilesE");
+                return validTilesE;
+            case Vector2Int v when v.Equals(Vector2Int.right + Vector2Int.down):
+                Debug.Log($"Return validTilesSE");
+                return validTilesSE;
+            case Vector2Int v when v.Equals(Vector2Int.down):
+                Debug.Log($"Return validTilesS");
+                return validTilesS;
+            case Vector2Int v when v.Equals(Vector2Int.down + Vector2Int.left):
+                Debug.Log($"Return validTilesSW");
+                return validTilesSW;
+            case Vector2Int v when v.Equals(Vector2Int.left):
+                Debug.Log($"Return validTilesW");
+                return validTilesW;
+            case Vector2Int v when v.Equals(Vector2Int.left + Vector2Int.up):
+                Debug.Log($"Return validTilesNW");
+                return validTilesNW;
+        }
+        Debug.Log($"R{direction} is not registered as a valid direction.");
+        return null;
+    }
+
+    //# Private Methods 
     /// <summary>
     /// Called when the script is loaded or a value is changed in the
     /// inspector (Called in the editor only).

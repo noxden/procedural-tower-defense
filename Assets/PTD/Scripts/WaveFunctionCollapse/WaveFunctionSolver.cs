@@ -74,8 +74,7 @@ public class WaveFunctionSolver : MonoBehaviour
 
     private void Propagate(Node sourceNode)
     {
-        //! This only propagates to nodes north of source for now.
-
+        //#> Set up propagation stack 
         List<Node> nodesToPropagateFrom = new List<Node>();
         nodesToPropagateFrom.Add(sourceNode);
 
@@ -84,23 +83,26 @@ public class WaveFunctionSolver : MonoBehaviour
             Node nodeToPropagateFrom = nodesToPropagateFrom[0];
             Debug.Log($"Now propagating from {nodeToPropagateFrom}.");
 
-            //#> Generate lists of valid tiles for the different directions 
-            List<Tile> validTilesN = new List<Tile>();
+            //#> Generate lists of valid tiles for the desired directions 
+            Vector2Int direction = new Vector2Int(1, 0);    //< This now propagates from the sourceNode to nodes in the direction set here.
+
+            List<Tile> allValidTilesInDirection = new List<Tile>();
             foreach (Tile tile in nodeToPropagateFrom.potentialTiles)
             {
-                foreach (Tile validTile in tile.validTilesN)
+                List<Tile> validTilesInDirection = tile.GetValidTilesInDirection(direction);
+                foreach (Tile validTile in validTilesInDirection)
                 {
-                    if (!validTilesN.Contains(validTile))
-                        validTilesN.Add(validTile);
+                    if (!allValidTilesInDirection.Contains(validTile))
+                        allValidTilesInDirection.Add(validTile);
                 }
             }
-            Debug.Log($"Generated list of valid tiles NORTH of {nodeToPropagateFrom}: {string.Join(", ", validTilesN)}");
+            Debug.Log($"Generated list of valid tiles NORTH of {nodeToPropagateFrom}: {string.Join(", ", allValidTilesInDirection)}");
 
             //#> Check for node in that direction and apply the list generated above as a limiting factor 
-            Node nodeToPropagateTo = NodeManager.instance.GetNodeByPosition(nodeToPropagateFrom.gridPosition + Vector2Int.up);  //< Gets node in given direction
+            Node nodeToPropagateTo = NodeManager.instance.GetNodeByPosition(nodeToPropagateFrom.gridPosition + direction);  //< Gets node in given direction
             if (nodeToPropagateTo != null)  //TODO: Null-Check could be moved above validTiles list generation (at least partially), in order to not do that generation for nothing.
             {
-                if (nodeToPropagateTo.ReducePotentialTilesByLimiter(validTilesN))
+                if (nodeToPropagateTo.ReducePotentialTilesByLimiter(allValidTilesInDirection))
                     nodesToPropagateFrom.Add(nodeToPropagateTo);
             }
 
