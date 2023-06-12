@@ -67,7 +67,7 @@ public class NodeManager : MonoBehaviour
     public Node GetNodeByPosition(Vector2Int position)
     {
         bool success = nodeGrid.TryGetValue(position, out Node node);
-        if (!success) Debug.Log($"Could not reach node at position {position}."); //< Intended behaviour whenever system would try to reach an out-of-bounds node
+        if (!success) Debug.Log($"Could not locate node at position {position}."); //< Intended behaviour whenever system would try to reach an out-of-bounds node
         return node;
     }
 

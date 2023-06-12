@@ -10,8 +10,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public enum Direction { N, NE, E, SE, S, SW, W, NW }
-
 public class Node : MonoBehaviour
 {
     public int entropy { get { return potentialTiles.Count; } }  //< "The entropy of a cell / node.", previously named "numberOfRemainingPotentialTiles"
@@ -36,7 +34,6 @@ public class Node : MonoBehaviour
 
     private void Start()
     {
-        // potentialTiles = new List<Tile>(NodeManager.instance.allTiles);  //< This filling task is now handled by the nodemanager
         CreateNodePositionVisualizer();
     }
 
@@ -52,7 +49,7 @@ public class Node : MonoBehaviour
     /// <summary>
     /// This function causes one of the potential tiles to be instantiated, thereby collapsing the superposition. It returns true if collapse was successful, false if entropy was 0.
     /// </summary>
-    public bool Collapse()  //< Returns true if collapse was successful
+    public bool Collapse()  //< Returns true if collapse was successful     //? What should happen in the case that entropy does hit zero?
     {
         if (entropy == 1)
             Instantiate(potentialTiles[0].prefab, this.transform, false);

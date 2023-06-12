@@ -392,7 +392,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3c923dfb7e4262d4e97024a72b447c93, type: 2}
   - {fileID: 11400000, guid: 55370cff172b7ad41a2030a6862e7e3e, type: 2}
   - {fileID: 11400000, guid: bd2875e38b80939489cd0d433bfa383d, type: 2}
-  nodeGridSize: {x: 10, y: 10}
+  nodeGridSize: {x: 20, y: 20}
 --- !u!4 &1795796056
 Transform:
   m_ObjectHideFlags: 0
@@ -421,4 +421,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SOLVE: 0
+  directionsToPropagateTo: []
   uncollapsedNodes: []
