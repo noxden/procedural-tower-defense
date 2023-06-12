@@ -168,12 +168,12 @@ public class WaveFunctionSolver : MonoBehaviour
     private void FillDirectionsToPropagateTo()
     {
         directionsToPropagateTo.Add(Vector2Int.up);
-        directionsToPropagateTo.Add(Vector2Int.up + Vector2Int.right);
+        // directionsToPropagateTo.Add(Vector2Int.up + Vector2Int.right);
         directionsToPropagateTo.Add(Vector2Int.right);
-        directionsToPropagateTo.Add(Vector2Int.right + Vector2Int.down);
+        // directionsToPropagateTo.Add(Vector2Int.right + Vector2Int.down);
         directionsToPropagateTo.Add(Vector2Int.down);
-        directionsToPropagateTo.Add(Vector2Int.down + Vector2Int.left);
+        // directionsToPropagateTo.Add(Vector2Int.down + Vector2Int.left);
         directionsToPropagateTo.Add(Vector2Int.left);
-        directionsToPropagateTo.Add(Vector2Int.left + Vector2Int.up);
+        // directionsToPropagateTo.Add(Vector2Int.left + Vector2Int.up);
     }
 }
