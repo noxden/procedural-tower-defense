@@ -74,40 +74,37 @@ public class WaveFunctionSolver : MonoBehaviour
 
     private void Propagate(Node sourceNode)
     {
-        //! This only propagates to node north of source for now.        
-        //#> Generate lists of valid tiles for the different directions
-        List<Tile> validTilesN = new List<Tile>();
-        foreach (Tile tile in sourceNode.potentialTiles)
-        {
-            foreach (Tile validTile in tile.validTilesN)
-            {
-                if (!validTilesN.Contains(validTile))
-                    validTilesN.Add(validTile);
-            }
-        }
+        //! This only propagates to nodes north of source for now.
 
-        List<string> debugStringList = new List<string>();
-        foreach (var item in validTilesN)
-        {
-            debugStringList.Add(item.ToString());
-        }
-        Debug.Log($"Generated list of valid tiles NORTH of {sourceNode}: {string.Join(", ", debugStringList)}");
+        List<Node> nodesToPropagateFrom = new List<Node>();
+        nodesToPropagateFrom.Add(sourceNode);
 
-        //#> Check for node in that direction and apply the list generated above as a limiting factor
-        Node nodeToPropagateTo = NodeManager.instance.GetNodeByPosition(sourceNode.gridPosition + Vector2Int.up);
-        if (nodeToPropagateTo != null)
+        while (nodesToPropagateFrom.Count > 0)
         {
-            string potentialTilesBefore = string.Join(", ", nodeToPropagateTo.potentialTiles);
-            if (nodeToPropagateTo.ReducePotentialTilesByLimiter(validTilesN))
+            Node nodeToPropagateFrom = nodesToPropagateFrom[0];
+            Debug.Log($"Now propagating from {nodeToPropagateFrom}.");
+
+            //#> Generate lists of valid tiles for the different directions 
+            List<Tile> validTilesN = new List<Tile>();
+            foreach (Tile tile in nodeToPropagateFrom.potentialTiles)
             {
-                // nodesToPropagateFrom.Add(nodeToPropagateTo);
+                foreach (Tile validTile in tile.validTilesN)
+                {
+                    if (!validTilesN.Contains(validTile))
+                        validTilesN.Add(validTile);
+                }
             }
-            string potentialTilesAfter = string.Join(", ", nodeToPropagateTo.potentialTiles);
-            Debug.Log($"Reduced potential tiles of node {nodeToPropagateTo}:\nfrom {potentialTilesBefore} \nto      {potentialTilesAfter}");
-        }
-        else
-        {
-            Debug.Log($"Could not reach node at position {sourceNode.gridPosition + Vector2Int.up}.");
+            Debug.Log($"Generated list of valid tiles NORTH of {nodeToPropagateFrom}: {string.Join(", ", validTilesN)}");
+
+            //#> Check for node in that direction and apply the list generated above as a limiting factor 
+            Node nodeToPropagateTo = NodeManager.instance.GetNodeByPosition(nodeToPropagateFrom.gridPosition + Vector2Int.up);  //< Gets node in given direction
+            if (nodeToPropagateTo != null)  //TODO: Null-Check could be moved above validTiles list generation (at least partially), in order to not do that generation for nothing.
+            {
+                if (nodeToPropagateTo.ReducePotentialTilesByLimiter(validTilesN))
+                    nodesToPropagateFrom.Add(nodeToPropagateTo);
+            }
+
+            nodesToPropagateFrom.Remove(nodeToPropagateFrom);
         }
     }
 

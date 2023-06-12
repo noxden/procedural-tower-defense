@@ -8,6 +8,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public enum Direction { N, NE, E, SE, S, SW, W, NW }
 
@@ -81,13 +82,14 @@ public class Node : MonoBehaviour
             if (!limiter.Contains(entry))
                 reducedPotentialTiles.Remove(entry);
         }
-        if (reducedPotentialTiles == potentialTiles)
+        if (reducedPotentialTiles.SequenceEqual(potentialTiles))
         {
-            Debug.Log($"PotentialTiles of {this} have not been changed by the limiter");
+            Debug.Log($"PotentialTiles of {this} have not been changed by the limiter.");
             return false;
         }
         else
         {
+            Debug.Log($"Reduced potential tiles of {this}:\nfrom {string.Join(", ", potentialTiles)} \nto      {string.Join(", ", reducedPotentialTiles)}");
             potentialTiles = reducedPotentialTiles;
             return true;
         }
