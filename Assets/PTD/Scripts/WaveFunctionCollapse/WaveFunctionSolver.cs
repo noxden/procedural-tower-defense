@@ -16,6 +16,8 @@ public class WaveFunctionSolver : MonoBehaviour
     [SerializeField] private bool SOLVE = false;    //! FOR DEBUG PURPOSES ONLY
 
     //# Private Variables 
+    [SerializeField] private List<Vector2Int> directionsToPropagateTo = new List<Vector2Int>();
+    [Tooltip("For visualization purposes only.")]
     [SerializeField] private List<Node> uncollapsedNodes = new List<Node>();
     private bool isCollapsed
     {
@@ -28,6 +30,7 @@ public class WaveFunctionSolver : MonoBehaviour
     //# Monobehaviour Events 
     private void Start()
     {
+        FillDirectionsToPropagateTo();
         Initialize();
     }
 
@@ -37,6 +40,7 @@ public class WaveFunctionSolver : MonoBehaviour
         {
             SOLVE = false;
             Solve();
+            // Iterate();
         }
     }
 
@@ -72,6 +76,7 @@ public class WaveFunctionSolver : MonoBehaviour
         // TODO: Fix the issue stated above. 
     }
 
+    // TODO: Currently, there is a lot of recursion present in the propagation. This can be improved.
     private void Propagate(Node sourceNode)
     {
         //#> Set up propagation stack 
@@ -83,27 +88,28 @@ public class WaveFunctionSolver : MonoBehaviour
             Node nodeToPropagateFrom = nodesToPropagateFrom[0];
             Debug.Log($"Now propagating from {nodeToPropagateFrom}.");
 
-            //#> Generate lists of valid tiles for the desired directions 
-            Vector2Int direction = new Vector2Int(1, 0);    //< This now propagates from the sourceNode to nodes in the direction set here.
-
-            List<Tile> allValidTilesInDirection = new List<Tile>();
-            foreach (Tile tile in nodeToPropagateFrom.potentialTiles)
+            foreach (Vector2Int direction in directionsToPropagateTo)
             {
-                List<Tile> validTilesInDirection = tile.GetValidTilesInDirection(direction);
-                foreach (Tile validTile in validTilesInDirection)
+                //#> Generate lists of valid tiles for the desired direction 
+                List<Tile> allValidTilesInDirection = new List<Tile>();
+                foreach (Tile tile in nodeToPropagateFrom.potentialTiles)
                 {
-                    if (!allValidTilesInDirection.Contains(validTile))
-                        allValidTilesInDirection.Add(validTile);
+                    List<Tile> validTilesInDirection = tile.GetValidTilesInDirection(direction);
+                    foreach (Tile validTile in validTilesInDirection)
+                    {
+                        if (!allValidTilesInDirection.Contains(validTile))
+                            allValidTilesInDirection.Add(validTile);
+                    }
                 }
-            }
-            Debug.Log($"Generated list of valid tiles NORTH of {nodeToPropagateFrom}: {string.Join(", ", allValidTilesInDirection)}");
+                Debug.Log($"Generated list of valid tiles of {nodeToPropagateFrom} for direction {direction}: {string.Join(", ", allValidTilesInDirection)}");
 
-            //#> Check for node in that direction and apply the list generated above as a limiting factor 
-            Node nodeToPropagateTo = NodeManager.instance.GetNodeByPosition(nodeToPropagateFrom.gridPosition + direction);  //< Gets node in given direction
-            if (nodeToPropagateTo != null)  //TODO: Null-Check could be moved above validTiles list generation (at least partially), in order to not do that generation for nothing.
-            {
-                if (nodeToPropagateTo.ReducePotentialTilesByLimiter(allValidTilesInDirection))
-                    nodesToPropagateFrom.Add(nodeToPropagateTo);
+                //#> Check for node in that direction and apply the list generated above as a limiting factor 
+                Node nodeToPropagateTo = NodeManager.instance.GetNodeByPosition(nodeToPropagateFrom.gridPosition + direction);  //< Gets node in given direction
+                if (nodeToPropagateTo != null)  //TODO: Null-Check could be moved above validTiles list generation (at least partially), in order to not do that generation for nothing.
+                {
+                    if (nodeToPropagateTo.ReducePotentialTilesByLimiter(allValidTilesInDirection))
+                        nodesToPropagateFrom.Add(nodeToPropagateTo);
+                }
             }
 
             nodesToPropagateFrom.Remove(nodeToPropagateFrom);
@@ -128,5 +134,17 @@ public class WaveFunctionSolver : MonoBehaviour
             return uncollapsedNodes[0];
         else
             return null;
+    }
+
+    private void FillDirectionsToPropagateTo()
+    {
+        directionsToPropagateTo.Add(Vector2Int.up);
+        directionsToPropagateTo.Add(Vector2Int.up + Vector2Int.right);
+        directionsToPropagateTo.Add(Vector2Int.right);
+        directionsToPropagateTo.Add(Vector2Int.right + Vector2Int.down);
+        directionsToPropagateTo.Add(Vector2Int.down);
+        directionsToPropagateTo.Add(Vector2Int.down + Vector2Int.left);
+        directionsToPropagateTo.Add(Vector2Int.left);
+        directionsToPropagateTo.Add(Vector2Int.left + Vector2Int.up);
     }
 }
