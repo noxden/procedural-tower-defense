@@ -14,6 +14,8 @@ public class WaveFunctionSolver : MonoBehaviour
 {
     //# Debug "Button" Variables 
     [SerializeField] private bool SOLVE = false;    //! FOR DEBUG PURPOSES ONLY
+    [SerializeField] private bool SOLVEBySTEP = false;    //! FOR DEBUG PURPOSES ONLY
+    [SerializeField] private bool ITERATE = false;    //! FOR DEBUG PURPOSES ONLY
 
     //# Private Variables 
     [SerializeField] private List<Vector2Int> directionsToPropagateTo = new List<Vector2Int>();
@@ -40,7 +42,17 @@ public class WaveFunctionSolver : MonoBehaviour
         {
             SOLVE = false;
             Solve();
-            // Iterate();
+        }
+        if (SOLVEBySTEP)  //! FOR DEBUG PURPOSES ONLY
+        {
+            StopAllCoroutines();
+            SOLVEBySTEP = false;
+            StartCoroutine(SolveStepByStep());
+        }
+        if (ITERATE)  //! FOR DEBUG PURPOSES ONLY
+        {
+            ITERATE = false;
+            Iterate();
         }
     }
 
@@ -56,6 +68,17 @@ public class WaveFunctionSolver : MonoBehaviour
     {
         while (!isCollapsed)
             Iterate();
+
+        Debug.Log($"Wave Function is collapsed!");
+    }
+
+    private IEnumerator SolveStepByStep()
+    {
+        while (!isCollapsed)
+        {
+            Iterate();
+            yield return new WaitForSeconds(0.01f);
+        }
 
         Debug.Log($"Wave Function is collapsed!");
     }
