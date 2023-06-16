@@ -44,14 +44,15 @@ public class WaveFunctionSolver : MonoBehaviour
     {
         if (SOLVE)  //! FOR DEBUG PURPOSES ONLY
         {
+            StopAllCoroutines();
             SOLVE = false;
-            Solve();
+            StartCoroutine(Solve(solveInstantly: true));
         }
         if (SOLVE_STEPWISE)  //! FOR DEBUG PURPOSES ONLY
         {
             StopAllCoroutines();
             SOLVE_STEPWISE = false;
-            StartCoroutine(SolveStepByStep());
+            StartCoroutine(Solve(solveInstantly: false));
         }
         if (ITERATE)  //! FOR DEBUG PURPOSES ONLY
         {
@@ -68,21 +69,14 @@ public class WaveFunctionSolver : MonoBehaviour
             uncollapsedNodes.Add(entry.Value);
     }
 
-    private void Solve()
+    private IEnumerator Solve(bool solveInstantly)
     {
-        while (!isCollapsed)
-            Iterate();
-
-        Debug.Log($"Wave Function is collapsed!");
-    }
-
-    private IEnumerator SolveStepByStep()
-    {
-        float waitTimeBetweenIterations = stepwiseSolvingSpeedInSeconds / uncollapsedNodes.Count;   //< Takes a snapshot of the "uncollapsedNodes.Count" at the time of starting the coroutine.
+        float waitTimeBetweenIterations = (stepwiseSolvingSpeedInSeconds == 0 ? float.MinValue : stepwiseSolvingSpeedInSeconds) / uncollapsedNodes.Count;   //< Takes a snapshot of the "uncollapsedNodes.Count" at the time of starting the coroutine.
         while (!isCollapsed)
         {
             Iterate();
-            yield return new WaitForSeconds(waitTimeBetweenIterations);
+            if (!solveInstantly)
+                yield return new WaitForSeconds(waitTimeBetweenIterations);
         }
 
         Debug.Log($"Wave Function is collapsed!");
