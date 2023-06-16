@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.Events;
 
 public class Node : MonoBehaviour
 {
@@ -27,9 +28,22 @@ public class Node : MonoBehaviour
             RegisterInManager();
         }
     }
+    public UnityEvent<List<Tile>> OnPotentialTilesUpdated { get; } = new UnityEvent<List<Tile>>();
+    public List<Tile> potentialTiles
+    {
+        get
+        {
+            return _potentialTiles;
+        }
+        set
+        {
+            _potentialTiles = value;
+            OnPotentialTilesUpdated?.Invoke(potentialTiles);
+        }
+    }
+    [SerializeField] 
+    private List<Tile> _potentialTiles;  //< Defines this node's superposition
     private Vector2Int? _gridPosition;
-    [SerializeField]
-    public List<Tile> potentialTiles;  //< Defines this node's superposition
     private GameObject debugVisualizer;
 
     private void Start()
@@ -106,13 +120,11 @@ public class Node : MonoBehaviour
 
     private void CreateNodePositionVisualizer()
     {
-        debugVisualizer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        debugVisualizer.transform.SetParent(this.transform, false);
-        debugVisualizer.transform.localScale = Vector3.one * 0.75f;
+        gameObject.AddComponent<SuperpositionVisualizer>();
     }
 
     private void RemoveNodePositionVisualizer()
     {
-        Destroy(debugVisualizer);
+        gameObject.GetComponent<SuperpositionVisualizer>().Remove();
     }
 }
