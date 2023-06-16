@@ -143,15 +143,13 @@ public class WaveFunctionSolver : MonoBehaviour
     {
         if (uncollapsedNodes.Count > 1)
         {
-            List<Node> uncollapsedNodesSortedByEntropy = uncollapsedNodes.OrderBy(n => n.entropy).ToList();
-            if (uncollapsedNodesSortedByEntropy[0].entropy == uncollapsedNodesSortedByEntropy[1].entropy)
+            Node nodeWithLowestEntropy = uncollapsedNodes[(Random.Range(0, uncollapsedNodes.Count))];   //< Randomization prevents system from always solving the grid from Node (0,0).
+            foreach (Node nodeToCompare in uncollapsedNodes)
             {
-                List<Node> nodesWithLowestEntropy = new List<Node>(uncollapsedNodesSortedByEntropy.FindAll(n => n.entropy == uncollapsedNodesSortedByEntropy[0].entropy));
-                Node randomlyChosenNode = nodesWithLowestEntropy[Random.Range(0, nodesWithLowestEntropy.Count)];
-                Debug.Log($"Choosing randomly between nodes with an entropy of {uncollapsedNodesSortedByEntropy[0].entropy}...");
-                return randomlyChosenNode;
+                if (nodeToCompare.entropy < nodeWithLowestEntropy.entropy)
+                    nodeWithLowestEntropy = nodeToCompare;
             }
-            return uncollapsedNodesSortedByEntropy[0];
+            return nodeWithLowestEntropy;
         }
         else if (uncollapsedNodes.Count == 1)
             return uncollapsedNodes[0];
