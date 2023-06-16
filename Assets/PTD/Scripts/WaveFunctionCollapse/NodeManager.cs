@@ -84,11 +84,9 @@ public class NodeManager : MonoBehaviour
                 nodeGO.transform.SetParent(nodeGridGO.transform);
                 nodeGO.transform.localPosition = new Vector3(x * (tileExtends.x + tileSpacerThickness), 0, y * (tileExtends.y + tileSpacerThickness));
                 Node newNode = nodeGO.AddComponent<Node>();
-                newNode.potentialTiles = new List<Tile>(allTiles);  //< Fill this node's potential tiles
 
-                Vector2Int gridPosition = new Vector2Int(x, y);
-                newNode.gridPosition = gridPosition;
-                nodeGO.name = $"Node {gridPosition}";
+                newNode.potentialTiles = new List<Tile>(allTiles);  //< Fill this node's potential tiles
+                newNode.gridPosition = new Vector2Int(x, y);
             }
         }
     }

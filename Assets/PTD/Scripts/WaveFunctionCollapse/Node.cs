@@ -25,6 +25,7 @@ public class Node : MonoBehaviour
             if (_gridPosition.HasValue)
                 UnregisterFromManager();
             _gridPosition = value;
+            name = $"Node {gridPosition}";
             RegisterInManager();
         }
     }
