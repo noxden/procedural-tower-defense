@@ -21,7 +21,7 @@ public class SuperpositionVisualizer : MonoBehaviour
         tileVisualizerGroup = new GameObject("Superposition Visualizer").transform;
         tileVisualizerGroup.transform.SetParent(this.transform, false);
 
-        Intitialize_vertical();
+        Intitialize();
 
         OnPotentialTilesUpdatedInNode(GetComponent<Node>().potentialTiles);
     }
@@ -32,18 +32,6 @@ public class SuperpositionVisualizer : MonoBehaviour
     //# Public Methods 
     public void OnPotentialTilesUpdatedInNode(List<Tile> updatedTileList)
     {
-        //> Less performant option, but allows falsely / accidentally removed tileVisualizations to be displayed again.
-        // foreach (var item in tileVisualizations)
-        // {
-        //     item.SetActive(false);
-        // }
-
-        // for (int i = 0; i < NodeManager.instance.allTiles.Count; i++)
-        // {
-        //     if (updatedTileList.Contains(NodeManager.instance.allTiles[i]))
-        //         tileVisualizations[i].SetActive(true);
-        // }
-
         for (int i = 0; i < NodeManager.instance.allTiles.Count; i++)
         {
             if (!updatedTileList.Contains(NodeManager.instance.allTiles[i]))
@@ -82,19 +70,6 @@ public class SuperpositionVisualizer : MonoBehaviour
             }
 
             tileVisualization.transform.localScale = new Vector3(1f, 0.4f, 1f);
-        }
-    }
-
-    private void Intitialize_vertical()  //< Vertical Arrangement
-    {
-        List<Tile> allTiles = NodeManager.instance.allTiles;
-
-        foreach (var tile in allTiles)
-        {
-            GameObject tileVisualization = Instantiate(tile.prefab, parent: tileVisualizerGroup, worldPositionStays: false);
-            tileVisualizations.Add(tileVisualization);
-
-            tileVisualization.transform.localScale = new Vector3(0.75f, 0.5f, 0.75f);
         }
     }
 }
