@@ -16,7 +16,7 @@ public class WaveFunctionSolver : MonoBehaviour
     [Header("Debug Section")]
     [SerializeField] private bool SOLVE = false;    //! FOR DEBUG PURPOSES ONLY
     [SerializeField] private bool SOLVE_STEPWISE = false;    //! FOR DEBUG PURPOSES ONLY
-    [SerializeField] private float stepwiseSolvingSpeedInSeconds = 1f;    //! FOR DEBUG PURPOSES ONLY
+    [SerializeField] private float timeBetweenSteps = 0.05f;    //! FOR DEBUG PURPOSES ONLY
     [SerializeField] private bool ITERATE = false;    //! FOR DEBUG PURPOSES ONLY
 
     //# Private Variables 
@@ -71,12 +71,11 @@ public class WaveFunctionSolver : MonoBehaviour
 
     private IEnumerator Solve(bool solveInstantly)
     {
-        float waitTimeBetweenIterations = (stepwiseSolvingSpeedInSeconds == 0 ? float.MinValue : stepwiseSolvingSpeedInSeconds) / uncollapsedNodes.Count;   //< Takes a snapshot of the "uncollapsedNodes.Count" at the time of starting the coroutine.
         while (!isCollapsed)
         {
             Iterate();
             if (!solveInstantly)
-                yield return new WaitForSeconds(waitTimeBetweenIterations);
+                yield return new WaitForSeconds(timeBetweenSteps);
         }
 
         Debug.Log($"Wave Function is collapsed!");
