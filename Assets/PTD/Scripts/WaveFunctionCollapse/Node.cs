@@ -13,7 +13,8 @@ using UnityEngine.Events;
 
 public class Node : MonoBehaviour
 {
-    public int entropy { get { return potentialTiles.Count; } }  //< "The entropy of a cell / node.", previously named "numberOfRemainingPotentialTiles"
+    //# Public Variables 
+    public int entropy { get => potentialTiles.Count; }  //< The entropy of a node, previously named "numberOfRemainingPotentialTiles"
     public Vector2Int gridPosition
     {
         get
@@ -42,19 +43,18 @@ public class Node : MonoBehaviour
             OnPotentialTilesUpdated?.Invoke(potentialTiles);
         }
     }
-    [SerializeField] 
-    private List<Tile> _potentialTiles;  //< Defines this node's superposition
+
+    //# Private Variables 
+    [SerializeField] private List<Tile> _potentialTiles;  //< Defines this node's superposition
     private Vector2Int? _gridPosition;
     private GameObject debugVisualizer;
 
+    //# Monobehaviour Events 
     private void Start()
     {
         CreateNodePositionVisualizer();
     }
 
-    /// <summary>
-    /// This function is called when the MonoBehaviour will be destroyed.
-    /// </summary>
     private void OnDestroy()
     {
         UnregisterFromManager();
@@ -64,14 +64,14 @@ public class Node : MonoBehaviour
     /// <summary>
     /// This function causes one of the potential tiles to be instantiated, thereby collapsing the superposition. It returns true if collapse was successful, false if entropy was 0.
     /// </summary>
-    public bool Collapse()  //< Returns true if collapse was successful     //? What should happen in the case that entropy does hit zero?
+    public bool Collapse()
     {
         if (entropy == 1)
             Instantiate(potentialTiles[0].prefab, this.transform, false);
         else if (entropy > 1)
         {
             Tile randomlyChosenTile = potentialTiles[Random.Range(0, potentialTiles.Count)];
-            potentialTiles.RemoveAll(x => x != randomlyChosenTile); //< Removes every entry but randomlyChosenTile from potentialTiles list
+            potentialTiles.RemoveAll(x => x != randomlyChosenTile);  //< Removes every entry but randomlyChosenTile from potentialTiles list
             Instantiate(randomlyChosenTile.prefab, this.transform, false);
         }
         else
@@ -96,36 +96,21 @@ public class Node : MonoBehaviour
         }
         if (reducedPotentialTiles.SequenceEqual(potentialTiles))
         {
-            Debug.Log($"PotentialTiles of {this} have not been changed by the limiter.");
             return false;
         }
         else
         {
-            Debug.Log($"Reduced potential tiles of {this}:\nfrom {string.Join(", ", potentialTiles)} \nto      {string.Join(", ", reducedPotentialTiles)}", this);
             potentialTiles = reducedPotentialTiles;
             return true;
         }
     }
 
     //# Private Methods 
-    private void RegisterInManager()
-    {
-        NodeManager.instance.RegisterNode(gridPosition, this);
-        // Debug.Log($"Registering {name} at position {gridPosition}.");
-    }
+    private void RegisterInManager() => NodeManager.instance.RegisterNode(gridPosition, this);
 
-    private void UnregisterFromManager()
-    {
-        NodeManager.instance.UnregisterNode(gridPosition);
-    }
+    private void UnregisterFromManager() => NodeManager.instance.UnregisterNode(gridPosition);
 
-    private void CreateNodePositionVisualizer()
-    {
-        gameObject.AddComponent<SuperpositionVisualizer>();
-    }
+    private void CreateNodePositionVisualizer() => gameObject.AddComponent<SuperpositionVisualizer>();
 
-    private void RemoveNodePositionVisualizer()
-    {
-        gameObject.GetComponent<SuperpositionVisualizer>().Remove();
-    }
+    private void RemoveNodePositionVisualizer() => gameObject.GetComponent<SuperpositionVisualizer>().Remove();
 }

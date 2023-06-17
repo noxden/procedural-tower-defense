@@ -13,6 +13,7 @@ public class NodeManager : MonoBehaviour
 {
     //# Debug "Button" Variables 
     [SerializeField] private bool REGENERATE = false;    //! FOR DEBUG PURPOSES ONLY
+    
     //# Public Variables 
     public static NodeManager instance { get; set; }
     public Dictionary<Vector2Int, Node> nodeGrid { get; private set; }
@@ -53,7 +54,7 @@ public class NodeManager : MonoBehaviour
     public bool RegisterNode(Vector2Int position, Node node)
     {
         bool success = nodeGrid.TryAdd(position, node);
-        if (!success) Debug.Log($"NodeGrid already carries an entry for position \"{position}\". Adding new node \"{node.name}\" failed.", node);
+        if (!success) Debug.LogError($"NodeGrid already carries an entry for position \"{position}\". Adding new node \"{node.name}\" failed.", node);
         return success;
     }
     public void UnregisterNode(Vector2Int position) => nodeGrid.Remove(position);
@@ -61,7 +62,7 @@ public class NodeManager : MonoBehaviour
     public Node GetNodeByPosition(Vector2Int position)
     {
         bool success = nodeGrid.TryGetValue(position, out Node node);
-        if (!success) Debug.Log($"Could not locate node at position {position}."); //< Intended behaviour whenever system would try to reach an out-of-bounds node
+        // if (!success) Debug.Log($"Could not locate node at position {position}."); //< Intended behaviour whenever system would try to reach an out-of-bounds node
         return node;
     }
 

@@ -9,7 +9,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO: There has to be a way to make it more performance-friendly / take up less memory
 [ExecuteInEditMode]
 [CreateAssetMenu(fileName = "Tile", menuName = "Wave Function Collapse/Tile")]
 public class Tile : ScriptableObject
@@ -38,31 +37,23 @@ public class Tile : ScriptableObject
         switch (direction)
         {
             case Vector2Int v when v.Equals(Vector2Int.up):
-                // Debug.Log($"Return validTilesN");
                 return validTilesN;
             case Vector2Int v when v.Equals(Vector2Int.up + Vector2Int.right):
-                // Debug.Log($"Return validTilesNE");
                 return validTilesNE;
             case Vector2Int v when v.Equals(Vector2Int.right):
-                // Debug.Log($"Return validTilesE");
                 return validTilesE;
             case Vector2Int v when v.Equals(Vector2Int.right + Vector2Int.down):
-                // Debug.Log($"Return validTilesSE");
                 return validTilesSE;
             case Vector2Int v when v.Equals(Vector2Int.down):
-                // Debug.Log($"Return validTilesS");
                 return validTilesS;
             case Vector2Int v when v.Equals(Vector2Int.down + Vector2Int.left):
-                // Debug.Log($"Return validTilesSW");
                 return validTilesSW;
             case Vector2Int v when v.Equals(Vector2Int.left):
-                // Debug.Log($"Return validTilesW");
                 return validTilesW;
             case Vector2Int v when v.Equals(Vector2Int.left + Vector2Int.up):
-                // Debug.Log($"Return validTilesNW");
                 return validTilesNW;
         }
-        Debug.Log($"R{direction} is not registered as a valid direction.");
+        Debug.LogError($"{direction} is not registered as a valid direction.");
         return null;
     }
 
