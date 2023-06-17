@@ -42,12 +42,7 @@ public class NodeManager : MonoBehaviour
     {
         if (REGENERATE)
         {
-            REGENERATE = false;
-            Destroy(GameObject.Find("Node Grid"));
-            nodeGrid.Clear();
-            Destroy(GetComponent<WaveFunctionSolver>());
-            Start();
-            gameObject.AddComponent<WaveFunctionSolver>();
+            StartCoroutine(Regenerate());
         }
     }
 
@@ -89,5 +84,16 @@ public class NodeManager : MonoBehaviour
                 newNode.gridPosition = new Vector2Int(x, y);
             }
         }
+    }
+
+    private IEnumerator Regenerate()
+    {
+        Destroy(GameObject.Find("Node Grid"));
+        yield return new WaitForEndOfFrame();
+        nodeGrid.Clear();
+        Destroy(GetComponent<WaveFunctionSolver>());
+        Start();
+        gameObject.AddComponent<WaveFunctionSolver>();
+        REGENERATE = false;
     }
 }
