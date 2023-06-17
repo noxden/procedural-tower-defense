@@ -16,9 +16,9 @@ public class WaveFunctionSolver : MonoBehaviour
     [SerializeField] private bool SOLVE = false;    //! FOR DEBUG PURPOSES ONLY
     [SerializeField] private bool SOLVE_STEPWISE = false;    //! FOR DEBUG PURPOSES ONLY
     [SerializeField] private bool ITERATE = false;    //! FOR DEBUG PURPOSES ONLY
-    [SerializeField] private float timeBetweenSteps = 0.05f;    //TODO: Make this value more static so that in-editor changes don't get lost when Regenerating OR rework Regenerating method.
 
     //# Private Variables 
+    [SerializeField] private float timeBetweenSteps = 0.05f;
     private bool isCollapsed { get => uncollapsedNodes.Count == 0; }
     private List<Vector2Int> directionsToPropagateTo = new List<Vector2Int>();
 
@@ -52,6 +52,14 @@ public class WaveFunctionSolver : MonoBehaviour
             ITERATE = false;
             Iterate();
         }
+    }
+
+    public void Restart()
+    {
+        StopAllCoroutines();
+        directionsToPropagateTo.Clear();
+        uncollapsedNodes.Clear();
+        Start();
     }
 
     //# Private Methods 

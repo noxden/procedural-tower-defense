@@ -92,9 +92,8 @@ public class NodeManager : MonoBehaviour
         Destroy(GameObject.Find("Node Grid"));
         yield return new WaitForEndOfFrame();
         nodeGrid.Clear();
-        Destroy(GetComponent<WaveFunctionSolver>());
         Start();
-        gameObject.AddComponent<WaveFunctionSolver>();
+        GetComponent<WaveFunctionSolver>().Restart();
         REGENERATE = false;
     }
 }
