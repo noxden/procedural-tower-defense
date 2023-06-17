@@ -29,6 +29,8 @@ public class Tile : ScriptableObject
     private Tile addToAllDirections;
     [SerializeField]
     private Tile removeFromAllDirections;
+    [SerializeField]
+    private bool forceAddMode;
 
     //# Public Methods 
     public List<Tile> GetValidTilesInDirection(Vector2Int direction)
@@ -103,8 +105,11 @@ public class Tile : ScriptableObject
     /// </summary>
     private bool TryAddTileToList(Tile tile, List<Tile> list)
     {
-        if (list.Contains(tile))
-            return false;
+        if (!forceAddMode)
+        {
+            if (list.Contains(tile))
+                return false;
+        }
 
         list.Add(tile);
         return true;
