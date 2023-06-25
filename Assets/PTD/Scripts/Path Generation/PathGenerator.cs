@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class MyRandomWalk : MonoBehaviour
+public class PathGenerator : MonoBehaviour
 {
     [SerializeField] private int gridSizeX;
     [SerializeField] private int gridSizeY;
