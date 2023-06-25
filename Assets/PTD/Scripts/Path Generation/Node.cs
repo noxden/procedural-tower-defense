@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Node
+public class PathNode
 {
     public int posX;
     public int posY;
@@ -16,7 +16,7 @@ public class Node
             new Vector2(1f, 0f)
             };
 
-    public Node(int posX, int posY, List<Vector2> possibleDirections)
+    public PathNode(int posX, int posY, List<Vector2> possibleDirections)
     {
         this.posX = posX;
         this.posY = posY;
