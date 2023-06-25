@@ -44,6 +44,10 @@ public class Node : MonoBehaviour
         }
     }
 
+    //# Path Generation variables 
+    public List<Vector2Int> possiblePathDirections = new List<Vector2Int>();
+    public bool isPath = false;
+
     //# Private Variables 
     [SerializeField] private List<Tile> _potentialTiles;  //< Defines this node's superposition
     private Vector2Int? _gridPosition;
@@ -53,6 +57,7 @@ public class Node : MonoBehaviour
     private void Start()
     {
         CreateNodePositionVisualizer();
+        InitializePossiblePathDirections();
     }
 
     private void OnDestroy()
@@ -113,4 +118,16 @@ public class Node : MonoBehaviour
     private void CreateNodePositionVisualizer() => gameObject.AddComponent<SuperpositionVisualizer>();
 
     private void RemoveNodePositionVisualizer() => gameObject.GetComponent<SuperpositionVisualizer>().Remove();
+
+    private void InitializePossiblePathDirections()
+    {
+        if (gridPosition.x != 0)
+            possiblePathDirections.Add(new Vector2Int(-1, 0));
+        if (gridPosition.x != NodeManager.instance.nodeGridSize.x - 1)
+            possiblePathDirections.Add(new Vector2Int(1, 0));
+        if (gridPosition.y != 0)
+            possiblePathDirections.Add(new Vector2Int(0, -1));
+        if (gridPosition.y != NodeManager.instance.nodeGridSize.y - 1)
+            possiblePathDirections.Add(new Vector2Int(0, 1));
+    }
 }

@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class GenerationHandler : MonoBehaviour
 {
+    [SerializeField] private bool GENERATE_ALL = false;    //! FOR DEBUG PURPOSES ONLY
     public static GenerationHandler instance { get; set; }
+    private NodeManager nodeManager;
+    private PathGenerator pathGenerator;
+    private WaveFunctionSolver waveFunctionSolver;
 
     private void Awake()
     {
@@ -16,7 +20,21 @@ public class GenerationHandler : MonoBehaviour
 
     private void Start()
     {
-        // Get references to the nodemanager and the different generators
+        nodeManager = NodeManager.instance;
+        pathGenerator = FindObjectOfType<PathGenerator>();
+        waveFunctionSolver = FindObjectOfType<WaveFunctionSolver>();
+    }
+
+    /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// </summary>
+    private void Update()
+    {
+        if (GENERATE_ALL)
+        {
+            GenerateLevel();
+            GENERATE_ALL = false;
+        }
     }
 
     public void GenerateLevel()
@@ -29,12 +47,12 @@ public class GenerationHandler : MonoBehaviour
 
     private void GenerateHeight()
     {
-
+        waveFunctionSolver.SolveStepwise();
     }
 
     private void GeneratePath()
     {
-
+        pathGenerator.Generate();
     }
 
     private void GenerateTilemap()

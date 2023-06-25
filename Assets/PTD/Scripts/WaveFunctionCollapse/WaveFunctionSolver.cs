@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder(2)]
 public class WaveFunctionSolver : MonoBehaviour
 {
     //# Debug "Button" Variables 
@@ -18,7 +19,7 @@ public class WaveFunctionSolver : MonoBehaviour
     [SerializeField] private bool ITERATE = false;    //! FOR DEBUG PURPOSES ONLY
 
     //# Private Variables 
-    [SerializeField] private float timeBetweenSteps = 0.05f;
+    [SerializeField] private float stepDelayInSeconds = 0f;
     private bool isCollapsed { get => uncollapsedNodes.Count == 0; }
     private List<Vector2Int> directionsToPropagateTo = new List<Vector2Int>();
 
@@ -38,20 +39,25 @@ public class WaveFunctionSolver : MonoBehaviour
         if (SOLVE)  //! FOR DEBUG PURPOSES ONLY
         {
             StopAllCoroutines();
-            SOLVE = false;
             StartCoroutine(Solve(solveInstantly: true));
+            SOLVE = false;
         }
         if (SOLVE_STEPWISE)  //! FOR DEBUG PURPOSES ONLY
         {
-            StopAllCoroutines();
+            SolveStepwise();
             SOLVE_STEPWISE = false;
-            StartCoroutine(Solve(solveInstantly: false));
         }
         if (ITERATE)  //! FOR DEBUG PURPOSES ONLY
         {
             ITERATE = false;
             Iterate();
         }
+    }
+
+    public void SolveStepwise()
+    {
+        StopAllCoroutines();
+        StartCoroutine(Solve(solveInstantly: false));
     }
 
     public void Restart()
@@ -76,7 +82,7 @@ public class WaveFunctionSolver : MonoBehaviour
         {
             Iterate();
             if (!solveInstantly)
-                yield return new WaitForSeconds(timeBetweenSteps);
+                yield return new WaitForSeconds(stepDelayInSeconds);
         }
 
         Debug.Log($"Wave Function is collapsed!");

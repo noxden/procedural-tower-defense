@@ -13,15 +13,14 @@ public class NodeManager : MonoBehaviour
 {
     //# Debug "Button" Variables 
     [SerializeField] private bool REGENERATE = false;    //! FOR DEBUG PURPOSES ONLY
-    
+
     //# Public Variables 
     public static NodeManager instance { get; set; }
     public Dictionary<Vector2Int, Node> nodeGrid { get; private set; }
     public List<Tile> allTiles; //< Would be static if that did not prevent adding the tiles in the editor
 
     //# Private Variables 
-    [SerializeField]
-    private Vector2Int nodeGridSize = new Vector2Int(8, 8);  //< Number of tiles in x/z axis
+    public Vector2Int nodeGridSize = new Vector2Int(8, 8);  //< Number of tiles in x/z axis
     private readonly Vector2 tileExtends = new Vector2(3, 3);    //< in Meters
     private readonly float tileSpacerThickness = 0.0f;
 
