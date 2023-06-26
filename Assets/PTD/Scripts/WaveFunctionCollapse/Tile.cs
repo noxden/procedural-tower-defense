@@ -22,6 +22,7 @@ public class Tile : ScriptableObject
     public List<Tile> validTilesSW;
     public List<Tile> validTilesW;
     public List<Tile> validTilesNW;
+    public bool isPath;
 
     [Header("In-Editor Tile Setup")]
     [SerializeField]

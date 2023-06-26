@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [DefaultExecutionOrder(1)]
 public class PathGenerator : MonoBehaviour
@@ -25,7 +26,8 @@ public class PathGenerator : MonoBehaviour
     private PathNode[,] gridBackup;
     private Dictionary<Vector2Int, Node> currentGrid;
     private List<Node> path = new List<Node>();
-    private List<Node> currentPath;
+    [SerializeField] private List<Node> currentPath;
+    public UnityEvent OnPathGenerated { get; } = new UnityEvent();
 
     private void Start()
     {
@@ -113,9 +115,11 @@ public class PathGenerator : MonoBehaviour
             yield return new WaitForSeconds(stepDelayInSeconds);
         }
 
+        currentPath[currentPath.Count - 1].isPath = true;   //! Quick fix for issue where the endnode would not have its isPath variable set accordingly.
         // Debug.Log($"Path generated from {(currentGrid.TryGetValue(startPositionIndex, out Node startNode) ? "" : "")}{startNode.name} to {(currentGrid.TryGetValue(endPositionIndex, out Node endNode) ? "" : "")}{endNode.name}.");
         Debug.Log($"Path is generated!");
         path = currentPath;
+        OnPathGenerated.Invoke();
 
         // TODO: Now, each node should reduce its potentialTiles based on their isPath value. Thanks to the path list here, we already know which nodes to notify!
     }
@@ -195,7 +199,7 @@ public class PathGenerator : MonoBehaviour
     private void OnDrawGizmos()
     {
         Vector3 gizmoScale = new Vector3(1f, 0.5f, 1f);
-        float gizmoHeight = 3f;
+        float gizmoHeight = 4.5f;
         if (currentGrid == null)
             return;
 

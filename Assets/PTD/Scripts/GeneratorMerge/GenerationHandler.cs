@@ -42,21 +42,38 @@ public class GenerationHandler : MonoBehaviour
         // Here, potential pre- or post-generation methods could be called as well
         GenerateHeight();
         GeneratePath();
-        GenerateTilemap();
+        // GenerateTilemap();
     }
 
     private void GenerateHeight()
     {
-        waveFunctionSolver.SolveStepwise();
+
     }
 
     private void GeneratePath()
     {
+        Debug.Log($"[Generator] Starting path generation.");
         pathGenerator.Generate();
+        pathGenerator.OnPathGenerated.AddListener(PostPathGeneration);
+    }
+
+    private void PostPathGeneration()
+    {
+        Debug.Log($"[Generator] Starting post path generation.");
+        Dictionary<Vector2Int, Node> nodeGrid = NodeManager.instance.nodeGrid;
+        foreach (var keyValuePair in nodeGrid)
+        {
+            Node node = keyValuePair.Value;
+            node.ReducePotentialTilesByPath();
+        }
+        pathGenerator.OnPathGenerated.RemoveListener(PostPathGeneration);
+        Debug.Log($"[Generator] Finished post path generation.");
+
+        GenerateTilemap();
     }
 
     private void GenerateTilemap()
     {
-
+        waveFunctionSolver.SolveStepwise();
     }
 }

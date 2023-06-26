@@ -127,6 +127,7 @@ public class WaveFunctionSolver : MonoBehaviour
                             allValidTilesInDirection.Add(validTile);
                     }
                 }
+                // Debug.Log($"All valid tiles in direction {direction} of {nodeToPropagateFrom.name} are: {string.Join(", ", allValidTilesInDirection)}");
 
                 //#> Check for node in that direction and apply the list generated above as a limiting factor 
                 Node nodeToPropagateTo = NodeManager.instance.GetNodeByPosition(nodeToPropagateFrom.gridPosition + direction);  //< Gets node in given direction
