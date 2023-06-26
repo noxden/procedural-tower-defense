@@ -5,7 +5,16 @@ using UnityEngine;
 public class GenerationHandler : MonoBehaviour
 {
     [SerializeField] private bool GENERATE_ALL = false;    //! FOR DEBUG PURPOSES ONLY
+    public bool generateInstantly = false;
     public static GenerationHandler instance { get; set; }
+
+    [Header("Generation Settings")]
+    public Vector2Int gridSize = new Vector2Int(10, 10);
+    public Vector2Int startPositionIndex;
+    public Vector2Int endPositionIndex;
+    public int pathLength;
+
+    //# Private variables 
     private NodeManager nodeManager;
     private PathGenerator pathGenerator;
     private WaveFunctionSolver waveFunctionSolver;
@@ -45,7 +54,7 @@ public class GenerationHandler : MonoBehaviour
     private void GeneratePath()
     {
         Debug.Log($"[Generator] Starting path generation.");
-        pathGenerator.Generate();
+        pathGenerator.Generate(generateInstantly);
         pathGenerator.OnPathGenerated.AddListener(PostPathGeneration);
     }
 
@@ -66,6 +75,41 @@ public class GenerationHandler : MonoBehaviour
 
     private void GenerateTilemap()
     {
-        waveFunctionSolver.SolveStepwise();
+        if (generateInstantly)
+            waveFunctionSolver.SolveInstantly();
+        else
+            waveFunctionSolver.SolveStepwise();
     }
+
+    private void OnValidate()
+    {
+        //> Ensure positions are within the gridsize
+        startPositionIndex.x = Mathf.Clamp(startPositionIndex.x, 0, gridSize.x - 1);
+        startPositionIndex.y = Mathf.Clamp(startPositionIndex.y, 0, gridSize.y - 1);
+
+        endPositionIndex.x = Mathf.Clamp(endPositionIndex.x, 0, gridSize.x - 1);
+        endPositionIndex.y = Mathf.Clamp(endPositionIndex.y, 0, gridSize.y - 1);
+
+        int shortestDistance = (Mathf.Abs(endPositionIndex.x - startPositionIndex.x) + Mathf.Abs(endPositionIndex.y - startPositionIndex.y)) + 1;
+
+        if (pathLength < shortestDistance)
+        {
+            pathLength = shortestDistance;
+            Debug.LogWarning("Path length is too short, setting to shortest distance");
+        }
+
+        if (pathLength % 2 != shortestDistance % 2)
+        {
+            pathLength++;
+            Debug.LogWarning("Path cannot end, setting it to an " + (shortestDistance % 2 == 0 ? "even" : "uneven") + " number");
+        }
+
+        if (pathLength > gridSize.x * gridSize.y)
+        {
+            pathLength = gridSize.x * gridSize.y;
+            Debug.LogWarning("Path length is too long, setting to max length");
+        }
+    }
+
+
 }

@@ -12,18 +12,12 @@ using UnityEngine;
 [DefaultExecutionOrder(2)]
 public class WaveFunctionSolver : MonoBehaviour
 {
-    //# Debug "Button" Variables 
-    [Header("Debug Section"), Space(5)]
-    [SerializeField] private bool SOLVE = false;    //! FOR DEBUG PURPOSES ONLY
-    [SerializeField] private bool SOLVE_STEPWISE = false;    //! FOR DEBUG PURPOSES ONLY
-    [SerializeField] private bool ITERATE = false;    //! FOR DEBUG PURPOSES ONLY
-
     //# Private Variables 
     [SerializeField] private float stepDelayInSeconds = 0f;
     private bool isCollapsed { get => uncollapsedNodes.Count == 0; }
     private List<Vector2Int> directionsToPropagateTo = new List<Vector2Int>();
 
-    [Header("Visualization Section"), Space(5)]
+    // [Header("Visualization Section"), Space(5)]
     [Tooltip("For visualization purposes only."), SerializeField]
     private List<Node> uncollapsedNodes = new List<Node>();
 
@@ -34,24 +28,10 @@ public class WaveFunctionSolver : MonoBehaviour
         Initialize();
     }
 
-    private void Update()
+    public void SolveInstantly()
     {
-        if (SOLVE)  //! FOR DEBUG PURPOSES ONLY
-        {
-            StopAllCoroutines();
-            StartCoroutine(Solve(solveInstantly: true));
-            SOLVE = false;
-        }
-        if (SOLVE_STEPWISE)  //! FOR DEBUG PURPOSES ONLY
-        {
-            SolveStepwise();
-            SOLVE_STEPWISE = false;
-        }
-        if (ITERATE)  //! FOR DEBUG PURPOSES ONLY
-        {
-            ITERATE = false;
-            Iterate();
-        }
+        StopAllCoroutines();
+        StartCoroutine(Solve(solveInstantly: true));
     }
 
     public void SolveStepwise()

@@ -15,40 +15,32 @@ using UnityEngine.Events;
 public class PathGenerator : MonoBehaviour
 {
     //# Debug "Button" Variables 
-    [SerializeField] private bool GENERATE = false;    //! FOR DEBUG PURPOSES ONLY
     private Vector2Int gridSize = Vector2Int.zero;
-    [SerializeField] private Vector2Int startPositionIndex;
-    [SerializeField] private Vector2Int endPositionIndex;
-    [SerializeField] private int pathLength;
-
+    private Vector2Int startPositionIndex;
+    private Vector2Int endPositionIndex;
+    private int pathLength;
     [SerializeField] private float stepDelayInSeconds = 0f;
 
     private PathNode[,] gridBackup;
     private Dictionary<Vector2Int, Node> currentGrid;
-    private List<Node> path = new List<Node>();
-    [SerializeField] private List<Node> currentPath;
+    [SerializeField] private List<Node> path = new List<Node>();
+    private List<Node> currentPath;
     public UnityEvent OnPathGenerated { get; } = new UnityEvent();
 
     private void Start()
     {
-        gridSize = NodeManager.instance.nodeGridSize;
+        startPositionIndex = GenerationHandler.instance.startPositionIndex;
+        endPositionIndex = GenerationHandler.instance.endPositionIndex;
+        pathLength = GenerationHandler.instance.pathLength;
+
+        gridSize = GenerationHandler.instance.gridSize;
         currentGrid = NodeManager.instance.nodeGrid;
-        ValidateSettings();
     }
 
-    private void Update()
-    {
-        if (GENERATE)
-        {
-            Generate();
-            GENERATE = false;
-        }
-    }
-
-    public void Generate()
+    public void Generate(bool generateInstantly = true)
     {
         StopAllCoroutines();
-        StartCoroutine(GeneratePath());
+        StartCoroutine(GeneratePath(generateInstantly));
     }
 
     private void CloneGrid()
@@ -68,7 +60,7 @@ public class PathGenerator : MonoBehaviour
         }
     }
 
-    private IEnumerator GeneratePath()
+    private IEnumerator GeneratePath(bool generateInstantly)
     {
         CloneGrid();
 
@@ -112,7 +104,10 @@ public class PathGenerator : MonoBehaviour
                 currentPath.Add(nextNode);
                 currentNode = nextNode;
             }
-            yield return new WaitForSeconds(stepDelayInSeconds);
+            if (!generateInstantly)
+                yield return new WaitForSeconds(stepDelayInSeconds);
+            else
+                yield return new WaitForSeconds(0);
         }
 
         currentPath[currentPath.Count - 1].isPath = true;   //! Quick fix for issue where the endnode would not have its isPath variable set accordingly.
@@ -151,51 +146,12 @@ public class PathGenerator : MonoBehaviour
         return false;
     }
 
-
-    private void ValidateSettings()
-    {
-        //> Ensure positions are within the gridsize
-        startPositionIndex.x = Mathf.Clamp(startPositionIndex.x, 0, gridSize.x - 1);
-        startPositionIndex.y = Mathf.Clamp(startPositionIndex.y, 0, gridSize.y - 1);
-
-        endPositionIndex.x = Mathf.Clamp(endPositionIndex.x, 0, gridSize.x - 1);
-        endPositionIndex.y = Mathf.Clamp(endPositionIndex.y, 0, gridSize.y - 1);
-
-        int shortestDistance = (Mathf.Abs(endPositionIndex.x - startPositionIndex.x) + Mathf.Abs(endPositionIndex.y - startPositionIndex.y)) + 1;
-
-        if (pathLength % 2 != shortestDistance % 2)
-        {
-            pathLength++;
-            Debug.LogWarning("Path cannot end, setting it to an " + (shortestDistance % 2 == 0 ? "even" : "uneven") + " number");
-        }
-
-        if (pathLength < shortestDistance)
-        {
-            pathLength = shortestDistance;
-            Debug.LogWarning("Path length is too short, setting to shortest distance");
-        }
-
-        if (pathLength > gridSize.x * gridSize.y)
-        {
-            pathLength = gridSize.x * gridSize.y;
-            Debug.LogWarning("Path length is too long, setting to max length");
-        }
-    }
-
     private PathNode NodeToPathNode(Node node)
     {
         return new PathNode(node.gridPosition, node.possiblePathDirections);
     }
 
     #region Editor
-
-    private void OnValidate()
-    {
-        if (!(gridSize.x == 0 & gridSize.y == 0))
-            ValidateSettings();
-
-    }
-
     private void OnDrawGizmos()
     {
         Vector3 gizmoScale = new Vector3(1f, 0.5f, 1f);

@@ -12,7 +12,7 @@ using UnityEngine;
 public class NodeManager : MonoBehaviour
 {
     //# Debug "Button" Variables 
-    [SerializeField] private bool REGENERATE = false;    //! FOR DEBUG PURPOSES ONLY
+    private bool REGENERATE = false;    //! FOR DEBUG PURPOSES ONLY     // Doesn't work right now
 
     //# Public Variables 
     public static NodeManager instance { get; set; }
@@ -20,7 +20,7 @@ public class NodeManager : MonoBehaviour
     public List<Tile> allTiles; //< Would be static if that did not prevent adding the tiles in the editor
 
     //# Private Variables 
-    public Vector2Int nodeGridSize = new Vector2Int(8, 8);  //< Number of tiles in x/z axis
+    private Vector2Int nodeGridSize;  //< Number of tiles in x/z axis
     private readonly Vector2 tileExtends = new Vector2(3, 3);    //< in Meters
     private readonly float tileSpacerThickness = 0.0f;
 
@@ -35,6 +35,7 @@ public class NodeManager : MonoBehaviour
 
     private void Start()
     {
+        nodeGridSize = GenerationHandler.instance.gridSize;
         GenerateNodeGrid();
     }
 

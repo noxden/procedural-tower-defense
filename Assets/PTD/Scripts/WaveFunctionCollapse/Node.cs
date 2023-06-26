@@ -135,11 +135,11 @@ public class Node : MonoBehaviour
     {
         if (gridPosition.x != 0)
             possiblePathDirections.Add(new Vector2Int(-1, 0));
-        if (gridPosition.x != NodeManager.instance.nodeGridSize.x - 1)
+        if (gridPosition.x != GenerationHandler.instance.gridSize.x - 1)
             possiblePathDirections.Add(new Vector2Int(1, 0));
         if (gridPosition.y != 0)
             possiblePathDirections.Add(new Vector2Int(0, -1));
-        if (gridPosition.y != NodeManager.instance.nodeGridSize.y - 1)
+        if (gridPosition.y != GenerationHandler.instance.gridSize.y - 1)
             possiblePathDirections.Add(new Vector2Int(0, 1));
     }
 }
