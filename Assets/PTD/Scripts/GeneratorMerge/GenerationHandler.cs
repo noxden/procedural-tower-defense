@@ -39,15 +39,7 @@ public class GenerationHandler : MonoBehaviour
 
     public void GenerateLevel()
     {
-        // Here, potential pre- or post-generation methods could be called as well
-        GenerateHeight();
         GeneratePath();
-        // GenerateTilemap();
-    }
-
-    private void GenerateHeight()
-    {
-
     }
 
     private void GeneratePath()

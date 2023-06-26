@@ -17,42 +17,34 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 55370cff172b7ad41a2030a6862e7e3e, type: 2}
   - {fileID: 11400000, guid: aa6f64739f1c75e44bf32cd62e3d7e4c, type: 2}
   - {fileID: 11400000}
-  - {fileID: 11400000, guid: 7e06dae80e90b294cbe0a0d1217067ae, type: 2}
   validTilesNE:
   - {fileID: 11400000, guid: 55370cff172b7ad41a2030a6862e7e3e, type: 2}
   - {fileID: 11400000, guid: aa6f64739f1c75e44bf32cd62e3d7e4c, type: 2}
   - {fileID: 11400000}
-  - {fileID: 11400000, guid: 7e06dae80e90b294cbe0a0d1217067ae, type: 2}
   validTilesE:
   - {fileID: 11400000, guid: 55370cff172b7ad41a2030a6862e7e3e, type: 2}
   - {fileID: 11400000, guid: aa6f64739f1c75e44bf32cd62e3d7e4c, type: 2}
   - {fileID: 11400000}
-  - {fileID: 11400000, guid: 7e06dae80e90b294cbe0a0d1217067ae, type: 2}
   validTilesSE:
   - {fileID: 11400000, guid: 55370cff172b7ad41a2030a6862e7e3e, type: 2}
   - {fileID: 11400000, guid: aa6f64739f1c75e44bf32cd62e3d7e4c, type: 2}
   - {fileID: 11400000}
-  - {fileID: 11400000, guid: 7e06dae80e90b294cbe0a0d1217067ae, type: 2}
   validTilesS:
   - {fileID: 11400000, guid: 55370cff172b7ad41a2030a6862e7e3e, type: 2}
   - {fileID: 11400000, guid: aa6f64739f1c75e44bf32cd62e3d7e4c, type: 2}
   - {fileID: 11400000}
-  - {fileID: 11400000, guid: 7e06dae80e90b294cbe0a0d1217067ae, type: 2}
   validTilesSW:
   - {fileID: 11400000, guid: 55370cff172b7ad41a2030a6862e7e3e, type: 2}
   - {fileID: 11400000, guid: aa6f64739f1c75e44bf32cd62e3d7e4c, type: 2}
   - {fileID: 11400000}
-  - {fileID: 11400000, guid: 7e06dae80e90b294cbe0a0d1217067ae, type: 2}
   validTilesW:
   - {fileID: 11400000, guid: 55370cff172b7ad41a2030a6862e7e3e, type: 2}
   - {fileID: 11400000, guid: aa6f64739f1c75e44bf32cd62e3d7e4c, type: 2}
   - {fileID: 11400000}
-  - {fileID: 11400000, guid: 7e06dae80e90b294cbe0a0d1217067ae, type: 2}
   validTilesNW:
   - {fileID: 11400000, guid: 55370cff172b7ad41a2030a6862e7e3e, type: 2}
   - {fileID: 11400000, guid: aa6f64739f1c75e44bf32cd62e3d7e4c, type: 2}
   - {fileID: 11400000}
-  - {fileID: 11400000, guid: 7e06dae80e90b294cbe0a0d1217067ae, type: 2}
   height: 4
   isPath: 0
   addToAllDirections: {fileID: 0}
