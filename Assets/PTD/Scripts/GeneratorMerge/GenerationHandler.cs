@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Implement different generation calls as async -> Await cast and so on
 public class GenerationHandler : MonoBehaviour
 {
-    [SerializeField] private bool GENERATE_ALL = false;    //! FOR DEBUG PURPOSES ONLY
     public bool generateInstantly = false;
     public static GenerationHandler instance { get; set; }
 
@@ -12,7 +12,7 @@ public class GenerationHandler : MonoBehaviour
     public Vector2Int gridSize = new Vector2Int(10, 10);
     public Vector2Int startPositionIndex;
     public Vector2Int endPositionIndex;
-    public int pathLength;
+    public int pathLength { get; set; }
 
     //# Private variables 
     private NodeManager nodeManager;
@@ -34,24 +34,12 @@ public class GenerationHandler : MonoBehaviour
         waveFunctionSolver = FindObjectOfType<WaveFunctionSolver>();
     }
 
-    /// <summary>
-    /// Update is called every frame, if the MonoBehaviour is enabled.
-    /// </summary>
-    private void Update()
-    {
-        if (GENERATE_ALL)
-        {
-            GenerateLevel();
-            GENERATE_ALL = false;
-        }
-    }
-
     public void GenerateLevel()
     {
         GeneratePath();
     }
 
-    private void GeneratePath()
+    public void GeneratePath()
     {
         Debug.Log($"[Generator] Starting path generation.");
         pathGenerator.Generate(generateInstantly);
@@ -73,7 +61,7 @@ public class GenerationHandler : MonoBehaviour
         GenerateTilemap();
     }
 
-    private void GenerateTilemap()
+    public void GenerateTilemap()
     {
         if (generateInstantly)
             waveFunctionSolver.SolveInstantly();
