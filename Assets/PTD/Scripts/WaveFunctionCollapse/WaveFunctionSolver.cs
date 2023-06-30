@@ -15,7 +15,7 @@ public class WaveFunctionSolver : MonoBehaviour
     //# Private Variables 
     [SerializeField] private float stepDelayInSeconds = 0f;
     private bool isCollapsed { get => uncollapsedNodes.Count == 0; }
-    private List<Vector2Int> directionsToPropagateTo = new List<Vector2Int>();
+    private List<Vector2Int> directionsToPropagateTo = new List<Vector2Int> { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
 
     // [Header("Visualization Section"), Space(5)]
     [Tooltip("For visualization purposes only."), SerializeField]
@@ -24,7 +24,6 @@ public class WaveFunctionSolver : MonoBehaviour
     //# Monobehaviour Events 
     private void Start()
     {
-        FillDirectionsToPropagateTo();
         Initialize();
     }
 
@@ -138,13 +137,5 @@ public class WaveFunctionSolver : MonoBehaviour
             return uncollapsedNodes[0];
         else
             return null;
-    }
-
-    private void FillDirectionsToPropagateTo()
-    {
-        directionsToPropagateTo.Add(Vector2Int.up);
-        directionsToPropagateTo.Add(Vector2Int.right);
-        directionsToPropagateTo.Add(Vector2Int.down);
-        directionsToPropagateTo.Add(Vector2Int.left);
     }
 }

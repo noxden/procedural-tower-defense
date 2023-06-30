@@ -15,13 +15,9 @@ public class Tile : ScriptableObject
 {
     public GameObject prefab;
     public List<Tile> validTilesN;
-    public List<Tile> validTilesNE;
     public List<Tile> validTilesE;
-    public List<Tile> validTilesSE;
     public List<Tile> validTilesS;
-    public List<Tile> validTilesSW;
     public List<Tile> validTilesW;
-    public List<Tile> validTilesNW;
     public bool isPath;
 
     [Header("In-Editor Tile Setup")]
@@ -39,23 +35,16 @@ public class Tile : ScriptableObject
         {
             case Vector2Int v when v.Equals(Vector2Int.up):
                 return validTilesN;
-            case Vector2Int v when v.Equals(Vector2Int.up + Vector2Int.right):
-                return validTilesNE;
             case Vector2Int v when v.Equals(Vector2Int.right):
                 return validTilesE;
-            case Vector2Int v when v.Equals(Vector2Int.right + Vector2Int.down):
-                return validTilesSE;
             case Vector2Int v when v.Equals(Vector2Int.down):
                 return validTilesS;
-            case Vector2Int v when v.Equals(Vector2Int.down + Vector2Int.left):
-                return validTilesSW;
             case Vector2Int v when v.Equals(Vector2Int.left):
                 return validTilesW;
-            case Vector2Int v when v.Equals(Vector2Int.left + Vector2Int.up):
-                return validTilesNW;
+            default:
+                Debug.LogError($"{direction} is not registered as a valid direction.");
+                return null;
         }
-        Debug.LogError($"{direction} is not registered as a valid direction.");
-        return null;
     }
 
     //# Private Methods 
@@ -68,26 +57,18 @@ public class Tile : ScriptableObject
         if (addToAllDirections != null)
         {
             TryAddTileToList(addToAllDirections, validTilesN);
-            TryAddTileToList(addToAllDirections, validTilesNE);
             TryAddTileToList(addToAllDirections, validTilesE);
-            TryAddTileToList(addToAllDirections, validTilesSE);
             TryAddTileToList(addToAllDirections, validTilesS);
-            TryAddTileToList(addToAllDirections, validTilesSW);
             TryAddTileToList(addToAllDirections, validTilesW);
-            TryAddTileToList(addToAllDirections, validTilesNW);
         }
         addToAllDirections = null;
 
         if (removeFromAllDirections != null)
         {
             TryRemoveTileFromList(removeFromAllDirections, validTilesN);
-            TryRemoveTileFromList(removeFromAllDirections, validTilesNE);
             TryRemoveTileFromList(removeFromAllDirections, validTilesE);
-            TryRemoveTileFromList(removeFromAllDirections, validTilesSE);
             TryRemoveTileFromList(removeFromAllDirections, validTilesS);
-            TryRemoveTileFromList(removeFromAllDirections, validTilesSW);
             TryRemoveTileFromList(removeFromAllDirections, validTilesW);
-            TryRemoveTileFromList(removeFromAllDirections, validTilesNW);
         }
         removeFromAllDirections = null;
     }
