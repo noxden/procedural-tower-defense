@@ -19,7 +19,7 @@ public class GenerationHandlerEditor : Editor
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Generate Path"))
         {
-            handler.GeneratePath();
+            handler.pathGenerator.Generate(generateInstantly: false);
         }
 
         if (GUILayout.Button("Generate Tilemap"))
