@@ -11,7 +11,6 @@ using UnityEngine;
 
 public enum Socket { h1, h1_2, h2, h2_3, h3, h3_4, h4, p2, p2_3, p3 }
 
-[ExecuteInEditMode]
 [CreateAssetMenu(fileName = "Tile", menuName = "Wave Function Collapse/Tile")]
 public class Tile : ScriptableObject
 {
@@ -46,11 +45,7 @@ public class Tile : ScriptableObject
     }
 
     //# Private Methods 
-    /// <summary>
-    /// Called when the script is loaded or a value is changed in the
-    /// inspector (Called in the editor only).
-    /// </summary>
-    private void OnValidate()
+    public void ApplyBulkChanges()
     {
         if (addToAllSides.Count != 0)
         {
