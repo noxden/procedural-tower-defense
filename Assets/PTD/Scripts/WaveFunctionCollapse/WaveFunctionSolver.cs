@@ -95,24 +95,25 @@ public class WaveFunctionSolver : MonoBehaviour
 
             foreach (Vector2Int direction in directionsToPropagateTo)
             {
-                //> Generate lists of valid tiles for the desired direction 
-                List<Tile> allValidTilesInDirection = new List<Tile>();
+                //> Generate lists of all sockets on the side in question
+                HashSet<Socket> allSocketsOnSide = new HashSet<Socket>();
                 foreach (Tile tile in nodeToPropagateFrom.potentialTiles)
                 {
-                    List<Tile> validTilesInDirection = tile.GetValidTilesInDirection(direction);
-                    foreach (Tile validTile in validTilesInDirection)
+                    List<Socket> socketsOnSide = tile.GetSocketsOnSide(direction);
+                    foreach (Socket socket in socketsOnSide)
                     {
-                        if (!allValidTilesInDirection.Contains(validTile))
-                            allValidTilesInDirection.Add(validTile);
+                        if (!allSocketsOnSide.Contains(socket))
+                            allSocketsOnSide.Add(socket);
                     }
                 }
                 // Debug.Log($"All valid tiles in direction {direction} of {nodeToPropagateFrom.name} are: {string.Join(", ", allValidTilesInDirection)}");
 
-                //#> Check for node in that direction and apply the list generated above as a limiting factor 
+                //> Check for node in that direction and apply the list generated above as a limiting factor 
                 Node nodeToPropagateTo = NodeManager.instance.GetNodeByPosition(nodeToPropagateFrom.gridPosition + direction);  //< Gets node in given direction
                 if (nodeToPropagateTo != null)  //TODO: Null-Check could be moved above validTiles list generation (at least partially), in order to not do that generation for nothing.
                 {
-                    if (nodeToPropagateTo.ReducePotentialTilesByLimiter(allValidTilesInDirection))
+                    // Debug.Log($"{nodeToPropagateFrom.name}'s socket towards {nodeToPropagateTo.name} is compatible with the following sockets: {string.Join(", ", allSocketsOnSide)}", nodeToPropagateTo.gameObject);
+                    if (nodeToPropagateTo.ReducePotentialTilesBySocketCompatibility(allSocketsOnSide, -direction))
                         nodesToPropagateFrom.Add(nodeToPropagateTo);
                 }
             }

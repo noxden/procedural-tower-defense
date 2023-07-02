@@ -91,14 +91,29 @@ public class Node : MonoBehaviour
     /// <summary>
     /// Returns true if potentialTiles were reduced by limiter, false if not.
     /// </summary>
-    public bool ReducePotentialTilesByLimiter(List<Tile> limiter)
+    public bool ReducePotentialTilesBySocketCompatibility(HashSet<Socket> compatibleSockets, Vector2Int socketSide)
     {
         List<Tile> reducedPotentialTiles = new List<Tile>(potentialTiles);
-        foreach (Tile entry in potentialTiles)
+        foreach (Tile tile in potentialTiles)
         {
-            if (!limiter.Contains(entry))
-                reducedPotentialTiles.Remove(entry);
+            bool isTileCompatible = false;
+
+            List<Socket> socketsOnSide = tile.GetSocketsOnSide(socketSide);
+            foreach (Socket socket in socketsOnSide)
+            {
+                if (compatibleSockets.Contains(socket)) //< If at least one of the tiles sockets matches the required sockets on that side, this tile is compatible.
+                {
+                    isTileCompatible = true;
+                }
+            }
+
+            if (!isTileCompatible)
+            {
+                reducedPotentialTiles.Remove(tile);
+                // Debug.Log($"Removing {tile.prefab.name} from potentialTiles in {this.name}, as it was incompatible with socket: {string.Join(", ", compatibleSockets)} of {NodeManager.instance.GetNodeByPosition(this.gridPosition + socketSide).name}.", this.gameObject);
+            }
         }
+
         if (reducedPotentialTiles.SequenceEqual(potentialTiles))
         {
             return false;

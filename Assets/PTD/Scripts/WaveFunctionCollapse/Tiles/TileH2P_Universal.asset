@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a18a4b63df8da47937d38df62326a6, type: 3}
+  m_Name: TileH2P_Universal
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 6734502803721455086, guid: cadaa9b1f284b304f9dbd5b2b15ea3a2, type: 3}
+  isPath: 1
+  northSockets: 0100000002000000030000000700000008000000
+  eastSockets: 0100000002000000030000000700000008000000
+  southSockets: 0100000002000000030000000700000008000000
+  westSockets: 0100000002000000030000000700000008000000
+  addToAllSides: 
+  removeFromAllSides: 

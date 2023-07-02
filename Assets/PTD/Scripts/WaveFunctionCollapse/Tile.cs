@@ -9,40 +9,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Socket { h1, h1_2, h2, h2_3, h3, h3_4, h4, p2, p2_3, p3 }
+
 [ExecuteInEditMode]
 [CreateAssetMenu(fileName = "Tile", menuName = "Wave Function Collapse/Tile")]
 public class Tile : ScriptableObject
 {
     public GameObject prefab;
-    public List<Tile> validTilesN;
-    public List<Tile> validTilesE;
-    public List<Tile> validTilesS;
-    public List<Tile> validTilesW;
     public bool isPath;
+    public List<Socket> northSockets;
+    public List<Socket> eastSockets;
+    public List<Socket> southSockets;
+    public List<Socket> westSockets;
 
-    [Header("In-Editor Tile Setup")]
-    [SerializeField]
-    private Tile addToAllDirections;
-    [SerializeField]
-    private Tile removeFromAllDirections;
-    [SerializeField]
-    private bool forceAddMode;
+    [Header("In-Editor Socket Bulk-Setup"), Space(10)]
+    [SerializeField] private List<Socket> addToAllSides;
+    [SerializeField] private List<Socket> removeFromAllSides;
 
     //# Public Methods 
-    public List<Tile> GetValidTilesInDirection(Vector2Int direction)
+    public List<Socket> GetSocketsOnSide(Vector2Int tileSide)
     {
-        switch (direction)
+        switch (tileSide)
         {
             case Vector2Int v when v.Equals(Vector2Int.up):
-                return validTilesN;
+                return northSockets;
             case Vector2Int v when v.Equals(Vector2Int.right):
-                return validTilesE;
+                return eastSockets;
             case Vector2Int v when v.Equals(Vector2Int.down):
-                return validTilesS;
+                return southSockets;
             case Vector2Int v when v.Equals(Vector2Int.left):
-                return validTilesW;
+                return westSockets;
             default:
-                Debug.LogError($"{direction} is not registered as a valid direction.");
+                Debug.LogError($"{tileSide} is not registered as a valid side.");
                 return null;
         }
     }
@@ -54,45 +52,51 @@ public class Tile : ScriptableObject
     /// </summary>
     private void OnValidate()
     {
-        if (addToAllDirections != null)
+        if (addToAllSides.Count != 0)
         {
-            TryAddTileToList(addToAllDirections, validTilesN);
-            TryAddTileToList(addToAllDirections, validTilesE);
-            TryAddTileToList(addToAllDirections, validTilesS);
-            TryAddTileToList(addToAllDirections, validTilesW);
+            TryAddSocketsToList(addToAllSides, northSockets);
+            TryAddSocketsToList(addToAllSides, eastSockets);
+            TryAddSocketsToList(addToAllSides, southSockets);
+            TryAddSocketsToList(addToAllSides, westSockets);
         }
-        addToAllDirections = null;
+        addToAllSides.Clear();
 
-        if (removeFromAllDirections != null)
+        if (removeFromAllSides.Count != 0)
         {
-            TryRemoveTileFromList(removeFromAllDirections, validTilesN);
-            TryRemoveTileFromList(removeFromAllDirections, validTilesE);
-            TryRemoveTileFromList(removeFromAllDirections, validTilesS);
-            TryRemoveTileFromList(removeFromAllDirections, validTilesW);
+            TryRemoveSocketsFromList(removeFromAllSides, northSockets);
+            TryRemoveSocketsFromList(removeFromAllSides, eastSockets);
+            TryRemoveSocketsFromList(removeFromAllSides, southSockets);
+            TryRemoveSocketsFromList(removeFromAllSides, westSockets);
         }
-        removeFromAllDirections = null;
+        removeFromAllSides.Clear();
     }
 
     /// <summary>
     /// Tries to add tile to list, returning false if the list already contains the tile.
     /// </summary>
-    private bool TryAddTileToList(Tile tile, List<Tile> list)
+    private bool TryAddSocketsToList(List<Socket> sockets, List<Socket> list)
     {
-        if (!forceAddMode)
+        bool success = true;
+        foreach (Socket socket in sockets)
         {
-            if (list.Contains(tile))
-                return false;
-        }
+            if (list.Contains(socket) && success == true)   //< If at least one socket cannot be added, return false
+                success = false;
 
-        list.Add(tile);
-        return true;
+            list.Add(socket);
+        }
+        return success;   //< This can only be reached if sockets is empty, which it can't be right now, as the list length is checked before the call of TryRemoveTileFromList().
     }
 
     /// <summary>
     /// Tries to remove tile from list, returning false if the list does not contain the tile.
     /// </summary>
-    private bool TryRemoveTileFromList(Tile tile, List<Tile> list)
+    private bool TryRemoveSocketsFromList(List<Socket> sockets, List<Socket> list)
     {
-        return list.Remove(tile);
+        bool success = true;
+        foreach (Socket socket in sockets)
+            if (list.Remove(socket) && success == true)  //< If at least one socket cannot be added, return false
+                success = false;
+
+        return success;   //< This can only be reached if sockets is empty, which it can't be right now, as the list length is checked before the call of TryRemoveTileFromList().
     }
 }
