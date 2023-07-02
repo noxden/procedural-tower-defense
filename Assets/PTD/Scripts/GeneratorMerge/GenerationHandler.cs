@@ -12,7 +12,9 @@ public class GenerationHandler : MonoBehaviour
     public Vector2Int gridSize = new Vector2Int(10, 10);
     public Vector2Int startPositionIndex;
     public Vector2Int endPositionIndex;
-    public int pathLength { get; set; }
+
+    [HideInInspector]
+    public int pathLength;
 
     //# Private variables 
     private NodeManager nodeManager;
