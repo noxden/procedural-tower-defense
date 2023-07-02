@@ -16,8 +16,8 @@ public class GenerationHandler : MonoBehaviour
 
     //# Private variables 
     private NodeManager nodeManager;
-    public PathGenerator pathGenerator;  //< Is required to be accessible by GenerationHandlerEditor right now
-    private WaveFunctionSolver waveFunctionSolver;
+    public PathGenerator pathGenerator { get; private set; } //< Is required to be accessible by GenerationHandlerEditor right now
+    public WaveFunctionSolver waveFunctionSolver { get; private set; }
 
     private void Awake()
     {
