@@ -114,9 +114,20 @@ public class PathGenerator : MonoBehaviour
         // Debug.Log($"Path generated from {(currentGrid.TryGetValue(startPositionIndex, out Node startNode) ? "" : "")}{startNode.name} to {(currentGrid.TryGetValue(endPositionIndex, out Node endNode) ? "" : "")}{endNode.name}.");
         Debug.Log($"Path is generated!");
         path = currentPath;
-        OnPathGenerated.Invoke();
+        
+        UpdateAllNodesBasedOnPathValue();
 
-        // TODO: Now, each node should reduce its potentialTiles based on their isPath value. Thanks to the path list here, we already know which nodes to notify!
+        OnPathGenerated.Invoke();
+    }
+
+    private void UpdateAllNodesBasedOnPathValue()
+    {
+        Dictionary<Vector2Int, Node> nodeGrid = NodeManager.instance.nodeGrid;
+        foreach (var keyValuePair in nodeGrid)
+        {
+            Node node = keyValuePair.Value;
+            node.ReducePotentialTilesByPath();
+        }
     }
 
     private bool CanVisitNode(Node nextNode, List<Node> currentPath)

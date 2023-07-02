@@ -9,7 +9,7 @@ public class GenerationHandler : MonoBehaviour
     public static GenerationHandler instance { get; set; }
 
     [Header("Generation Settings")]
-    public Vector2Int gridSize = new Vector2Int(10, 10);
+    public Vector2Int gridSize;
     public Vector2Int startPositionIndex;
     public Vector2Int endPositionIndex;
 
@@ -39,32 +39,18 @@ public class GenerationHandler : MonoBehaviour
     public void GenerateLevel()
     {
         GeneratePath();
+        pathGenerator.OnPathGenerated.AddListener(GenerateTilemap);
     }
 
     public void GeneratePath()
     {
         Debug.Log($"[Generator] Starting path generation.");
         pathGenerator.Generate(generateInstantly);
-        pathGenerator.OnPathGenerated.AddListener(PostPathGeneration);
-    }
-
-    private void PostPathGeneration()
-    {
-        Debug.Log($"[Generator] Starting post path generation.");
-        Dictionary<Vector2Int, Node> nodeGrid = NodeManager.instance.nodeGrid;
-        foreach (var keyValuePair in nodeGrid)
-        {
-            Node node = keyValuePair.Value;
-            node.ReducePotentialTilesByPath();
-        }
-        pathGenerator.OnPathGenerated.RemoveListener(PostPathGeneration);
-        Debug.Log($"[Generator] Finished post path generation.");
-
-        GenerateTilemap();
     }
 
     public void GenerateTilemap()
     {
+        Debug.Log($"[Generator] Starting tilemap generation.");
         if (generateInstantly)
             waveFunctionSolver.SolveInstantly();
         else
