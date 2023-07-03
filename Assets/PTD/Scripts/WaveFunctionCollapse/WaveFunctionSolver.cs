@@ -39,7 +39,8 @@ public class WaveFunctionSolver : MonoBehaviour
         StartCoroutine(Solve(solveInstantly: false));
     }
 
-    public void Restart()
+    [ContextMenu("Reinitialize")]
+    public void Reinitialize()
     {
         StopAllCoroutines();
         directionsToPropagateTo.Clear();
