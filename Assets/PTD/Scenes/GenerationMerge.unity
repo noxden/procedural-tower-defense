@@ -325,12 +325,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f49f810505836c41951b62076de2396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GENERATE_ALL: 0
   generateInstantly: 0
   gridSize: {x: 20, y: 20}
-  startPositionIndex: {x: 10, y: 19}
-  endPositionIndex: {x: 10, y: 0}
-  pathLength: 56
+  startPositionIndex: {x: 10, y: 0}
+  endPositionIndex: {x: 8, y: 19}
+  pathLength: 52
 --- !u!1 &762826240
 GameObject:
   m_ObjectHideFlags: 0
