@@ -17,7 +17,7 @@ public class NodeManager : MonoBehaviour
     //# Public Variables 
     public static NodeManager instance { get; set; }
     public Dictionary<Vector2Int, Node> nodeGrid { get; private set; }
-    public List<Tile> allTiles; //< Would be static if that did not prevent adding the tiles in the editor
+    private static List<Tile> allTiles; //< Would be static if that did not prevent adding the tiles in the editor 
 
     //# Private Variables 
     private Vector2Int nodeGridSize;  //< Number of tiles in x/z axis
@@ -36,6 +36,7 @@ public class NodeManager : MonoBehaviour
     private void Start()
     {
         nodeGridSize = GenerationHandler.instance.gridSize;
+        FetchAllTilesFromResourcesFolder();
         GenerateNodeGrid();
     }
 
@@ -96,4 +97,6 @@ public class NodeManager : MonoBehaviour
         GetComponent<WaveFunctionSolver>().Restart();
         REGENERATE = false;
     }
+
+    private void FetchAllTilesFromResourcesFolder() => allTiles = new List<Tile>(Resources.LoadAll<Tile>("Tiles"));
 }
