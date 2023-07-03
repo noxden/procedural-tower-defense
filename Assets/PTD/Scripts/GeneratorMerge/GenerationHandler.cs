@@ -110,6 +110,4 @@ public class GenerationHandler : MonoBehaviour
             Debug.LogWarning("Path length is too long, setting to max length");
         }
     }
-
-
 }

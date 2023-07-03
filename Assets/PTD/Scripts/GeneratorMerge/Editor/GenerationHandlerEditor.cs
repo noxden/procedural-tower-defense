@@ -27,7 +27,6 @@ public class GenerationHandlerEditor : Editor
         {
             handler.pathGenerator.Generate(generateInstantly: false);
         }
-
         if (GUILayout.Button("Generate Tilemap"))
         {
             handler.GenerateTilemap();
