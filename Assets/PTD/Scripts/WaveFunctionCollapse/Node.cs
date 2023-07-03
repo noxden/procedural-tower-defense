@@ -47,6 +47,7 @@ public class Node : MonoBehaviour
     //# Path Generation variables 
     public List<Vector2Int> possiblePathDirections = new List<Vector2Int>();
     public bool isPath = false;
+    public List<Vector2Int> pathDirection = new List<Vector2Int>();
 
     //# Private Variables 
     [SerializeField] private List<Tile> _potentialTiles;  //< Defines this node's superposition
@@ -72,12 +73,12 @@ public class Node : MonoBehaviour
     public bool Collapse()
     {
         if (entropy == 1)
-            Instantiate(potentialTiles[0].prefab, this.transform, false);
+            potentialTiles[0].InstantiatePrefab(this.transform);
         else if (entropy > 1)
         {
             Tile randomlyChosenTile = potentialTiles[Random.Range(0, potentialTiles.Count)];
             potentialTiles.RemoveAll(x => x != randomlyChosenTile);  //< Removes every entry but randomlyChosenTile from potentialTiles list
-            Instantiate(randomlyChosenTile.prefab, this.transform, false);
+            randomlyChosenTile.InstantiatePrefab(this.transform);
         }
         else
         {
@@ -125,13 +126,34 @@ public class Node : MonoBehaviour
         }
     }
 
-    public void ReducePotentialTilesByPath()
+    public void ReducePotentialTilesByPathFlag()
     {
         List<Tile> reducedPotentialTiles = new List<Tile>(potentialTiles);
         foreach (Tile entry in potentialTiles)
         {
             if (entry.isPath != this.isPath)
                 reducedPotentialTiles.Remove(entry);
+        }
+
+        potentialTiles = reducedPotentialTiles;
+    }
+
+    public void ReducePotentialTilesByPathDirection()
+    {
+        List<Tile> reducedPotentialTiles = new List<Tile>(potentialTiles);
+        foreach (Tile tile in potentialTiles)
+        {
+            bool isTileCompatible = true;
+            foreach (Vector2Int direction in pathDirection)
+            {
+                if (!tile.pathDirection.Contains(direction))
+                    isTileCompatible = false;
+            }
+            if (!isTileCompatible)
+            {
+                // Debug.Log($"[LimitByPathDirection] [{name}] Removing tile {tile} due to incompatibility.");
+                reducedPotentialTiles.Remove(tile);
+            }
         }
 
         potentialTiles = reducedPotentialTiles;
