@@ -196,7 +196,7 @@ public class PathGenerator : MonoBehaviour
     private void OnDrawGizmos()
     {
         Vector3 gizmoScale = new Vector3(1f, 0.5f, 1f);
-        float gizmoHeight = 4.5f;
+        float gizmoHeight = 0f;
         if (currentGrid == null)
             return;
 
@@ -211,6 +211,8 @@ public class PathGenerator : MonoBehaviour
         {
             for (int i = 0; i < currentPath.Count; i++)
             {
+                if (currentPath[i] == null)
+                    return;
                 float greyScale = (float)i / currentPath.Count;
                 Gizmos.color = new Color(0, greyScale, 0, 1f);
                 Gizmos.DrawCube(new Vector3(currentPath[i].gameObject.transform.position.x, gizmoHeight, currentPath[i].gameObject.transform.position.z), gizmoScale);
