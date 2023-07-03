@@ -13,8 +13,9 @@ public class GenerationHandler : MonoBehaviour
     public Vector2Int startPositionIndex;
     public Vector2Int endPositionIndex;
 
-    [HideInInspector]
+    [HideInInspector] 
     public int pathLength;
+    private bool isLevelGenerated = false;
 
     //# Private variables 
     //> Are required to be public to allow access to GenerationHandlerEditor
@@ -35,6 +36,26 @@ public class GenerationHandler : MonoBehaviour
         nodeManager = NodeManager.instance;
         pathGenerator = FindObjectOfType<PathGenerator>();
         waveFunctionSolver = FindObjectOfType<WaveFunctionSolver>();
+    }
+
+    /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// </summary>
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (isLevelGenerated)
+            {
+                nodeManager.Regenerate();
+                isLevelGenerated = false;
+            }
+            else
+            {
+                GenerateLevel();
+                isLevelGenerated = true;
+            }
+        }
     }
 
     public void GenerateLevel()
