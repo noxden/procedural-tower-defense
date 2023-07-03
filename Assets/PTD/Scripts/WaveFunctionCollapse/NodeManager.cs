@@ -11,9 +11,6 @@ using UnityEngine;
 
 public class NodeManager : MonoBehaviour
 {
-    //# Debug "Button" Variables 
-    private bool REGENERATE = false;    //! FOR DEBUG PURPOSES ONLY     // Doesn't work right now
-
     //# Public Variables 
     public static NodeManager instance { get; set; }
     public Dictionary<Vector2Int, Node> nodeGrid { get; private set; }
@@ -40,12 +37,11 @@ public class NodeManager : MonoBehaviour
         GenerateNodeGrid();
     }
 
-    private void Update()    //! FOR DEBUG PURPOSES ONLY
+    [ContextMenu("Regenerate")]
+    public void Regenerate()
     {
-        if (REGENERATE)
-        {
-            StartCoroutine(Regenerate());
-        }
+        StopAllCoroutines();
+        StartCoroutine(RegenerateNodeGrid());
     }
 
     //# Public Methods 
@@ -88,14 +84,17 @@ public class NodeManager : MonoBehaviour
         }
     }
 
-    private IEnumerator Regenerate()
+    private IEnumerator RegenerateNodeGrid()
     {
         Destroy(GameObject.Find("Node Grid"));
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();   //< Requires this brief wait time to work properly, that's why this is called as an IEnumerator. I dunno why that's necessary.
         nodeGrid.Clear();
-        Start();
-        GetComponent<WaveFunctionSolver>().Restart();
-        REGENERATE = false;
+
+        nodeGridSize = GenerationHandler.instance.gridSize;
+        GenerateNodeGrid();
+
+        GetComponent<WaveFunctionSolver>().Reinitialize();
+        GetComponent<PathGenerator>().Reinitialize();
     }
 
     private void FetchAllTilesFromResourcesFolder() => allTiles = new List<Tile>(Resources.LoadAll<Tile>("Tiles"));

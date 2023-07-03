@@ -25,14 +25,14 @@ public class RotatedTile : Tile
     protected override void OnValidate()
     {
         if (!EditorApplication.isPlayingOrWillChangePlaymode)  //< So that it only updates them when they are modified, not when play mode is started.
-            UpdateTileFields();
+            Reload();
 
         base.OnValidate();
     }
 #endif
 
-    [ContextMenu("Manually Update Sockets")]
-    private void UpdateTileFields()
+    [ContextMenu("Reload Link to Original Tile")]
+    private void Reload()
     {
         if (originalTile == null)
             return;
@@ -46,6 +46,7 @@ public class RotatedTile : Tile
         westSockets = new List<Socket>(originalTile.westSockets);
 
         RotateSockets(amountRotatedClockwise);
+        Debug.Log($"[Setup] Reloaded sockets of RotatedTile {name}.", this);
     }
 
     private void RotateSockets(int rotationIterations)

@@ -39,10 +39,10 @@ public class WaveFunctionSolver : MonoBehaviour
         StartCoroutine(Solve(solveInstantly: false));
     }
 
-    public void Restart()
+    [ContextMenu("Reinitialize")]
+    public void Reinitialize()
     {
         StopAllCoroutines();
-        directionsToPropagateTo.Clear();
         uncollapsedNodes.Clear();
         Start();
     }
@@ -95,24 +95,24 @@ public class WaveFunctionSolver : MonoBehaviour
 
             foreach (Vector2Int direction in directionsToPropagateTo)
             {
-                //> Generate lists of all sockets on the side in question
-                HashSet<Socket> allSocketsOnSide = new HashSet<Socket>();
-                foreach (Tile tile in nodeToPropagateFrom.potentialTiles)
-                {
-                    List<Socket> socketsOnSide = tile.GetSocketsOnSide(direction);
-                    foreach (Socket socket in socketsOnSide)
-                    {
-                        if (!allSocketsOnSide.Contains(socket))
-                            allSocketsOnSide.Add(socket);
-                    }
-                }
-                // Debug.Log($"All valid tiles in direction {direction} of {nodeToPropagateFrom.name} are: {string.Join(", ", allValidTilesInDirection)}");
-
-                //> Check for node in that direction and apply the list generated above as a limiting factor 
                 Node nodeToPropagateTo = NodeManager.instance.GetNodeByPosition(nodeToPropagateFrom.gridPosition + direction);  //< Gets node in given direction
                 if (nodeToPropagateTo != null)  //TODO: Null-Check could be moved above validTiles list generation (at least partially), in order to not do that generation for nothing.
                 {
-                    // Debug.Log($"{nodeToPropagateFrom.name}'s socket towards {nodeToPropagateTo.name} is compatible with the following sockets: {string.Join(", ", allSocketsOnSide)}", nodeToPropagateTo.gameObject);
+                    //> Generate lists of all sockets on the side in question
+                    HashSet<Socket> allSocketsOnSide = new HashSet<Socket>();
+                    foreach (Tile tile in nodeToPropagateFrom.potentialTiles)
+                    {
+                        List<Socket> socketsOnSide = tile.GetSocketsOnSide(direction);
+                        foreach (Socket socket in socketsOnSide)
+                        {
+                            if (!allSocketsOnSide.Contains(socket))
+                                allSocketsOnSide.Add(socket);
+                        }
+                    }
+                    // Debug.Log($"All valid tiles in direction {direction} of {nodeToPropagateFrom.name} are: {string.Join(", ", allValidTilesInDirection)}");
+
+                    //> Check for node in that direction and apply the list generated above as a limiting factor 
+                    // Debug.Log($"{nodeToPropagateFrom.name}'s socket towards {nodeToPropagateTo.name} are: {string.Join(", ", allSocketsOnSide)}", nodeToPropagateTo.gameObject);
                     if (nodeToPropagateTo.ReducePotentialTilesBySocketCompatibility(allSocketsOnSide, -direction))
                         nodesToPropagateFrom.Add(nodeToPropagateTo);
                 }

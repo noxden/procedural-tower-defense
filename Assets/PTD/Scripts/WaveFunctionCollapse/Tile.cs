@@ -91,7 +91,7 @@ public class Tile : ScriptableObject
             m_pathDirection.Add(Vector2Int.down);
         if (westSockets.Contains(Socket.p2) || westSockets.Contains(Socket.p2_3) || westSockets.Contains(Socket.p3))
             m_pathDirection.Add(Vector2Int.left);
-        Debug.Log($"Generated path directions for {name}.");
+        Debug.Log($"[Setup] Generated path directions of {name}.", this);
     }
     public void ApplyBulkChanges()
     {

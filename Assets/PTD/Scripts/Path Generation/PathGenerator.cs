@@ -37,6 +37,14 @@ public class PathGenerator : MonoBehaviour
         currentGrid = NodeManager.instance.nodeGrid;
     }
 
+    [ContextMenu("Reinitialize")]
+    public void Reinitialize()
+    {
+        path = new List<Node>();
+        currentPath = null;
+        Start();
+    }
+
     public void Generate(bool generateInstantly = true)
     {
         StopAllCoroutines();
@@ -106,9 +114,8 @@ public class PathGenerator : MonoBehaviour
             }
             if (!generateInstantly)
                 yield return new WaitForSeconds(stepDelayInSeconds);
-            else
-                yield return new WaitForSeconds(0);
         }
+        yield return null;
 
         currentPath[currentPath.Count - 1].isPath = true;   //! Quick fix for issue where the endnode would not have its isPath variable set accordingly.
         // Debug.Log($"Path generated from {(currentGrid.TryGetValue(startPositionIndex, out Node startNode) ? "" : "")}{startNode.name} to {(currentGrid.TryGetValue(endPositionIndex, out Node endNode) ? "" : "")}{endNode.name}.");
@@ -189,7 +196,7 @@ public class PathGenerator : MonoBehaviour
     private void OnDrawGizmos()
     {
         Vector3 gizmoScale = new Vector3(1f, 0.5f, 1f);
-        float gizmoHeight = 4.5f;
+        float gizmoHeight = 0f;
         if (currentGrid == null)
             return;
 
@@ -204,6 +211,8 @@ public class PathGenerator : MonoBehaviour
         {
             for (int i = 0; i < currentPath.Count; i++)
             {
+                if (currentPath[i] == null)
+                    return;
                 float greyScale = (float)i / currentPath.Count;
                 Gizmos.color = new Color(0, greyScale, 0, 1f);
                 Gizmos.DrawCube(new Vector3(currentPath[i].gameObject.transform.position.x, gizmoHeight, currentPath[i].gameObject.transform.position.z), gizmoScale);

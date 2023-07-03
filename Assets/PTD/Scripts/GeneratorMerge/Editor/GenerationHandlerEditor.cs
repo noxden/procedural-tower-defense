@@ -11,10 +11,16 @@ public class GenerationHandlerEditor : Editor
         GenerationHandler handler = target as GenerationHandler;
 
         GUILayout.BeginVertical();
+        GUILayout.BeginHorizontal();
         if (GUILayout.Button("Generate All"))
         {
             handler.GenerateLevel();
         }
+        if (GUILayout.Button("Reset Level"))
+        {
+            handler.nodeManager.Regenerate();
+        }
+        GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Generate Path"))

@@ -5,20 +5,22 @@ using UnityEngine;
 // TODO: Implement different generation calls as async -> Await cast and so on
 public class GenerationHandler : MonoBehaviour
 {
-    public bool generateInstantly = false;
     public static GenerationHandler instance { get; set; }
 
     [Header("Generation Settings")]
+    public bool generateInstantly = false;
     public Vector2Int gridSize;
     public Vector2Int startPositionIndex;
     public Vector2Int endPositionIndex;
 
-    [HideInInspector]
+    [HideInInspector] 
     public int pathLength;
+    private bool isLevelGenerated = false;
 
     //# Private variables 
-    private NodeManager nodeManager;
-    public PathGenerator pathGenerator { get; private set; } //< Is required to be accessible by GenerationHandlerEditor right now
+    //> Are required to be public to allow access to GenerationHandlerEditor
+    public NodeManager nodeManager { get; private set; }
+    public PathGenerator pathGenerator { get; private set; }
     public WaveFunctionSolver waveFunctionSolver { get; private set; }
 
     private void Awake()
@@ -34,6 +36,26 @@ public class GenerationHandler : MonoBehaviour
         nodeManager = NodeManager.instance;
         pathGenerator = FindObjectOfType<PathGenerator>();
         waveFunctionSolver = FindObjectOfType<WaveFunctionSolver>();
+    }
+
+    /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// </summary>
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (isLevelGenerated)
+            {
+                nodeManager.Regenerate();
+                isLevelGenerated = false;
+            }
+            else
+            {
+                GenerateLevel();
+                isLevelGenerated = true;
+            }
+        }
     }
 
     public void GenerateLevel()
@@ -55,6 +77,8 @@ public class GenerationHandler : MonoBehaviour
             waveFunctionSolver.SolveInstantly();
         else
             waveFunctionSolver.SolveStepwise();
+
+        pathGenerator.OnPathGenerated.RemoveListener(GenerateTilemap);
     }
 
     private void OnValidate()
