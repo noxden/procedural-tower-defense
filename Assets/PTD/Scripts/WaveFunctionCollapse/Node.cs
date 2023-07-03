@@ -111,7 +111,7 @@ public class Node : MonoBehaviour
             if (!isTileCompatible)
             {
                 reducedPotentialTiles.Remove(tile);
-                // Debug.Log($"Removing {tile.prefab.name} from potentialTiles in {this.name}, as it was incompatible with socket: {string.Join(", ", compatibleSockets)} of {NodeManager.instance.GetNodeByPosition(this.gridPosition + socketSide).name}.", this.gameObject);
+                // Debug.Log($"Removing {tile.prefab.name} from potentialTiles in {this.name}, as its sockets (({string.Join(", ", socketsOnSide)})) were incompatible with {NodeManager.instance.GetNodeByPosition(this.gridPosition + socketSide).name}'s sockets ({string.Join(", ", compatibleSockets)})'", this.gameObject);
             }
         }
 

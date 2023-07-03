@@ -113,7 +113,7 @@ public class WaveFunctionSolver : MonoBehaviour
                 Node nodeToPropagateTo = NodeManager.instance.GetNodeByPosition(nodeToPropagateFrom.gridPosition + direction);  //< Gets node in given direction
                 if (nodeToPropagateTo != null)  //TODO: Null-Check could be moved above validTiles list generation (at least partially), in order to not do that generation for nothing.
                 {
-                    // Debug.Log($"{nodeToPropagateFrom.name}'s socket towards {nodeToPropagateTo.name} is compatible with the following sockets: {string.Join(", ", allSocketsOnSide)}", nodeToPropagateTo.gameObject);
+                    // Debug.Log($"{nodeToPropagateFrom.name}'s socket towards {nodeToPropagateTo.name} are: {string.Join(", ", allSocketsOnSide)}", nodeToPropagateTo.gameObject);
                     if (nodeToPropagateTo.ReducePotentialTilesBySocketCompatibility(allSocketsOnSide, -direction))
                         nodesToPropagateFrom.Add(nodeToPropagateTo);
                 }

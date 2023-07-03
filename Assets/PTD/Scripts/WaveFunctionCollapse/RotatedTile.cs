@@ -46,6 +46,7 @@ public class RotatedTile : Tile
         westSockets = new List<Socket>(originalTile.westSockets);
 
         RotateSockets(amountRotatedClockwise);
+        Debug.Log($"[Setup] Updated sockets of RotatedTile {name}.", this);
     }
 
     private void RotateSockets(int rotationIterations)
