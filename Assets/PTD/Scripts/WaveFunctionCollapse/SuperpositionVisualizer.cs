@@ -67,9 +67,10 @@ public class SuperpositionVisualizer : MonoBehaviour
             {
                 Debug.LogError($"Cannot find position for a fifth tileVisualization.");
                 Destroy(tileVisualization);
+                return;
             }
 
-            tileVisualization.transform.localScale = new Vector3(1f, 0.4f, 1f);
+            tileVisualization.transform.localScale = new Vector3(0.35f, 0.3f, 0.35f);
         }
     }
 }

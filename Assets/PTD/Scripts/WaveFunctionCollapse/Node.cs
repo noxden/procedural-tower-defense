@@ -44,6 +44,10 @@ public class Node : MonoBehaviour
         }
     }
 
+    //# Path Generation variables 
+    public List<Vector2Int> possiblePathDirections = new List<Vector2Int>();
+    public bool isPath = false;
+
     //# Private Variables 
     [SerializeField] private List<Tile> _potentialTiles;  //< Defines this node's superposition
     private Vector2Int? _gridPosition;
@@ -52,7 +56,8 @@ public class Node : MonoBehaviour
     //# Monobehaviour Events 
     private void Start()
     {
-        CreateNodePositionVisualizer();
+        // CreateNodePositionVisualizer();
+        InitializePossiblePathDirections();
     }
 
     private void OnDestroy()
@@ -79,21 +84,36 @@ public class Node : MonoBehaviour
             Debug.LogError($"Tile {this.name} does not have any potential tiles left.");
             return false;
         }
-        RemoveNodePositionVisualizer();    //< Only remove visualizer if collapsing was successful
+        // RemoveNodePositionVisualizer();    //< Only remove visualizer if collapsing was successful
         return true;
     }
 
     /// <summary>
     /// Returns true if potentialTiles were reduced by limiter, false if not.
     /// </summary>
-    public bool ReducePotentialTilesByLimiter(List<Tile> limiter)
+    public bool ReducePotentialTilesBySocketCompatibility(HashSet<Socket> compatibleSockets, Vector2Int socketSide)
     {
         List<Tile> reducedPotentialTiles = new List<Tile>(potentialTiles);
-        foreach (Tile entry in potentialTiles)
+        foreach (Tile tile in potentialTiles)
         {
-            if (!limiter.Contains(entry))
-                reducedPotentialTiles.Remove(entry);
+            bool isTileCompatible = false;
+
+            List<Socket> socketsOnSide = tile.GetSocketsOnSide(socketSide);
+            foreach (Socket socket in socketsOnSide)
+            {
+                if (compatibleSockets.Contains(socket)) //< If at least one of the tiles sockets matches the required sockets on that side, this tile is compatible.
+                {
+                    isTileCompatible = true;
+                }
+            }
+
+            if (!isTileCompatible)
+            {
+                reducedPotentialTiles.Remove(tile);
+                // Debug.Log($"Removing {tile.prefab.name} from potentialTiles in {this.name}, as it was incompatible with socket: {string.Join(", ", compatibleSockets)} of {NodeManager.instance.GetNodeByPosition(this.gridPosition + socketSide).name}.", this.gameObject);
+            }
         }
+
         if (reducedPotentialTiles.SequenceEqual(potentialTiles))
         {
             return false;
@@ -105,6 +125,18 @@ public class Node : MonoBehaviour
         }
     }
 
+    public void ReducePotentialTilesByPath()
+    {
+        List<Tile> reducedPotentialTiles = new List<Tile>(potentialTiles);
+        foreach (Tile entry in potentialTiles)
+        {
+            if (entry.isPath != this.isPath)
+                reducedPotentialTiles.Remove(entry);
+        }
+
+        potentialTiles = reducedPotentialTiles;
+    }
+
     //# Private Methods 
     private void RegisterInManager() => NodeManager.instance.RegisterNode(gridPosition, this);
 
@@ -113,4 +145,16 @@ public class Node : MonoBehaviour
     private void CreateNodePositionVisualizer() => gameObject.AddComponent<SuperpositionVisualizer>();
 
     private void RemoveNodePositionVisualizer() => gameObject.GetComponent<SuperpositionVisualizer>().Remove();
+
+    private void InitializePossiblePathDirections()
+    {
+        if (gridPosition.x != 0)
+            possiblePathDirections.Add(new Vector2Int(-1, 0));
+        if (gridPosition.x != GenerationHandler.instance.gridSize.x - 1)
+            possiblePathDirections.Add(new Vector2Int(1, 0));
+        if (gridPosition.y != 0)
+            possiblePathDirections.Add(new Vector2Int(0, -1));
+        if (gridPosition.y != GenerationHandler.instance.gridSize.y - 1)
+            possiblePathDirections.Add(new Vector2Int(0, 1));
+    }
 }

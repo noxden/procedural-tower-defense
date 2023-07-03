@@ -9,49 +9,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder(2)]
 public class WaveFunctionSolver : MonoBehaviour
 {
-    //# Debug "Button" Variables 
-    [Header("Debug Section"), Space(5)]
-    [SerializeField] private bool SOLVE = false;    //! FOR DEBUG PURPOSES ONLY
-    [SerializeField] private bool SOLVE_STEPWISE = false;    //! FOR DEBUG PURPOSES ONLY
-    [SerializeField] private bool ITERATE = false;    //! FOR DEBUG PURPOSES ONLY
-
     //# Private Variables 
-    [SerializeField] private float timeBetweenSteps = 0.05f;
+    [SerializeField] private float stepDelayInSeconds = 0f;
     private bool isCollapsed { get => uncollapsedNodes.Count == 0; }
-    private List<Vector2Int> directionsToPropagateTo = new List<Vector2Int>();
+    private List<Vector2Int> directionsToPropagateTo = new List<Vector2Int> { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
 
-    [Header("Visualization Section"), Space(5)]
+    // [Header("Visualization Section"), Space(5)]
     [Tooltip("For visualization purposes only."), SerializeField]
     private List<Node> uncollapsedNodes = new List<Node>();
 
     //# Monobehaviour Events 
     private void Start()
     {
-        FillDirectionsToPropagateTo();
         Initialize();
     }
 
-    private void Update()
+    public void SolveInstantly()
     {
-        if (SOLVE)  //! FOR DEBUG PURPOSES ONLY
-        {
-            StopAllCoroutines();
-            SOLVE = false;
-            StartCoroutine(Solve(solveInstantly: true));
-        }
-        if (SOLVE_STEPWISE)  //! FOR DEBUG PURPOSES ONLY
-        {
-            StopAllCoroutines();
-            SOLVE_STEPWISE = false;
-            StartCoroutine(Solve(solveInstantly: false));
-        }
-        if (ITERATE)  //! FOR DEBUG PURPOSES ONLY
-        {
-            ITERATE = false;
-            Iterate();
-        }
+        StopAllCoroutines();
+        StartCoroutine(Solve(solveInstantly: true));
+    }
+
+    public void SolveStepwise()
+    {
+        StopAllCoroutines();
+        StartCoroutine(Solve(solveInstantly: false));
     }
 
     public void Restart()
@@ -76,7 +61,7 @@ public class WaveFunctionSolver : MonoBehaviour
         {
             Iterate();
             if (!solveInstantly)
-                yield return new WaitForSeconds(timeBetweenSteps);
+                yield return new WaitForSeconds(stepDelayInSeconds);
         }
 
         Debug.Log($"Wave Function is collapsed!");
@@ -110,23 +95,25 @@ public class WaveFunctionSolver : MonoBehaviour
 
             foreach (Vector2Int direction in directionsToPropagateTo)
             {
-                //> Generate lists of valid tiles for the desired direction 
-                List<Tile> allValidTilesInDirection = new List<Tile>();
+                //> Generate lists of all sockets on the side in question
+                HashSet<Socket> allSocketsOnSide = new HashSet<Socket>();
                 foreach (Tile tile in nodeToPropagateFrom.potentialTiles)
                 {
-                    List<Tile> validTilesInDirection = tile.GetValidTilesInDirection(direction);
-                    foreach (Tile validTile in validTilesInDirection)
+                    List<Socket> socketsOnSide = tile.GetSocketsOnSide(direction);
+                    foreach (Socket socket in socketsOnSide)
                     {
-                        if (!allValidTilesInDirection.Contains(validTile))
-                            allValidTilesInDirection.Add(validTile);
+                        if (!allSocketsOnSide.Contains(socket))
+                            allSocketsOnSide.Add(socket);
                     }
                 }
+                // Debug.Log($"All valid tiles in direction {direction} of {nodeToPropagateFrom.name} are: {string.Join(", ", allValidTilesInDirection)}");
 
-                //#> Check for node in that direction and apply the list generated above as a limiting factor 
+                //> Check for node in that direction and apply the list generated above as a limiting factor 
                 Node nodeToPropagateTo = NodeManager.instance.GetNodeByPosition(nodeToPropagateFrom.gridPosition + direction);  //< Gets node in given direction
                 if (nodeToPropagateTo != null)  //TODO: Null-Check could be moved above validTiles list generation (at least partially), in order to not do that generation for nothing.
                 {
-                    if (nodeToPropagateTo.ReducePotentialTilesByLimiter(allValidTilesInDirection))
+                    // Debug.Log($"{nodeToPropagateFrom.name}'s socket towards {nodeToPropagateTo.name} is compatible with the following sockets: {string.Join(", ", allSocketsOnSide)}", nodeToPropagateTo.gameObject);
+                    if (nodeToPropagateTo.ReducePotentialTilesBySocketCompatibility(allSocketsOnSide, -direction))
                         nodesToPropagateFrom.Add(nodeToPropagateTo);
                 }
             }
@@ -151,13 +138,5 @@ public class WaveFunctionSolver : MonoBehaviour
             return uncollapsedNodes[0];
         else
             return null;
-    }
-
-    private void FillDirectionsToPropagateTo()
-    {
-        directionsToPropagateTo.Add(Vector2Int.up);
-        directionsToPropagateTo.Add(Vector2Int.right);
-        directionsToPropagateTo.Add(Vector2Int.down);
-        directionsToPropagateTo.Add(Vector2Int.left);
     }
 }
