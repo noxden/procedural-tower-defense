@@ -43,7 +43,6 @@ public class WaveFunctionSolver : MonoBehaviour
     public void Reinitialize()
     {
         StopAllCoroutines();
-        directionsToPropagateTo.Clear();
         uncollapsedNodes.Clear();
         Start();
     }
