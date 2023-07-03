@@ -40,6 +40,7 @@ public class NodeManager : MonoBehaviour
     [ContextMenu("Regenerate")]
     public void Regenerate()
     {
+        StopAllCoroutines();
         StartCoroutine(RegenerateNodeGrid());
     }
 
@@ -88,7 +89,10 @@ public class NodeManager : MonoBehaviour
         Destroy(GameObject.Find("Node Grid"));
         yield return new WaitForEndOfFrame();   //< Requires this brief wait time to work properly, that's why this is called as an IEnumerator. I dunno why that's necessary.
         nodeGrid.Clear();
-        Start();
+
+        nodeGridSize = GenerationHandler.instance.gridSize;
+        GenerateNodeGrid();
+
         GetComponent<WaveFunctionSolver>().Reinitialize();
         GetComponent<PathGenerator>().Reinitialize();
     }
