@@ -8,6 +8,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public enum Socket { h1, h1_2, h2, h2_3, h3, h3_4, h4, p2, p2_3, p3 }
 
@@ -21,12 +22,44 @@ public class Tile : ScriptableObject
     public List<Socket> eastSockets;
     public List<Socket> southSockets;
     public List<Socket> westSockets;
+    public List<Vector2Int> pathDirection
+    {
+        get
+        {
+            if (!isPath)
+            {
+                Debug.Log($"Tile \"{name}\" is not marked as path.");
+                m_pathDirection = new List<Vector2Int>();
+            }
+            if (m_pathDirection.Count == 0)
+            {
+                GeneratePathDirection();
+            }
+            return m_pathDirection;
+        }
+    }
+    [SerializeField] private List<Vector2Int> m_pathDirection = new List<Vector2Int>();
+    protected GameObject instantiatedPrefab;
 
     [Header("In-Editor Socket Bulk-Setup"), Space(10)]
     [SerializeField] private List<Socket> addToAllSides;
     [SerializeField] private List<Socket> removeFromAllSides;
 
+    //# Monobehaviour Events 
+#if UNITY_EDITOR
+    protected virtual void OnValidate()
+    {
+        if (!EditorApplication.isPlayingOrWillChangePlaymode)  //< So that it is not regenerated every time the in-editor play mode is started.
+            GeneratePathDirection();
+    }
+#endif
+
     //# Public Methods 
+    public virtual void InstantiatePrefab(Transform parentTransform)
+    {
+        instantiatedPrefab = Instantiate(prefab, parentTransform, false);
+    }
+
     public List<Socket> GetSocketsOnSide(Vector2Int tileSide)
     {
         switch (tileSide)
@@ -46,11 +79,21 @@ public class Tile : ScriptableObject
     }
 
     //# Private Methods 
-    /// <summary>
-    /// Called when the script is loaded or a value is changed in the
-    /// inspector (Called in the editor only).
-    /// </summary>
-    private void OnValidate()
+    [ContextMenu("Regenerate Path Direction")]
+    private void GeneratePathDirection()
+    {
+        m_pathDirection = new List<Vector2Int>();
+        if (northSockets.Contains(Socket.p2) || northSockets.Contains(Socket.p2_3) || northSockets.Contains(Socket.p3))
+            m_pathDirection.Add(Vector2Int.up);
+        if (eastSockets.Contains(Socket.p2) || eastSockets.Contains(Socket.p2_3) || eastSockets.Contains(Socket.p3))
+            m_pathDirection.Add(Vector2Int.right);
+        if (southSockets.Contains(Socket.p2) || southSockets.Contains(Socket.p2_3) || southSockets.Contains(Socket.p3))
+            m_pathDirection.Add(Vector2Int.down);
+        if (westSockets.Contains(Socket.p2) || westSockets.Contains(Socket.p2_3) || westSockets.Contains(Socket.p3))
+            m_pathDirection.Add(Vector2Int.left);
+        Debug.Log($"Generated path directions for {name}.");
+    }
+    public void ApplyBulkChanges()
     {
         if (addToAllSides.Count != 0)
         {

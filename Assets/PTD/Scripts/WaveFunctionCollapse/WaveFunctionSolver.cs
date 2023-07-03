@@ -67,7 +67,7 @@ public class WaveFunctionSolver : MonoBehaviour
         Debug.Log($"Wave Function is collapsed!");
     }
 
-    private void Iterate()
+    public void Iterate()
     {
         Node node = GetNodeWithLowestEntropy();
         CollapseNode(node);

@@ -114,9 +114,43 @@ public class PathGenerator : MonoBehaviour
         // Debug.Log($"Path generated from {(currentGrid.TryGetValue(startPositionIndex, out Node startNode) ? "" : "")}{startNode.name} to {(currentGrid.TryGetValue(endPositionIndex, out Node endNode) ? "" : "")}{endNode.name}.");
         Debug.Log($"Path is generated!");
         path = currentPath;
-        OnPathGenerated.Invoke();
 
-        // TODO: Now, each node should reduce its potentialTiles based on their isPath value. Thanks to the path list here, we already know which nodes to notify!
+        UpdateAllNodesBasedOnPathValue();
+
+        UpdateNodesInPathBasedOnPathDirection();
+
+        OnPathGenerated.Invoke();
+    }
+
+    private void UpdateAllNodesBasedOnPathValue()
+    {
+        Dictionary<Vector2Int, Node> nodeGrid = NodeManager.instance.nodeGrid;
+        foreach (var keyValuePair in nodeGrid)
+        {
+            Node node = keyValuePair.Value;
+            node.ReducePotentialTilesByPathFlag();
+        }
+    }
+
+    private void UpdateNodesInPathBasedOnPathDirection()
+    {
+        int pathIndex = 0;
+        foreach (Node node in path)     //< Did this as for loop before, but the foreach loop is much more readable.
+        {
+            if (pathIndex > 0)
+            {
+                Vector2Int direction = path[pathIndex - 1].gridPosition - node.gridPosition;
+                node.pathDirection.Add(direction);
+            }
+            if (pathIndex < path.Count - 1)     //< Because max index is always List.Count-1, so when pathIndex is at path.Count-2, the "path[pathIndex + 1]" below will get the node at path.Count-1, which is the final node.
+            {
+                Vector2Int direction = path[pathIndex + 1].gridPosition - node.gridPosition;
+                node.pathDirection.Add(direction);
+            }
+            node.ReducePotentialTilesByPathDirection();
+
+            pathIndex++;
+        }
     }
 
     private bool CanVisitNode(Node nextNode, List<Node> currentPath)

@@ -26,6 +26,10 @@ public class GenerationHandlerEditor : Editor
         {
             handler.GenerateTilemap();
         }
+        if (GUILayout.Button("Iterate Tilemap"))
+        {
+            handler.waveFunctionSolver.Iterate();
+        }
         GUILayout.EndHorizontal();
         GUILayout.EndVertical();
 

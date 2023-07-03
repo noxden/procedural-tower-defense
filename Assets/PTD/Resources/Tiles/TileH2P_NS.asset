@@ -10,13 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54a18a4b63df8da47937d38df62326a6, type: 3}
-  m_Name: TileH3P_Universal
+  m_Name: TileH2P_NS
   m_EditorClassIdentifier: 
-  prefab: {fileID: 6298285335769332128, guid: 83e0729783267a6428ebdab1abf87fb0, type: 3}
+  prefab: {fileID: 530362624692623137, guid: 6dd97e209be43e741b16e06f2d21f228, type: 3}
   isPath: 1
-  northSockets: 0300000004000000050000000800000009000000
-  eastSockets: 0300000004000000050000000800000009000000
-  southSockets: 0300000004000000050000000800000009000000
-  westSockets: 0300000004000000050000000800000009000000
+  northSockets: 0700000008000000
+  eastSockets: 010000000200000003000000
+  southSockets: 0700000008000000
+  westSockets: 010000000200000003000000
+  m_pathDirection:
+  - {x: 0, y: 1}
+  - {x: 0, y: -1}
   addToAllSides: 
   removeFromAllSides: 

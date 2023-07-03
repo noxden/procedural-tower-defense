@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//! Just a temporary band-aid solution, not a permanent fix!
 public class SuperpositionVisualizer : MonoBehaviour
 {
     //# Private Variables 
@@ -23,21 +24,21 @@ public class SuperpositionVisualizer : MonoBehaviour
 
         Intitialize();
 
-        OnPotentialTilesUpdatedInNode(GetComponent<Node>().potentialTiles);
+        // OnPotentialTilesUpdatedInNode(GetComponent<Node>().potentialTiles);
     }
 
-    private void OnEnable() => GetComponent<Node>().OnPotentialTilesUpdated.AddListener(OnPotentialTilesUpdatedInNode);
-    private void OnDisable() => GetComponent<Node>().OnPotentialTilesUpdated.RemoveListener(OnPotentialTilesUpdatedInNode);
+    // private void OnEnable() => GetComponent<Node>().OnPotentialTilesUpdated.AddListener(OnPotentialTilesUpdatedInNode);
+    // private void OnDisable() => GetComponent<Node>().OnPotentialTilesUpdated.RemoveListener(OnPotentialTilesUpdatedInNode);
 
-    //# Public Methods 
-    public void OnPotentialTilesUpdatedInNode(List<Tile> updatedTileList)
-    {
-        for (int i = 0; i < NodeManager.instance.allTiles.Count; i++)
-        {
-            if (!updatedTileList.Contains(NodeManager.instance.allTiles[i]))
-                tileVisualizations[i].SetActive(false);
-        }
-    }
+    // //# Public Methods 
+    // public void OnPotentialTilesUpdatedInNode(List<Tile> updatedTileList)
+    // {
+    //     for (int i = 0; i < NodeManager.instance.allTiles.Count; i++)
+    //     {
+    //         if (!updatedTileList.Contains(NodeManager.instance.allTiles[i]))
+    //             tileVisualizations[i].SetActive(false);
+    //     }
+    // }
 
     public void Remove()
     {
@@ -48,29 +49,33 @@ public class SuperpositionVisualizer : MonoBehaviour
     //# Private Methods 
     private void Intitialize()
     {
-        List<Tile> allTiles = NodeManager.instance.allTiles;
+        GameObject tileVisualization = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        tileVisualization.transform.SetParent(parent: tileVisualizerGroup, worldPositionStays: false);
+        tileVisualization.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
 
-        foreach (var tile in allTiles)
-        {
-            GameObject tileVisualization = Instantiate(tile.prefab, parent: tileVisualizerGroup, worldPositionStays: false);
-            tileVisualizations.Add(tileVisualization);
+        // List<Tile> allTiles = NodeManager.instance.allTiles;
 
-            if (tile == allTiles[0])
-                tileVisualization.transform.localPosition = new Vector3(0.6f, 0, -0.6f);
-            else if (tile == allTiles[1])
-                tileVisualization.transform.localPosition = new Vector3(-0.6f, 0, -0.6f);
-            else if (tile == allTiles[2])
-                tileVisualization.transform.localPosition = new Vector3(0.6f, 0, 0.6f);
-            else if (tile == allTiles[3])
-                tileVisualization.transform.localPosition = new Vector3(-0.6f, 0, 0.6f);
-            else
-            {
-                Debug.LogError($"Cannot find position for a fifth tileVisualization.");
-                Destroy(tileVisualization);
-                return;
-            }
+        // foreach (var tile in allTiles)
+        // {
+        //     GameObject tileVisualization = Instantiate(tile.prefab, parent: tileVisualizerGroup, worldPositionStays: false);
+        //     tileVisualizations.Add(tileVisualization);
 
-            tileVisualization.transform.localScale = new Vector3(0.35f, 0.3f, 0.35f);
-        }
+        //     if (tile == allTiles[0])
+        //         tileVisualization.transform.localPosition = new Vector3(0.6f, 0, -0.6f);
+        //     else if (tile == allTiles[1])
+        //         tileVisualization.transform.localPosition = new Vector3(-0.6f, 0, -0.6f);
+        //     else if (tile == allTiles[2])
+        //         tileVisualization.transform.localPosition = new Vector3(0.6f, 0, 0.6f);
+        //     else if (tile == allTiles[3])
+        //         tileVisualization.transform.localPosition = new Vector3(-0.6f, 0, 0.6f);
+        //     else
+        //     {
+        //         Debug.LogError($"Cannot find position for a fifth tileVisualization.");
+        //         Destroy(tileVisualization);
+        //         return;
+        //     }
+
+        //     tileVisualization.transform.localScale = new Vector3(0.35f, 0.3f, 0.35f);
+        // }
     }
 }
