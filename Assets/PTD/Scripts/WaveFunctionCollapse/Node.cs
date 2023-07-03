@@ -57,7 +57,7 @@ public class Node : MonoBehaviour
     //# Monobehaviour Events 
     private void Start()
     {
-        // CreateNodePositionVisualizer();
+        CreateNodePositionVisualizer();
         InitializePossiblePathDirections();
     }
 
@@ -85,7 +85,7 @@ public class Node : MonoBehaviour
             Debug.LogError($"Tile {this.name} does not have any potential tiles left.");
             return false;
         }
-        // RemoveNodePositionVisualizer();    //< Only remove visualizer if collapsing was successful
+        RemoveNodePositionVisualizer();    //< Only remove visualizer if collapsing was successful
         return true;
     }
 
