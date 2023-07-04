@@ -36,36 +36,11 @@ public class TileDefinition : ScriptableObject
         outputDefinition.name = inputDefinition.name;
         outputDefinition.prefab = inputDefinition.prefab;
 
-        // float startTime = Time.realtimeSinceStartup;    //! DEBUG
-
-        //# Version A 
         outputDefinition.northSockets = new List<Socket>(inputDefinition.northSockets);
         outputDefinition.eastSockets = new List<Socket>(inputDefinition.eastSockets);
         outputDefinition.southSockets = new List<Socket>(inputDefinition.southSockets);
         outputDefinition.westSockets = new List<Socket>(inputDefinition.westSockets);
 
-        // //# Version A (Variant 1) 
-        // //> This version should be more RAM-friendly, as the system does not have to constantly find slots in memory for new lists
-        // for (int i = 0; i < rotationIterations; i++)
-        // {
-        //     List<Socket> buffer = new List<Socket>();
-        //     buffer.AddRange(outputDefinition.northSockets);
-
-        //     outputDefinition.northSockets.Clear();
-        //     outputDefinition.northSockets.AddRange(outputDefinition.westSockets);
-
-        //     outputDefinition.westSockets.Clear();
-        //     outputDefinition.westSockets.AddRange(outputDefinition.southSockets);
-
-        //     outputDefinition.southSockets.Clear();
-        //     outputDefinition.southSockets.AddRange(outputDefinition.eastSockets);
-
-        //     outputDefinition.eastSockets.Clear();
-        //     outputDefinition.eastSockets.AddRange(buffer);
-        // }
-
-        //# Version A (Variant 2) 
-        //> This version has less lines of code
         for (int i = 0; i < rotationIterations; i++)
         {
             List<Socket> buffer = new List<Socket>(outputDefinition.northSockets);
@@ -74,38 +49,7 @@ public class TileDefinition : ScriptableObject
             outputDefinition.southSockets = new List<Socket>(outputDefinition.eastSockets);
             outputDefinition.eastSockets = new List<Socket>(buffer);
         }
-
-        // // //# Version B 
-        // // //> This version should be the fastest to run, but looks the ugliest and most hard-coded in code
-        // switch (rotationIterations)
-        // {
-        //     case 1:
-        //         outputDefinition.northSockets = new List<Socket>(inputDefinition.westSockets);
-        //         outputDefinition.eastSockets = new List<Socket>(inputDefinition.northSockets);
-        //         outputDefinition.southSockets = new List<Socket>(inputDefinition.eastSockets);
-        //         outputDefinition.westSockets = new List<Socket>(inputDefinition.southSockets);
-        //         break;
-        //     case 2:
-        //         outputDefinition.northSockets = new List<Socket>(inputDefinition.southSockets);
-        //         outputDefinition.eastSockets = new List<Socket>(inputDefinition.westSockets);
-        //         outputDefinition.southSockets = new List<Socket>(inputDefinition.northSockets);
-        //         outputDefinition.westSockets = new List<Socket>(inputDefinition.eastSockets);
-        //         break;
-        //     case 3:
-        //         outputDefinition.northSockets = new List<Socket>(inputDefinition.eastSockets);
-        //         outputDefinition.eastSockets = new List<Socket>(inputDefinition.southSockets);
-        //         outputDefinition.southSockets = new List<Socket>(inputDefinition.westSockets);
-        //         outputDefinition.westSockets = new List<Socket>(inputDefinition.northSockets);
-        //         break;
-        //     default:
-        //         outputDefinition.northSockets = new List<Socket>(inputDefinition.northSockets);
-        //         outputDefinition.eastSockets = new List<Socket>(inputDefinition.eastSockets);
-        //         outputDefinition.southSockets = new List<Socket>(inputDefinition.southSockets);
-        //         outputDefinition.westSockets = new List<Socket>(inputDefinition.westSockets);
-        //         break;
-        // }
-
-        // Debug.Log($"Creating Rotated Variant for {inputDefinition.name} with {rotationIterations} rotations took {(Time.realtimeSinceStartup - startTime) * 1000000f} microseconds.");
+        
         return outputDefinition;
     }
 
