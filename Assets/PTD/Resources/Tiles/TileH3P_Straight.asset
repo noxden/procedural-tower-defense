@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54a18a4b63df8da47937d38df62326a6, type: 3}
-  m_Name: TileH3P_NS
+  m_Name: TileH3P_Straight
   m_EditorClassIdentifier: 
   generateRotatedVariants: 1
   isMirrorable: 1
