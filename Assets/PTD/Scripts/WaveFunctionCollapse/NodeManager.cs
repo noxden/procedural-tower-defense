@@ -97,5 +97,30 @@ public class NodeManager : MonoBehaviour
         GetComponent<PathGenerator>().Reinitialize();
     }
 
-    private void FetchAllTilesFromResourcesFolder() => allTiles = new List<Tile>(Resources.LoadAll<Tile>("Tiles"));
+    private void FetchAllTilesFromResourcesFolder()
+    {
+        TileDefinition[] allTileDefinitions = Resources.LoadAll<TileDefinition>("Tiles");
+        if (allTileDefinitions.Length == 0)
+            return;
+
+        // float startTime = Time.realtimeSinceStartup;    //! DEBUG
+
+        allTiles = new List<Tile>();
+        foreach (TileDefinition definition in allTileDefinitions)
+        {
+            allTiles.Add(new Tile(definition));
+            if (definition.generateRotatedVariants)
+            {
+                allTiles.Add(new Tile(TileDefinition.CreateRotatedVariant(definition, 1), 1));
+                if (!definition.isMirrorable)
+                {
+                    for (int i = 2; i <= 3; i++)
+                    {
+                        allTiles.Add(new Tile(TileDefinition.CreateRotatedVariant(definition, i), i));
+                    }
+                }
+            }
+        }
+        // Debug.Log($"Took {(Time.realtimeSinceStartup - startTime) * 1000f}ms to create all tiles and their variants.");
+    }
 }

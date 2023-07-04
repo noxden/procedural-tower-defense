@@ -12,13 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54a18a4b63df8da47937d38df62326a6, type: 3}
   m_Name: TileH2P_End_N
   m_EditorClassIdentifier: 
+  generateRotatedVariants: 1
+  isMirrorable: 0
   prefab: {fileID: 530362624692623137, guid: 1964f7a17b85f834bb537255b61669ca, type: 3}
-  isPath: 1
   northSockets: 0700000008000000
   eastSockets: 010000000200000003000000
   southSockets: 010000000200000003000000
   westSockets: 010000000200000003000000
-  m_pathDirection:
-  - {x: 0, y: 1}
   addToAllSides: 
   removeFromAllSides: 

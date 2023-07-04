@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54a18a4b63df8da47937d38df62326a6, type: 3}
   m_Name: TileH3P_NS
   m_EditorClassIdentifier: 
+  generateRotatedVariants: 1
+  isMirrorable: 1
   prefab: {fileID: 903675823108082698, guid: 0c30184f89c899d4ea30d0a9f71e6dbd, type: 3}
-  isPath: 1
   northSockets: 0800000009000000
   eastSockets: 030000000400000005000000
   southSockets: 0800000009000000
