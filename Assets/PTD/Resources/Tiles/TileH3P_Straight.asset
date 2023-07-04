@@ -9,16 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9f2c720495dab24bb8f57678c432ef7, type: 3}
-  m_Name: TileH3P_EW
+  m_Script: {fileID: 11500000, guid: 54a18a4b63df8da47937d38df62326a6, type: 3}
+  m_Name: TileH3P_Straight
   m_EditorClassIdentifier: 
+  generateRotatedVariants: 1
+  isMirrorable: 1
   prefab: {fileID: 903675823108082698, guid: 0c30184f89c899d4ea30d0a9f71e6dbd, type: 3}
-  isPath: 1
-  northSockets: 030000000400000005000000
-  eastSockets: 0800000009000000
-  southSockets: 030000000400000005000000
-  westSockets: 0800000009000000
+  northSockets: 0800000009000000
+  eastSockets: 030000000400000005000000
+  southSockets: 0800000009000000
+  westSockets: 030000000400000005000000
   addToAllSides: 
   removeFromAllSides: 
-  originalTile: {fileID: 11400000, guid: 0b6e3356c8daaeb4a9a5e56d12ef1fc2, type: 2}
-  amountRotatedClockwise: 1
