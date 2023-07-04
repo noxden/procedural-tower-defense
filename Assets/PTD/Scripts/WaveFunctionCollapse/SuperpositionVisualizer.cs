@@ -13,12 +13,15 @@ using UnityEngine;
 public class SuperpositionVisualizer : MonoBehaviour
 {
     //# Private Variables 
+    private static Material visualizationMaterial;
     private Transform tileVisualizerGroup;
     private List<GameObject> tileVisualizations = new List<GameObject>();
 
     //# Monobehaviour Events 
     private void Start()
     {
+        visualizationMaterial = NodeManager.instance.visualizationMaterial;
+
         tileVisualizerGroup = new GameObject("Superposition Visualizer").transform;
         tileVisualizerGroup.transform.SetParent(this.transform, false);
 
@@ -50,6 +53,7 @@ public class SuperpositionVisualizer : MonoBehaviour
     private void Intitialize()
     {
         GameObject tileVisualization = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        tileVisualization.GetComponent<Renderer>().material = visualizationMaterial;
         tileVisualization.transform.SetParent(parent: tileVisualizerGroup, worldPositionStays: false);
         tileVisualization.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
 

@@ -17,9 +17,10 @@ public class NodeManager : MonoBehaviour
     private static List<Tile> allTiles; //< Would be static if that did not prevent adding the tiles in the editor 
 
     //# Private Variables 
+    public Material visualizationMaterial;
     private Vector2Int nodeGridSize;  //< Number of tiles in x/z axis
     private readonly Vector2 tileExtends = new Vector2(3, 3);    //< in Meters
-    private readonly float tileSpacerThickness = 0.0f;
+    private readonly float tileSpacerThickness = 0.5f;
 
     //# Monobehaviour Events 
     private void Awake()

@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/PTD/Scenes/GenerationMerge.unity
+    path: Assets/PTD/Scenes/GenerationDemo.unity
     guid: d1eebae36f08a264ea6c943412aff631
   m_configObjects: {}
