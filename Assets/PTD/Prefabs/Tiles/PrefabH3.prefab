@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 3944387227083911836}
   - component: {fileID: 8514377174327038434}
   - component: {fileID: 3526473752026403864}
+  - component: {fileID: 791152090232250549}
   m_Layer: 7
   m_Name: BaseMesh
   m_TagString: Untagged
@@ -143,3 +144,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileType: 2
+--- !u!114 &791152090232250549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8421358448624504324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
