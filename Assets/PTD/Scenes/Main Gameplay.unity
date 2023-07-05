@@ -387,6 +387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f49f810505836c41951b62076de2396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameEventManager: {fileID: 11400000, guid: 04fcedceab7d3644ea1465290ee8a1fb, type: 2}
   generateInstantly: 1
   gridSize: {x: 20, y: 20}
   startPositionIndex: {x: 10, y: 0}

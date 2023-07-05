@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build.Content;
 using UnityEngine;
 
 // TODO: Implement different generation calls as async -> Await cast and so on
 public class GenerationHandler : MonoBehaviour
 {
     public static GenerationHandler instance { get; set; }
+
+    [SerializeField] private GameEventManagerScriptableObject gameEventManager;
 
     [Header("Generation Settings")]
     public bool generateInstantly = false;
@@ -36,6 +39,16 @@ public class GenerationHandler : MonoBehaviour
         nodeManager = NodeManager.instance;
         pathGenerator = FindObjectOfType<PathGenerator>();
         waveFunctionSolver = FindObjectOfType<WaveFunctionSolver>();
+    }
+
+    private void OnEnable()
+    {
+        gameEventManager.generateMapEvent.AddListener(GenerateLevel);
+    }
+
+    private void OnDisable()
+    {
+        gameEventManager.generateMapEvent.RemoveListener(GenerateLevel);
     }
 
     /// <summary>

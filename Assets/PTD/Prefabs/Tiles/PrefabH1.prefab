@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 8777378121635339637}
   - component: {fileID: 6564656692266437124}
   - component: {fileID: 266830129366559264}
-  m_Layer: 0
+  - component: {fileID: 8259231119595038579}
+  m_Layer: 7
   m_Name: BaseMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,6 +98,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8259231119595038579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6018201832514547172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fd9ab4f393410f4ea22aebfa431f2de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileType: 0
 --- !u!1 &8574089104529907636
 GameObject:
   m_ObjectHideFlags: 0
