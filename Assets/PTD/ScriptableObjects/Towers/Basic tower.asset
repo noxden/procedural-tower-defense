@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc88bd2d20785c84b92e34cd8e2497dc, type: 3}
+  m_Name: Basic tower
+  m_EditorClassIdentifier: 
+  cost: 50
+  damage: 1
+  range: 10
+  secondsPerAttack: 0.5
+  towerObject: {fileID: 147548198310780583, guid: 163a803e10bdece489c976152e700725, type: 3}
+  attackCooldown: 0
+  targetingPriority: 0
+  towerIcon: {fileID: 21300000, guid: 54dc0b63b285f4aac9103e86d8d8e8bf, type: 3}
