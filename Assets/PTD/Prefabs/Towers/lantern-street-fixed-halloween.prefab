@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac702bcd1a828f44ae22b2cf919ba5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tower: {fileID: 0}
+  tower: {fileID: 11400000, guid: 05054e121061e414f97ae429552daa61, type: 2}
   projectileObject: {fileID: 7700497619344419598, guid: 7e56149433bb7e04ea9b43a7295b9d13, type: 3}
   projectileSpawnPoint: {fileID: 6618475241045951657}
 --- !u!1 &6618475241045951656
