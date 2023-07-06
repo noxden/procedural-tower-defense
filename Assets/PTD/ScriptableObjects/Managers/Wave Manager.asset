@@ -9,9 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6716411f788b24ebcd1f909e57fa26, type: 3}
-  m_Name: Basic enemy
+  m_Script: {fileID: 11500000, guid: 94111005e4df2fd4abe80f42067f5e30, type: 3}
+  m_Name: Wave Manager
   m_EditorClassIdentifier: 
-  maxHealth: 10
-  currentHealth: 10
-  damage: 10

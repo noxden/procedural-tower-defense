@@ -621,6 +621,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 784693da0e6d8a94d8034b12c672a79c, type: 2}
+        m_TargetAssemblyTypeName: WaveManagerScriptableObject, Assembly-CSharp
+        m_MethodName: SpawnWave
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5610010421949201122
 GameObject:
   m_ObjectHideFlags: 0

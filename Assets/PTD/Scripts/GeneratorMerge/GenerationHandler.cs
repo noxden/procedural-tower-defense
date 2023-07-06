@@ -43,12 +43,12 @@ public class GenerationHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        gameEventManager.generateMapEvent.AddListener(GenerateLevel);
+        gameEventManager.generateMapEvent.AddListener(RegenerateLevel);
     }
 
     private void OnDisable()
     {
-        gameEventManager.generateMapEvent.RemoveListener(GenerateLevel);
+        gameEventManager.generateMapEvent.RemoveListener(RegenerateLevel);
     }
 
     /// <summary>
@@ -68,6 +68,20 @@ public class GenerationHandler : MonoBehaviour
                 GenerateLevel();
                 isLevelGenerated = true;
             }
+        }
+    }
+
+    public void RegenerateLevel()
+    {
+        if (isLevelGenerated)
+        {
+            nodeManager.Regenerate();
+            isLevelGenerated = false;
+        }
+        else
+        {
+            GenerateLevel();
+            isLevelGenerated = true;
         }
     }
 

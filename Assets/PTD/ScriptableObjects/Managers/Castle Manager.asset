@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6716411f788b24ebcd1f909e57fa26, type: 3}
-  m_Name: Basic enemy
+  m_Script: {fileID: 11500000, guid: 2f070d4703d664649acebd1668f9052b, type: 3}
+  m_Name: Castle Manager
   m_EditorClassIdentifier: 
-  maxHealth: 10
-  currentHealth: 10
-  damage: 10
+  maxHealth: 100

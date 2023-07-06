@@ -110,7 +110,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6298285335769332128, guid: 83e0729783267a6428ebdab1abf87fb0, type: 3}
       propertyPath: m_Name
-      value: Prefab_H3P_N_Start
+      value: PrefabH3P_Start
       objectReference: {fileID: 0}
     - target: {fileID: 8443202682846965436, guid: 83e0729783267a6428ebdab1abf87fb0, type: 3}
       propertyPath: m_LocalScale.x

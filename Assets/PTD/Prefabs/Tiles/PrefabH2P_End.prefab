@@ -110,7 +110,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6734502803721455086, guid: cadaa9b1f284b304f9dbd5b2b15ea3a2, type: 3}
       propertyPath: m_Name
-      value: Prefab_H2P_N_End
+      value: PrefabH2P_End
       objectReference: {fileID: 0}
     - target: {fileID: 9166464651898154849, guid: cadaa9b1f284b304f9dbd5b2b15ea3a2, type: 3}
       propertyPath: m_LocalScale.x

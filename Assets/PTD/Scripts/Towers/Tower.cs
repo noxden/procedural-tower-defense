@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Tower", menuName = "Tower")]
+[CreateAssetMenu(fileName = "New Tower", menuName = "ScriptableObjects/Tower")]
 public class Tower : ScriptableObject
 {
     [Header("Tower Stats")]
