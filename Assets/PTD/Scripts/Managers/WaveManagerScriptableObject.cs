@@ -6,18 +6,50 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "Wave Manager", menuName = "ScriptableObjects/Managers/Wave Manager")]
 public class WaveManagerScriptableObject : ScriptableObject
 {
-    [System.NonSerialized] public UnityEvent spawnWaveEvent = new UnityEvent();
+    [System.NonSerialized] public UnityEvent spawnFirstWaveEvent = new UnityEvent();
+    [System.NonSerialized] public UnityEvent halfwayThroughWaveEvent = new UnityEvent();
+    [System.NonSerialized] public UnityEvent spawnNextWaveEarlyEvent = new UnityEvent();
+
     public List<Transform> navigationPath = new List<Transform>();
+    [SerializeField] private List<EnemyWave> enemyWaves = new List<EnemyWave>();
+    [HideInInspector] public int currentWave = 0;
 
     private void OnEnable()
     {
-        if(spawnWaveEvent == null)
-            spawnWaveEvent = new UnityEvent();
+        currentWave = 0;
+        if(spawnFirstWaveEvent == null)
+            spawnFirstWaveEvent = new UnityEvent();
+        if (halfwayThroughWaveEvent == null)
+            halfwayThroughWaveEvent = new UnityEvent();
+        if (spawnNextWaveEarlyEvent == null)
+            spawnNextWaveEarlyEvent = new UnityEvent();
     }
 
-    public void SpawnWave()
+    public void SpawnFirstWave()
     {
-        spawnWaveEvent.Invoke();
+        spawnFirstWaveEvent.Invoke();
+    }
+
+    public void HalfwayThroughWave()
+    {
+        halfwayThroughWaveEvent.Invoke();
+    }
+
+    public bool IsLastWave()
+    {
+          return currentWave == enemyWaves.Count - 1;
+    }
+
+    public void SpawnNextWaveEarly()
+    {
+        spawnNextWaveEarlyEvent.Invoke();
+    }
+
+    public EnemyWave GetCurrentWave()
+    {
+        if (enemyWaves.Count <= currentWave)
+            return null;
+        return enemyWaves[currentWave];
     }
 
     public void SetNavigationPath(List<Node> wholePath)

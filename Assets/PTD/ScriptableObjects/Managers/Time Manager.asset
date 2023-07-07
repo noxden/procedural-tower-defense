@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f070d4703d664649acebd1668f9052b, type: 3}
-  m_Name: Castle Manager
+  m_Script: {fileID: 11500000, guid: 1242feb26c2576244a20af2dbd558a04, type: 3}
+  m_Name: Time Manager
   m_EditorClassIdentifier: 
-  gameEventManager: {fileID: 11400000, guid: 04fcedceab7d3644ea1465290ee8a1fb, type: 2}
-  maxHealth: 100
+  timeScale: 1
+  isPaused: 0

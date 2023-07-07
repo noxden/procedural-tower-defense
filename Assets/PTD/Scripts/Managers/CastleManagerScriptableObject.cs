@@ -6,6 +6,7 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "Castle Manager", menuName = "ScriptableObjects/Managers/Castle Manager")]
 public class CastleManagerScriptableObject : ScriptableObject
 {
+    [SerializeField] private GameEventManagerScriptableObject gameEventManager;
     [System.NonSerialized] public UnityEvent healthChangedEvent = new UnityEvent();
     [SerializeField] private float maxHealth = 100;
     public float CurrentHealth { get { return currentHealth; } }
@@ -24,7 +25,7 @@ public class CastleManagerScriptableObject : ScriptableObject
         if(currentHealth <= 0)
         {
             currentHealth = 0;
-            // Game Over
+            gameEventManager.LoseGame();
         }
         healthChangedEvent.Invoke();
     }

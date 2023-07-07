@@ -6,36 +6,85 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private WaveManagerScriptableObject waveManager;
     [SerializeField] private Transform spawnPoint;
-    [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private int numberOfEnemiesToSpawn;
-    [SerializeField] private float secondsBetweenSpawns = 1;
+    private EnemyWave currentWave;
+    private bool waveSpawningStarted = false;
+    private float waveCooldownTimer = 0f;
+    private bool currentWaveSpawned = false;
+    private bool halfwayThroughCurrentWave = false;
 
     private void OnEnable()
     {
-        waveManager.spawnWaveEvent.AddListener(SpawnWave);
+        waveManager.spawnFirstWaveEvent.AddListener(StartWaveSpawning);
+        waveManager.spawnNextWaveEarlyEvent.AddListener(SpawnNextWaveEarly);
     }
 
     private void OnDisable()
     {
-        waveManager.spawnWaveEvent.RemoveListener(SpawnWave);
+        waveManager.spawnFirstWaveEvent.RemoveListener(StartWaveSpawning);
+        waveManager.spawnNextWaveEarlyEvent.RemoveListener(SpawnNextWaveEarly);
     }
 
-    private void SpawnWave()
+    private void StartWaveSpawning()
     {
-        StartCoroutine(SpawnWaveEnumerator());
+        GetNextWave();
+        waveSpawningStarted = true;
+    }
+
+    private void GetNextWave()
+    {
+        currentWave = waveManager.GetCurrentWave();
+        if(currentWave == null)
+        {
+            Debug.Log("No more waves");
+            return;
+        }
+        waveCooldownTimer = currentWave.timeUntilNextWave;
+        currentWaveSpawned = false;
+        halfwayThroughCurrentWave = false;
+        waveManager.currentWave++;
+    }
+
+    public void SpawnNextWaveEarly()
+    {
+        waveCooldownTimer = 0;
     }
 
     private IEnumerator SpawnWaveEnumerator()
     {
-        for (int i = 0; i < numberOfEnemiesToSpawn; i++)
+        currentWaveSpawned = true;
+        List<GameObject> enemyObjectList = currentWave.enemies;
+        float secondsBetweenSpawns = currentWave.secondsBetweenSpawns;
+
+        for (int i = 0; i < enemyObjectList.Count; i++)
         {
-            GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+            GameObject enemy = Instantiate(enemyObjectList[i], spawnPoint.position, Quaternion.identity);
             yield return new WaitForSeconds(secondsBetweenSpawns);
         }
     }
 
     private void Update()
     {
-        
+        if (!waveSpawningStarted)
+            return;
+
+        if (!currentWaveSpawned)
+        {
+            StartCoroutine(SpawnWaveEnumerator());
+            currentWaveSpawned = true;
+        }
+
+        if(waveCooldownTimer <= 0)
+        {
+            GetNextWave();
+        }
+        else
+        {
+            if(waveCooldownTimer <= currentWave.timeUntilNextWave / 2 && !halfwayThroughCurrentWave)
+            {
+                waveManager.HalfwayThroughWave();
+                halfwayThroughCurrentWave = true;
+            }
+            waveCooldownTimer -= Time.deltaTime;
+        }
     }
 }

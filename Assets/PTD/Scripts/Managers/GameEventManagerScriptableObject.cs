@@ -9,6 +9,7 @@ public class GameEventManagerScriptableObject : ScriptableObject
     [System.NonSerialized] public UnityEvent startGameEvent;
     [System.NonSerialized] public UnityEvent generateMapEvent;
     [System.NonSerialized] public UnityEvent nodeGridRegeneratedEvent;
+    [System.NonSerialized] public UnityEvent loseGameEvent;
 
     private void OnEnable()
     {
@@ -18,6 +19,8 @@ public class GameEventManagerScriptableObject : ScriptableObject
             generateMapEvent = new UnityEvent();
         if(nodeGridRegeneratedEvent == null)
             nodeGridRegeneratedEvent = new UnityEvent();
+        if(loseGameEvent == null)
+            loseGameEvent = new UnityEvent();
     }
 
     public void StartGame()
@@ -33,5 +36,10 @@ public class GameEventManagerScriptableObject : ScriptableObject
     public void NodeGridRegenerated()
     {
         nodeGridRegeneratedEvent.Invoke();
+    }
+
+    public void LoseGame()
+    {
+        loseGameEvent.Invoke();
     }
 }

@@ -12,3 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94111005e4df2fd4abe80f42067f5e30, type: 3}
   m_Name: Wave Manager
   m_EditorClassIdentifier: 
+  navigationPath: []
+  enemyWaves:
+  - {fileID: 11400000, guid: a8e9198165ee6f148848c3bd7616bf99, type: 2}
+  - {fileID: 11400000, guid: 2eca1b22e87ec13499159c8f36e5c15c, type: 2}
+  currentWave: 0
