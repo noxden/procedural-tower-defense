@@ -15,3 +15,5 @@ MonoBehaviour:
   maxHealth: 10
   currentHealth: 10
   damage: 10
+  goldOnDeath: 10
+  speed: 3

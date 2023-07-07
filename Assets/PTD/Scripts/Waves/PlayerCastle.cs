@@ -11,7 +11,7 @@ public class PlayerCastle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        waveManager.goal = goalPoint;
+        waveManager.SetGoal(goalPoint);
     }
 
 }

@@ -245,5 +245,5 @@ MonoBehaviour:
   waveManager: {fileID: 11400000, guid: 784693da0e6d8a94d8034b12c672a79c, type: 2}
   spawnPoint: {fileID: 129546913718423810}
   enemyPrefab: {fileID: 7782644754692826338, guid: 2973385accfc00043983af3a6725cdd4, type: 3}
-  numberOfEnemiesToSpawn: 5
-  secondsBetweenSpawns: 1
+  numberOfEnemiesToSpawn: 10
+  secondsBetweenSpawns: 2

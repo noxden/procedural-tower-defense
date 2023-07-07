@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 96031235}
   - component: {fileID: 96031234}
   m_Layer: 0
-  m_Name: NavMeshSurface
+  m_Name: Terrain Baker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -448,6 +448,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a6cf7b0bcf62f4c8239ce199b27c51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waveManager: {fileID: 11400000, guid: 784693da0e6d8a94d8034b12c672a79c, type: 2}
   stepDelayInSeconds: 0.01
   path: []
 --- !u!114 &606182041
@@ -773,6 +774,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 768635196385184589, guid: 55cd73bebfbc21e42816bf1d1417e773, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 863370877068690236, guid: 55cd73bebfbc21e42816bf1d1417e773, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}

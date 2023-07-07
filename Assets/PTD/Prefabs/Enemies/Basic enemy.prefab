@@ -115,6 +115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waveManager: {fileID: 11400000, guid: 784693da0e6d8a94d8034b12c672a79c, type: 2}
   castleManager: {fileID: 11400000, guid: 0932f0bf13609c84f8a7efeabb25eaf0, type: 2}
+  financeManager: {fileID: 11400000, guid: e7daad3a6d386f14990ce69f62faa7ed, type: 2}
   castleLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -128,11 +129,11 @@ NavMeshAgent:
   m_GameObject: {fileID: 7782644754692826338}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.1
   m_Speed: 3.5
   m_Acceleration: 10000
   avoidancePriority: 50
-  m_AngularSpeed: 0
+  m_AngularSpeed: 100
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0
@@ -140,7 +141,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!54 &2016840435679359022
 Rigidbody:
   m_ObjectHideFlags: 0

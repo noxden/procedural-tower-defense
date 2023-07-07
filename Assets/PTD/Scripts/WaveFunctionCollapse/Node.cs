@@ -179,4 +179,33 @@ public class Node : MonoBehaviour
         if (gridPosition.y != GenerationHandler.instance.gridSize.y - 1)
             possiblePathDirections.Add(new Vector2Int(0, 1));
     }
+
+    public bool IsCornerPiece()
+    {
+        if(pathDirection.Count == 2)
+        {
+            if(pathDirection.Contains(new Vector2Int(1, 0)) && pathDirection.Contains(new Vector2Int(0, 1)))
+            {
+                return true;
+            }
+            else if (pathDirection.Contains(new Vector2Int(-1, 0)) && pathDirection.Contains(new Vector2Int(0, 1)))
+            {
+                return true;
+            }
+            else if (pathDirection.Contains(new Vector2Int(1, 0)) && pathDirection.Contains(new Vector2Int(0, -1)))
+            {
+                return true;
+            }
+            else if (pathDirection.Contains(new Vector2Int(-1, 0)) && pathDirection.Contains(new Vector2Int(0, -1)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return false;
+    }
 }

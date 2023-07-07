@@ -6,6 +6,7 @@ public class TowerObject : MonoBehaviour
 
     private void Awake()
     {
+        tower = Instantiate(tower);
         tower.attackCooldown = tower.secondsPerAttack;
     }
 
