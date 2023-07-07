@@ -11,6 +11,8 @@ using UnityEngine;
 
 public enum Socket { h1, h1_2, h2, h2_3, h3, h3_4, h4, p2, p2_3, p3 }
 
+public enum TileTag { None, StartTile, EndTile }
+
 [ExecuteInEditMode]
 [CreateAssetMenu(fileName = "TileDefinition", menuName = "Wave Function Collapse/TileDefinition")]
 public class TileDefinition : ScriptableObject
@@ -25,6 +27,7 @@ public class TileDefinition : ScriptableObject
     public List<Socket> eastSockets;
     public List<Socket> southSockets;
     public List<Socket> westSockets;
+    public TileTag optionalTileTag;
 
     [Header("In-Editor Socket Bulk-Setup"), Space(10)]
     [SerializeField] private List<Socket> addToAllSides;
@@ -49,7 +52,7 @@ public class TileDefinition : ScriptableObject
             outputDefinition.southSockets = new List<Socket>(outputDefinition.eastSockets);
             outputDefinition.eastSockets = new List<Socket>(buffer);
         }
-        
+
         return outputDefinition;
     }
 

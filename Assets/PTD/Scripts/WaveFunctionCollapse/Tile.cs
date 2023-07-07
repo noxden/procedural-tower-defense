@@ -7,6 +7,7 @@ using System;
 public class Tile
 {
     public string name;
+    public TileTag tag;
     public GameObject prefab;
     public List<Socket> northSockets;
     public List<Socket> eastSockets;
@@ -28,10 +29,11 @@ public class Tile
     private GameObject instantiatedPrefab;
 
     /// <summary>
-    /// Create Tile from TileDefinition.
+    /// Construct Tile from TileDefinition.
     /// </summary>
     public Tile(TileDefinition definition, int rotationIterations = 0)
     {
+        this.tag = definition.optionalTileTag;
         this.prefab = definition.prefab;
         this.northSockets = new List<Socket>(definition.northSockets);
         this.eastSockets = new List<Socket>(definition.eastSockets);
@@ -43,10 +45,11 @@ public class Tile
     }
 
     /// <summary>
-    /// Create Tile from scratch.
+    /// Construct Tile from scratch.
     /// </summary>
-    public Tile(GameObject prefab, List<Socket> northSockets, List<Socket> eastSockets, List<Socket> southSockets, List<Socket> westSockets, int amountRotatedClockwise = 0)
+    public Tile(GameObject prefab, List<Socket> northSockets, List<Socket> eastSockets, List<Socket> southSockets, List<Socket> westSockets, TileTag tileTag = TileTag.None, int amountRotatedClockwise = 0)
     {
+        this.tag = tileTag;
         this.prefab = prefab;
         this.northSockets = new List<Socket>(northSockets);
         this.eastSockets = new List<Socket>(eastSockets);

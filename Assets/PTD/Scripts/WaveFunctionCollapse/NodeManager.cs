@@ -15,6 +15,8 @@ public class NodeManager : MonoBehaviour
     public static NodeManager instance { get; set; }
     public Dictionary<Vector2Int, Node> nodeGrid { get; private set; }
     private static List<Tile> allTiles; //< Would be static if that did not prevent adding the tiles in the editor 
+    public static List<Tile> startTiles;
+    public static List<Tile> endTiles;
 
     //# Private Variables 
     private Vector2Int nodeGridSize;  //< Number of tiles in x/z axis
@@ -100,23 +102,39 @@ public class NodeManager : MonoBehaviour
     private void FetchAllTilesFromResourcesFolder()
     {
         TileDefinition[] allTileDefinitions = Resources.LoadAll<TileDefinition>("Tiles");
-        if (allTileDefinitions.Length == 0)
+        if (allTileDefinitions.Length == 0) //< Skip constructing tiles if no tile definitions could be located.
             return;
 
         allTiles = new List<Tile>();
+        startTiles = new List<Tile>();
+        endTiles = new List<Tile>();
         foreach (TileDefinition definition in allTileDefinitions)
         {
-            allTiles.Add(new Tile(definition));
+            List<Tile> listToAddTo;
+            switch (definition.optionalTileTag)
+            {
+                case TileTag.StartTile:
+                    listToAddTo = startTiles;
+                    break;
+                case TileTag.EndTile:
+                    listToAddTo = endTiles;
+                    break;
+                default:
+                    listToAddTo = allTiles;
+                    break;
+            }
+
+            listToAddTo.Add(new Tile(definition));
             if (!definition.generateRotatedVariants)
                 continue;
 
-            allTiles.Add(new Tile(TileDefinition.CreateRotatedVariant(definition, 1), 1));
+            listToAddTo.Add(new Tile(TileDefinition.CreateRotatedVariant(definition, 1), 1));
             if (definition.isMirrorable)
                 continue;
 
             for (int i = 2; i <= 3; i++)
             {
-                allTiles.Add(new Tile(TileDefinition.CreateRotatedVariant(definition, i), i));
+                listToAddTo.Add(new Tile(TileDefinition.CreateRotatedVariant(definition, i), i));
             }
         }
     }
