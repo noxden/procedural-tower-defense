@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -11,6 +12,7 @@ public class EnemySpawner : MonoBehaviour
     private float waveCooldownTimer = 0f;
     private bool currentWaveSpawned = false;
     private bool halfwayThroughCurrentWave = false;
+    private int lastSkipGold = -1;
 
     private void OnEnable()
     {
@@ -71,6 +73,7 @@ public class EnemySpawner : MonoBehaviour
         {
             StartCoroutine(SpawnWaveEnumerator());
             currentWaveSpawned = true;
+            waveManager.NextWaveSpawned();
         }
 
         if(waveCooldownTimer <= 0)
@@ -79,10 +82,21 @@ public class EnemySpawner : MonoBehaviour
         }
         else
         {
-            if(waveCooldownTimer <= currentWave.timeUntilNextWave / 2 && !halfwayThroughCurrentWave)
+            if(waveCooldownTimer <= currentWave.timeUntilNextWave / 2)
             {
-                waveManager.HalfwayThroughWave();
-                halfwayThroughCurrentWave = true;
+                int skipGold = (int)( (currentWave.maxBonusGoldForSkippingWave * waveCooldownTimer) / (currentWave.timeUntilNextWave / 2));
+
+                if(skipGold != lastSkipGold)
+                {
+                    waveManager.UpdateSkipGold(skipGold);
+                    lastSkipGold = skipGold;
+                }
+
+                if (!halfwayThroughCurrentWave)
+                {
+                    waveManager.HalfwayThroughWave();
+                    halfwayThroughCurrentWave = true;
+                }             
             }
             waveCooldownTimer -= Time.deltaTime;
         }

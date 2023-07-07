@@ -7,22 +7,31 @@ using UnityEngine.Events;
 public class WaveManagerScriptableObject : ScriptableObject
 {
     [System.NonSerialized] public UnityEvent spawnFirstWaveEvent = new UnityEvent();
+    [System.NonSerialized] public UnityEvent nextWaveSpawnedEvent = new UnityEvent();
     [System.NonSerialized] public UnityEvent halfwayThroughWaveEvent = new UnityEvent();
     [System.NonSerialized] public UnityEvent spawnNextWaveEarlyEvent = new UnityEvent();
+    [System.NonSerialized] public UnityEvent<int> updateSkipGoldEvent = new UnityEvent<int>();
 
     public List<Transform> navigationPath = new List<Transform>();
     [SerializeField] private List<EnemyWave> enemyWaves = new List<EnemyWave>();
     [HideInInspector] public int currentWave = 0;
+    [HideInInspector] public int skipGold = 0;
 
     private void OnEnable()
     {
         currentWave = 0;
+        skipGold = 0;
+
         if(spawnFirstWaveEvent == null)
             spawnFirstWaveEvent = new UnityEvent();
         if (halfwayThroughWaveEvent == null)
             halfwayThroughWaveEvent = new UnityEvent();
         if (spawnNextWaveEarlyEvent == null)
             spawnNextWaveEarlyEvent = new UnityEvent();
+        if (nextWaveSpawnedEvent == null)
+            nextWaveSpawnedEvent = new UnityEvent();
+        if (updateSkipGoldEvent == null)
+            updateSkipGoldEvent = new UnityEvent<int>();
     }
 
     public void SpawnFirstWave()
@@ -35,9 +44,21 @@ public class WaveManagerScriptableObject : ScriptableObject
         halfwayThroughWaveEvent.Invoke();
     }
 
+    public void NextWaveSpawned()
+    {
+        nextWaveSpawnedEvent.Invoke();
+        skipGold = 0;
+    }
+
     public bool IsLastWave()
     {
-          return currentWave == enemyWaves.Count - 1;
+          return currentWave == enemyWaves.Count;
+    }
+
+    public void UpdateSkipGold(int skipGold)
+    {
+        this.skipGold = skipGold;
+        updateSkipGoldEvent.Invoke(skipGold);
     }
 
     public void SpawnNextWaveEarly()
