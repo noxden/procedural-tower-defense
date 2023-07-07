@@ -19,5 +19,6 @@ MonoBehaviour:
   eastSockets: 030000000400000005000000
   southSockets: 030000000400000005000000
   westSockets: 030000000400000005000000
+  optionalTileTag: 1
   addToAllSides: 
   removeFromAllSides: 

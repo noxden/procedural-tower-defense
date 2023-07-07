@@ -124,6 +124,8 @@ public class PathGenerator : MonoBehaviour
 
         UpdateAllNodesBasedOnPathValue();
 
+        OverwritePotentialTilesOfStartAndEndNodes();
+
         UpdateNodesInPathBasedOnPathDirection();
 
         OnPathGenerated.Invoke();
@@ -137,6 +139,12 @@ public class PathGenerator : MonoBehaviour
             Node node = keyValuePair.Value;
             node.ReducePotentialTilesByPathFlag();
         }
+    }
+
+    private void OverwritePotentialTilesOfStartAndEndNodes()
+    {
+        path[0].potentialTiles = NodeManager.startTiles;
+        path[path.Count - 1].potentialTiles = NodeManager.endTiles;
     }
 
     private void UpdateNodesInPathBasedOnPathDirection()
