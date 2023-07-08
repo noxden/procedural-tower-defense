@@ -9,7 +9,7 @@ public class TileInformation : MonoBehaviour
 
     public Vector3 GetTowerPlacementPosition()
     {
-        return transform.position + new Vector3(0, transform.localScale.y, 0);
+        return transform.position + new Vector3(0, transform.localScale.y / 2, 0);
     }
 
     public bool HasTower()
