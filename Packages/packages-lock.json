@@ -198,14 +198,6 @@
       },
       "url": "https://packages.unity.com"
     },
-    "jp.keijiro.klak.math": {
-      "version": "file:C:/Users/ameli/Downloads/KlakMath-master/KlakMath-master/Packages/jp.keijiro.klak.math",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {
-        "com.unity.mathematics": "1.2.6"
-      }
-    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,

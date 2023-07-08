@@ -1,6 +1,6 @@
 using UnityEngine;
 using Unity.Mathematics;
-using Klak.Math;
+
 
 sealed class WalkAnimation : MonoBehaviour
 {
@@ -40,16 +40,15 @@ sealed class WalkAnimation : MonoBehaviour
     void Update()
     {
         // PRNG
-        var seed = _seed;
-        var hash = new XXHash(seed++);
+        
 
         // Time parameter
-        var t_noise = hash.Float3(0.9f, 1.1f, 1) * Time.time * 0.3f + 100;
+        
 
         // Hip target
         {
             var walk = math.sin(_time * 2 + math.PI * 0.25f) * _hipUp * Amplitude;
-            var move = Noise.Float3(t_noise * 8, seed++) * _noise;
+            var move = _noise;
             _hip.localPosition = move + math.float3(0, walk - 0.2f * _noise, 0);
             _hip.localRotation = quaternion.RotateY(math.sin(_time) * -_hipShake * Amplitude);
         }
