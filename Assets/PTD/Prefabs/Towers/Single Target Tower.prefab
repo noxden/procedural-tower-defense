@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1805044315500560242}
   - component: {fileID: 6618475240483944276}
   m_Layer: 0
-  m_Name: lantern-street-fixed-halloween
+  m_Name: Single Target Tower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

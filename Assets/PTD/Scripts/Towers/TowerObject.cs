@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TowerObject : MonoBehaviour
 {
-    [SerializeField] protected Tower tower;
+    public Tower tower;
 
     private void Awake()
     {

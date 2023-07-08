@@ -624,7 +624,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   financeManager: {fileID: 11400000, guid: e7daad3a6d386f14990ce69f62faa7ed, type: 2}
-  tower: {fileID: 11400000, guid: 05054e121061e414f97ae429552daa61, type: 2}
+  towerObject: {fileID: 147548198310780583, guid: 163a803e10bdece489c976152e700725, type: 3}
   towerIcon: {fileID: 2562478247226241838}
   towerCostText: {fileID: 2312908993214968134}
   layerMask:

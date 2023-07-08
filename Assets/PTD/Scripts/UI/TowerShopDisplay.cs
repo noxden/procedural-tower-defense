@@ -8,7 +8,8 @@ using UnityEngine.UI;
 public class TowerShopDisplay : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     [SerializeField] private FinanceManagerScriptableObject financeManager;
-    [SerializeField] private Tower tower;
+    [SerializeField] private GameObject towerObject;
+    private Tower tower;
     [SerializeField] private Image towerIcon;
     [SerializeField] private TextMeshProUGUI towerCostText;
     [SerializeField] private LayerMask layerMask;
@@ -20,10 +21,11 @@ public class TowerShopDisplay : MonoBehaviour, IDragHandler, IBeginDragHandler, 
     private void Start()
     {
         mainCamera = Camera.main;
+        tower = towerObject.GetComponent<TowerObject>().tower;
 
         towerIcon.sprite = tower.towerIcon;
         towerCostText.text = tower.cost.ToString();
-        prePlacementTowerObject = Instantiate(tower.towerObject, transform.position, Quaternion.identity);
+        prePlacementTowerObject = Instantiate(towerObject, transform.position, Quaternion.identity);
         prePlacementTowerObject.SetActive(false);
     }
     
@@ -74,7 +76,7 @@ public class TowerShopDisplay : MonoBehaviour, IDragHandler, IBeginDragHandler, 
         if(currentTile != null && canPlaceTower)
         {
             financeManager.ChangeMoney(-tower.cost);
-            currentTile.PlaceTower(tower.towerObject);
+            currentTile.PlaceTower(towerObject);
         }
         prePlacementTowerObject.SetActive(false);
     }

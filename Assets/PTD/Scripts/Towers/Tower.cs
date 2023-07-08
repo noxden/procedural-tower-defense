@@ -10,7 +10,6 @@ public class Tower : ScriptableObject
     public float damage;
     public float range;
     public float secondsPerAttack;
-    public GameObject towerObject;
     [HideInInspector] public float attackCooldown;
 
     public enum TargetingPriority
