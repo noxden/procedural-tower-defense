@@ -12,8 +12,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94111005e4df2fd4abe80f42067f5e30, type: 3}
   m_Name: Wave Manager
   m_EditorClassIdentifier: 
-  navigationPath: []
+  navigationPath:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   enemyWaves:
   - {fileID: 11400000, guid: a8e9198165ee6f148848c3bd7616bf99, type: 2}
   - {fileID: 11400000, guid: 2eca1b22e87ec13499159c8f36e5c15c, type: 2}
-  currentWave: 0
+  - {fileID: 11400000, guid: 24f5e4071e5e11245b36cab8e5767409, type: 2}
+  - {fileID: 11400000, guid: 39e7310d24afd9541a7d8bd1277a7008, type: 2}
+  - {fileID: 11400000, guid: b9e776b00cf13f548ab5fb274ce735ff, type: 2}
+  currentWave: 5
+  skipGold: 6

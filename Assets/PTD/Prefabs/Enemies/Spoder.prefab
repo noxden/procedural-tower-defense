@@ -10,6 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2163545554418107469}
   - component: {fileID: 2163545554418107470}
+  - component: {fileID: 717200342182090290}
+  - component: {fileID: 1451322239556395049}
+  - component: {fileID: 493159489347345960}
+  - component: {fileID: 1601346116579975400}
   m_Layer: 0
   m_Name: Spoder
   m_TagString: Untagged
@@ -26,8 +30,8 @@ Transform:
   m_GameObject: {fileID: 2163545554418107471}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.275, y: 0.275, z: 0.275}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1841070945383073784}
   m_Father: {fileID: 0}
@@ -63,6 +67,77 @@ MonoBehaviour:
   _raycastRange: 5
   _feetOffset: 0
   _Arms: 0
+--- !u!136 &717200342182090290
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2163545554418107471}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.78
+  m_Height: 3.51
+  m_Direction: 2
+  m_Center: {x: 0, y: 2.49, z: -0.96}
+--- !u!54 &1451322239556395049
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2163545554418107471}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!195 &493159489347345960
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2163545554418107471}
+  m_Enabled: 1
+  m_AgentTypeID: -1372625422
+  m_Radius: 2.67
+  m_Speed: 3.5
+  m_Acceleration: 10000
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: -1.5
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 0
+--- !u!114 &1601346116579975400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2163545554418107471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98d6939e4b816694c88268889bb5f716, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waveManager: {fileID: 11400000, guid: 784693da0e6d8a94d8034b12c672a79c, type: 2}
+  castleManager: {fileID: 11400000, guid: 0932f0bf13609c84f8a7efeabb25eaf0, type: 2}
+  financeManager: {fileID: 11400000, guid: e7daad3a6d386f14990ce69f62faa7ed, type: 2}
+  castleLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  enemy: {fileID: 11400000, guid: c97b39632f06b0c469fae54765937437, type: 2}
 --- !u!1 &2163545554429518153
 GameObject:
   m_ObjectHideFlags: 0
@@ -1406,7 +1481,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &2163545555890678206
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1423,7 +1498,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &2163545555890678205
 MonoBehaviour:
   m_ObjectHideFlags: 0
