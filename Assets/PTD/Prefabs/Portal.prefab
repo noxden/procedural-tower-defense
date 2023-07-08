@@ -205,6 +205,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4467064393230735262}
+  - component: {fileID: 6360475813646526112}
   m_Layer: 0
   m_Name: Portal
   m_TagString: Untagged
@@ -229,3 +230,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6360475813646526112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7858008787935644495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c5791e6cebc27a49a8098219b7675de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waveManager: {fileID: 11400000, guid: 784693da0e6d8a94d8034b12c672a79c, type: 2}
+  spawnPoint: {fileID: 129546913718423810}
+  enemyPrefab: {fileID: 7782644754692826338, guid: 2973385accfc00043983af3a6725cdd4, type: 3}
+  numberOfEnemiesToSpawn: 10
+  secondsBetweenSpawns: 2

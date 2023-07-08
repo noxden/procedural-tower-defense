@@ -14,6 +14,8 @@ using UnityEngine.Events;
 [DefaultExecutionOrder(1)]
 public class PathGenerator : MonoBehaviour
 {
+    [SerializeField] private WaveManagerScriptableObject waveManager;
+
     //# Debug "Button" Variables 
     private Vector2Int gridSize = Vector2Int.zero;
     private Vector2Int startPositionIndex;
@@ -127,6 +129,8 @@ public class PathGenerator : MonoBehaviour
         OverwritePotentialTilesOfStartAndEndNodes();
 
         UpdateNodesInPathBasedOnPathDirection();
+
+        waveManager.SetNavigationPath(path);
 
         OnPathGenerated.Invoke();
     }

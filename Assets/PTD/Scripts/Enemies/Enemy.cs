@@ -2,28 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+[CreateAssetMenu(fileName = "New Enemy", menuName = "ScriptableObjects/Enemy")]
+public class Enemy : ScriptableObject
 {
-    [SerializeField] private float maxHealth;
-    private float health;
+    public float maxHealth;
+    [HideInInspector] public float currentHealth;
+    public float damage;
+    public float goldOnDeath;
+    public float speed = 5;
 
-    private void Awake()
+    private void OnEnable()
     {
-        health = maxHealth;
-    }
-
-    public void TakeDamage(float damage)
-    {
-        health -= damage;
-
-        if(health <= 0)
-        {
-            Die();
-        }
-    }
-
-    public void Die()
-    {
-        Destroy(gameObject);
+        currentHealth = maxHealth;
     }
 }

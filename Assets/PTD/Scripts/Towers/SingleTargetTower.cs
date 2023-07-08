@@ -1,15 +1,15 @@
 using UnityEngine;
 
-public class SingleTargetTower : Tower
+public class SingleTargetTower : TowerObject
 {
     [SerializeField] private GameObject projectileObject;
     [SerializeField] private Transform projectileSpawnPoint;
 
-    public override void Shoot(Enemy targetEnemy)
+    public override void Shoot(EnemyObject targetEnemy)
     {
         base.Shoot(targetEnemy);
         Projectile projectile = Instantiate(projectileObject, projectileSpawnPoint.position, Quaternion.identity, null).GetComponent<Projectile>();
-        projectile.SetDamage(damage);
+        projectile.SetDamage(tower.damage);
         projectile.SetTarget(targetEnemy);
     }
 }

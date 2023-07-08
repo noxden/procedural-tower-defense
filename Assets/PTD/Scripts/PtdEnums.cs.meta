@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/PTD/Scripts/PtdEnums.cs.meta
+guid: d2a735fea4011824f824e18bef6f4287
+========
+guid: 740860cf39cae23439d7a40ed0c00a60
+>>>>>>>> c9ed652 (Combined both generators in the same scene):Assets/PTD/Scripts/Path Generation/PathGenerator_original.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

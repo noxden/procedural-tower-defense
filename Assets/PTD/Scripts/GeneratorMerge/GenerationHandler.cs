@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build.Content;
 using UnityEngine;
 
 // TODO: Implement different generation calls as async -> Await cast and so on
 public class GenerationHandler : MonoBehaviour
 {
     public static GenerationHandler instance { get; set; }
+
+    [SerializeField] private GameEventManagerScriptableObject gameEventManager;
 
     [Header("Generation Settings")]
     public bool generateInstantly = false;
@@ -38,6 +41,16 @@ public class GenerationHandler : MonoBehaviour
         waveFunctionSolver = FindObjectOfType<WaveFunctionSolver>();
     }
 
+    private void OnEnable()
+    {
+        gameEventManager.generateMapEvent.AddListener(RegenerateLevel);
+    }
+
+    private void OnDisable()
+    {
+        gameEventManager.generateMapEvent.RemoveListener(RegenerateLevel);
+    }
+
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
     /// </summary>
@@ -55,6 +68,20 @@ public class GenerationHandler : MonoBehaviour
                 GenerateLevel();
                 isLevelGenerated = true;
             }
+        }
+    }
+
+    public void RegenerateLevel()
+    {
+        if (isLevelGenerated)
+        {
+            nodeManager.Regenerate();
+            isLevelGenerated = false;
+        }
+        else
+        {
+            GenerateLevel();
+            isLevelGenerated = true;
         }
     }
 

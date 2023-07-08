@@ -4,9 +4,9 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] private float speed = 10f;
     private float damage = 0;
-    private Enemy target;
+    private EnemyObject target;
 
-    public void SetTarget(Enemy target)
+    public void SetTarget(EnemyObject target)
     {
         this.target = target;
     }
