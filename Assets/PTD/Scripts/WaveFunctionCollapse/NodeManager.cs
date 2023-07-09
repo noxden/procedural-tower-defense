@@ -20,8 +20,8 @@ public class NodeManager : MonoBehaviour
 
     //# Private Variables 
     private Vector2Int nodeGridSize;  //< Number of tiles in x/z axis
-    private readonly Vector2 tileExtends = new Vector2(3, 3);    //< in Meters
-    private readonly float tileSpacerThickness = 0.0f;
+    public readonly Vector2 tileExtends = new Vector2(3, 3);    //< in Meters
+    public readonly float tileSpacerThickness = 0.0f;
 
     //# Monobehaviour Events 
     private void Awake()

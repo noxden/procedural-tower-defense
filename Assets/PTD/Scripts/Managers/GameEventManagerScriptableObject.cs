@@ -9,19 +9,19 @@ public class GameEventManagerScriptableObject : ScriptableObject
     [SerializeField] private TimeManagerScriptableObject timeManager;
     [System.NonSerialized] public UnityEvent startGameEvent;
     [System.NonSerialized] public UnityEvent generateMapEvent;
-    [System.NonSerialized] public UnityEvent nodeGridRegeneratedEvent;
+    [System.NonSerialized] public UnityEvent nodeGridGeneratedEvent;
     [System.NonSerialized] public UnityEvent loseGameEvent;
     [System.NonSerialized] public UnityEvent openMainMenuEvent;
 
     private void OnEnable()
     {
-        if(startGameEvent == null)
+        if (startGameEvent == null)
             startGameEvent = new UnityEvent();
-        if(generateMapEvent == null)
+        if (generateMapEvent == null)
             generateMapEvent = new UnityEvent();
-        if(nodeGridRegeneratedEvent == null)
-            nodeGridRegeneratedEvent = new UnityEvent();
-        if(loseGameEvent == null)
+        if (nodeGridGeneratedEvent == null)
+            nodeGridGeneratedEvent = new UnityEvent();
+        if (loseGameEvent == null)
             loseGameEvent = new UnityEvent();
         if (openMainMenuEvent == null)
             openMainMenuEvent = new UnityEvent();
@@ -36,12 +36,12 @@ public class GameEventManagerScriptableObject : ScriptableObject
 
     public void GenerateMap()
     {
-          generateMapEvent.Invoke();
+        generateMapEvent.Invoke();
     }
 
     public void NodeGridRegenerated()
     {
-        nodeGridRegeneratedEvent.Invoke();
+        nodeGridGeneratedEvent.Invoke();
     }
 
     public void LoseGame()
