@@ -17,11 +17,13 @@ public class ResultUI : MonoBehaviour
     private void OnEnable()
     {
         gameEventManager.loseGameEvent.AddListener(ShowLoseScreen);
+        gameEventManager.openMainMenuEvent.AddListener(HideScreens);
     }
 
     private void OnDisable()
     {
         gameEventManager.loseGameEvent.RemoveListener(ShowLoseScreen);
+        gameEventManager.openMainMenuEvent.RemoveListener(HideScreens);
     }
 
     public void HideScreens()

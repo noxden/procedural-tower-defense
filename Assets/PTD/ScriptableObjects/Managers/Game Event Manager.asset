@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06446ca88acedf340bcdb917c5d1238d, type: 3}
   m_Name: Game Event Manager
   m_EditorClassIdentifier: 
+  timeManager: {fileID: 11400000, guid: 57eff39e4586b8043bca67b849bde9b7, type: 2}
