@@ -1,13 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TowerShopDisplay : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class TowerShopDisplay : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private FinanceManagerScriptableObject financeManager;
+    [SerializeField] private TooltipSystemScriptableObject tooltipSystem;
+    [SerializeField] private WarningManagerScriptableObject warningManager;
     [SerializeField] private GameObject towerObject;
     private Tower tower;
     [SerializeField] private Image towerIcon;
@@ -17,6 +17,7 @@ public class TowerShopDisplay : MonoBehaviour, IDragHandler, IBeginDragHandler, 
     private Camera mainCamera;
     private TileInformation currentTile;
     private bool canPlaceTower = false;
+    string contentText;
 
     private void Start()
     {
@@ -27,12 +28,26 @@ public class TowerShopDisplay : MonoBehaviour, IDragHandler, IBeginDragHandler, 
         towerCostText.text = tower.cost.ToString();
         prePlacementTowerObject = Instantiate(towerObject, transform.position, Quaternion.identity);
         prePlacementTowerObject.SetActive(false);
+
+        contentText = "";
+        contentText += "Cost: " + tower.cost + "\n";
+        contentText += "Damage: " + tower.damage + "\n";
+        contentText += "Range: " + tower.range + "\n";
+        contentText += "Attack Speed: " + (1 / tower.secondsPerAttack) + "\n";
+        contentText += "Layers: ";
+        foreach (PtdEnums.TileType layer in tower.buildableHeights)
+        {
+            contentText += layer.ToString() + ", ";
+        }
     }
     
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (!financeManager.CanAfford(tower.cost))
+        {
+            warningManager.UpdateWarningUI("Not enough gold!");
             return;
+        }
 
         prePlacementTowerObject.SetActive(true);
     }
@@ -79,5 +94,15 @@ public class TowerShopDisplay : MonoBehaviour, IDragHandler, IBeginDragHandler, 
             currentTile.PlaceTower(towerObject);
         }
         prePlacementTowerObject.SetActive(false);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        tooltipSystem.Show(contentText, tower.towerName);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        tooltipSystem.Hide();
     }
 }

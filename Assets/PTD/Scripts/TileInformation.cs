@@ -22,5 +22,6 @@ public class TileInformation : MonoBehaviour
         currentTower = Instantiate(tower).GetComponent<TowerObject>();
         currentTower.transform.position = GetTowerPlacementPosition();
         currentTower.transform.parent = transform;
+        currentTower.Place();
     }
 }

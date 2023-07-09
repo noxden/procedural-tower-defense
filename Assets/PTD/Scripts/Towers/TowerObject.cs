@@ -3,6 +3,7 @@ using UnityEngine;
 public class TowerObject : MonoBehaviour
 {
     public Tower tower;
+    private bool isPlaced = false;
 
     private void Awake()
     {
@@ -12,6 +13,9 @@ public class TowerObject : MonoBehaviour
 
     private void Update()
     {
+        if (!isPlaced)
+            return;
+
         if(tower.attackCooldown <= 0)
         {
             EnemyObject targetEnemy = EnemyToAttack();
@@ -24,6 +28,12 @@ public class TowerObject : MonoBehaviour
         {
             tower.attackCooldown -= Time.deltaTime;
         }
+    }
+
+    public void Place()
+    {
+        Debug.Log("Tower placed");
+        isPlaced = true;
     }
 
     public virtual void Shoot(EnemyObject targetEnemy)

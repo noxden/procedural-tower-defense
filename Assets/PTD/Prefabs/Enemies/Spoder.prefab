@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1451322239556395049}
   - component: {fileID: 493159489347345960}
   - component: {fileID: 1601346116579975400}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spoder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

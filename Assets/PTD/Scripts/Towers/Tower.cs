@@ -6,10 +6,12 @@ using UnityEngine;
 public class Tower : ScriptableObject
 {
     [Header("Tower Stats")]
+    public string towerName;
     public float cost;
     public float damage;
     public float range;
     public float secondsPerAttack;
+    public PtdEnums.TileType[] buildableHeights;
     [HideInInspector] public float attackCooldown;
 
     public enum TargetingPriority

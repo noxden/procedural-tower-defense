@@ -624,6 +624,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   financeManager: {fileID: 11400000, guid: e7daad3a6d386f14990ce69f62faa7ed, type: 2}
+  tooltipSystem: {fileID: 11400000, guid: b170509e92a0ef548b4d7cd5c9e65364, type: 2}
+  warningManager: {fileID: 11400000, guid: 4d102776eec12be4082bcfe8cac0730e, type: 2}
   towerObject: {fileID: 147548198310780583, guid: 163a803e10bdece489c976152e700725, type: 3}
   towerIcon: {fileID: 2562478247226241838}
   towerCostText: {fileID: 2312908993214968134}
