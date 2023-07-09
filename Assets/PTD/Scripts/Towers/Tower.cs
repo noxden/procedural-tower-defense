@@ -11,7 +11,7 @@ public class Tower : ScriptableObject
     public float damage;
     public float range;
     public float secondsPerAttack;
-    public PtdEnums.TileType[] buildableHeights;
+    public List<PtdEnums.TileType> buildableHeights = new List<PtdEnums.TileType>();
     [HideInInspector] public float attackCooldown;
 
     public enum TargetingPriority
@@ -21,6 +21,7 @@ public class Tower : ScriptableObject
         First,
         Last
     }
+
     public TargetingPriority targetingPriority = TargetingPriority.Closest;
 
     [Header("Tower Visuals")]

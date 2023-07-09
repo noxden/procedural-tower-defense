@@ -6,10 +6,12 @@ public static class PtdEnums
 {
     public enum TileType
     {
-        Layer1,
-        Layer2,
-        Layer3,
-        Layer4,
-        Path
+        Height1,
+        Height2,
+        Height3,
+        Height4,
+        Path,
+        Portal,
+        Castle
     }
 }

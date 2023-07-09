@@ -74,7 +74,7 @@ public class TowerShopDisplay : MonoBehaviour, IDragHandler, IBeginDragHandler, 
                     return;
                 }
 
-                if (tileInformation.tileType == PtdEnums.TileType.Path)
+                if(!tower.buildableHeights.Contains(tileInformation.tileType))
                     canPlaceTower = false;
 
                 if (tileInformation.HasTower())
@@ -92,6 +92,10 @@ public class TowerShopDisplay : MonoBehaviour, IDragHandler, IBeginDragHandler, 
         {
             financeManager.ChangeMoney(-tower.cost);
             currentTile.PlaceTower(towerObject);
+        }
+        else
+        {
+            warningManager.UpdateWarningUI("Can't place tower here!");
         }
         prePlacementTowerObject.SetActive(false);
     }

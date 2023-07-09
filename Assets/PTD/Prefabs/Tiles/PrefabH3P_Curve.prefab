@@ -113,6 +113,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 378728293775547016, guid: 83e0729783267a6428ebdab1abf87fb0, type: 3}
+      propertyPath: tileType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 378728293775547016, guid: 83e0729783267a6428ebdab1abf87fb0, type: 3}
       propertyPath: isCornerPiece
       value: 1
       objectReference: {fileID: 0}
