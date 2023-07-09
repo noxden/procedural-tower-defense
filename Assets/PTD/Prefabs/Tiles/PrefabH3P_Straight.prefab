@@ -51,9 +51,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 378728293775547016, guid: 83e0729783267a6428ebdab1abf87fb0, type: 3}
+      propertyPath: tileType
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6298285335769332128, guid: 83e0729783267a6428ebdab1abf87fb0, type: 3}
       propertyPath: m_Name
-      value: Prefab_H3P_NS
+      value: PrefabH3P_Straight
       objectReference: {fileID: 0}
     - target: {fileID: 8443202682846965436, guid: 83e0729783267a6428ebdab1abf87fb0, type: 3}
       propertyPath: m_LocalScale.x

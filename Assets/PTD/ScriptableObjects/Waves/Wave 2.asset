@@ -13,13 +13,12 @@ MonoBehaviour:
   m_Name: Wave 2
   m_EditorClassIdentifier: 
   enemies:
-  - {fileID: 7782644754692826338, guid: 2973385accfc00043983af3a6725cdd4, type: 3}
-  - {fileID: 7782644754692826338, guid: 2973385accfc00043983af3a6725cdd4, type: 3}
-  - {fileID: 7782644754692826338, guid: 2973385accfc00043983af3a6725cdd4, type: 3}
-  - {fileID: 7782644754692826338, guid: 2973385accfc00043983af3a6725cdd4, type: 3}
-  - {fileID: 7782644754692826338, guid: 2973385accfc00043983af3a6725cdd4, type: 3}
-  - {fileID: 7782644754692826338, guid: 2973385accfc00043983af3a6725cdd4, type: 3}
-  - {fileID: 7782644754692826338, guid: 2973385accfc00043983af3a6725cdd4, type: 3}
-  secondsBetweenSpawns: 0.2
-  timeUntilNextWave: 15
+  - {fileID: 2163545554418107471, guid: 3a1762f65acec164c9faa381404bdeb1, type: 3}
+  - {fileID: 2163545554418107471, guid: 3a1762f65acec164c9faa381404bdeb1, type: 3}
+  - {fileID: 2163545554418107471, guid: 3a1762f65acec164c9faa381404bdeb1, type: 3}
+  - {fileID: 2163545554418107471, guid: 3a1762f65acec164c9faa381404bdeb1, type: 3}
+  - {fileID: 2163545554418107471, guid: 3a1762f65acec164c9faa381404bdeb1, type: 3}
+  - {fileID: 2163545554418107471, guid: 3a1762f65acec164c9faa381404bdeb1, type: 3}
+  secondsBetweenSpawns: 0.5
+  timeUntilNextWave: 10
   maxBonusGoldForSkippingWave: 25

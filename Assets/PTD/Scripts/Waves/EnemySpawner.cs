@@ -37,7 +37,6 @@ public class EnemySpawner : MonoBehaviour
         currentWave = waveManager.GetCurrentWave();
         if(currentWave == null)
         {
-            Debug.Log("No more waves");
             return;
         }
         waveCooldownTimer = currentWave.timeUntilNextWave;

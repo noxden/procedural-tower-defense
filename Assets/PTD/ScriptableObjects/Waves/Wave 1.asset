@@ -13,11 +13,10 @@ MonoBehaviour:
   m_Name: Wave 1
   m_EditorClassIdentifier: 
   enemies:
-  - {fileID: 7782644754692826338, guid: 2973385accfc00043983af3a6725cdd4, type: 3}
-  - {fileID: 7782644754692826338, guid: 2973385accfc00043983af3a6725cdd4, type: 3}
-  - {fileID: 7782644754692826338, guid: 2973385accfc00043983af3a6725cdd4, type: 3}
-  - {fileID: 7782644754692826338, guid: 2973385accfc00043983af3a6725cdd4, type: 3}
-  - {fileID: 7782644754692826338, guid: 2973385accfc00043983af3a6725cdd4, type: 3}
+  - {fileID: 8460368627847250257, guid: c604a4bbcbf4bb14ea007083ec38cba1, type: 3}
+  - {fileID: 8460368627847250257, guid: c604a4bbcbf4bb14ea007083ec38cba1, type: 3}
+  - {fileID: 8460368627847250257, guid: c604a4bbcbf4bb14ea007083ec38cba1, type: 3}
+  - {fileID: 8460368627847250257, guid: c604a4bbcbf4bb14ea007083ec38cba1, type: 3}
   secondsBetweenSpawns: 1
-  timeUntilNextWave: 15
+  timeUntilNextWave: 20
   maxBonusGoldForSkippingWave: 25

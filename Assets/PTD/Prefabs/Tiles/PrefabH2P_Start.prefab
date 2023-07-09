@@ -108,6 +108,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1594986622505221302, guid: cadaa9b1f284b304f9dbd5b2b15ea3a2, type: 3}
+      propertyPath: tileType
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6734502803721455086, guid: cadaa9b1f284b304f9dbd5b2b15ea3a2, type: 3}
       propertyPath: m_Name
       value: PrefabH2P_Start

@@ -64,6 +64,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3526473752026403864, guid: 1f23791cd0da76848a135a5cf0f8ea36, type: 3}
+      propertyPath: tileType
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 3757737290955605425, guid: 1f23791cd0da76848a135a5cf0f8ea36, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -110,7 +114,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7122741282177382192, guid: 1f23791cd0da76848a135a5cf0f8ea36, type: 3}
       propertyPath: m_Name
-      value: TileMediumHigh_Path
+      value: PrefabH3P_Universal
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1f23791cd0da76848a135a5cf0f8ea36, type: 3}

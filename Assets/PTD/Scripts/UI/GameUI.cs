@@ -15,11 +15,18 @@ public class GameUI : MonoBehaviour
     private void OnEnable()
     {
         gameEventManager.startGameEvent.AddListener(EnableMenu);
+        gameEventManager.openMainMenuEvent.AddListener(DisableMenu);
     }
 
     private void OnDisable()
     {
         gameEventManager.startGameEvent.RemoveListener(EnableMenu);
+        gameEventManager.openMainMenuEvent.RemoveListener(DisableMenu);
+    }
+
+    public void DisableMenu()
+    {
+        uiParent.SetActive(false);
     }
 
     public void EnableMenu()
