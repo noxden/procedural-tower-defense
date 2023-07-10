@@ -2,21 +2,18 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] private float speed = 10f;
-    private float damage = 0;
-    private EnemyObject target;
+    [SerializeField] protected float speed = 10f;
+    protected float damage = 0;
+    protected EnemyObject target;
 
-    public void SetTarget(EnemyObject target)
+    public virtual void SetValues(float speed, float damage, EnemyObject target)
     {
+        this.speed = speed;
+        this.damage = damage;
         this.target = target;
     }
 
-    public void SetDamage(float damage)
-    {
-        this.damage = damage;
-    }
-
-    private void Update()
+    protected virtual void Update()
     {
         if (target == null)
         {
@@ -41,7 +38,7 @@ public class Projectile : MonoBehaviour
         transform.Translate(direction.normalized * distanceThisFrame, Space.World);
     }
 
-    private void HitTarget()
+    protected virtual void HitTarget()
     {
         if (target != null)
         {
@@ -51,7 +48,7 @@ public class Projectile : MonoBehaviour
         DestroyProjectile();
     }
 
-    private void DestroyProjectile()
+    protected void DestroyProjectile()
     {
         Destroy(gameObject);
     }

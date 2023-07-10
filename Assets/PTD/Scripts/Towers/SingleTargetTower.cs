@@ -10,7 +10,6 @@ public class SingleTargetTower : TowerObject
         base.Shoot(targetEnemy);
 
         Projectile projectile = Instantiate(projectileObject, projectileSpawnPoint.position, Quaternion.identity, null).GetComponent<Projectile>();
-        projectile.SetDamage(tower.damage);
-        projectile.SetTarget(targetEnemy);
+        projectile.SetValues(tower.projectileSpeed, tower.damage, targetEnemy);
     }
 }

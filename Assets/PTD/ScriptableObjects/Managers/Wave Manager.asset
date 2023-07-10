@@ -41,14 +41,17 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   enemyWaves:
   - {fileID: 11400000, guid: a8e9198165ee6f148848c3bd7616bf99, type: 2}
   - {fileID: 11400000, guid: 2eca1b22e87ec13499159c8f36e5c15c, type: 2}
   - {fileID: 11400000, guid: 24f5e4071e5e11245b36cab8e5767409, type: 2}
   - {fileID: 11400000, guid: 39e7310d24afd9541a7d8bd1277a7008, type: 2}
   - {fileID: 11400000, guid: b9e776b00cf13f548ab5fb274ce735ff, type: 2}
-  currentWave: 5
-  skipGold: 6
+  - {fileID: 11400000, guid: 161c4e757bd8f414bb4338bb9532d5e0, type: 2}
+  - {fileID: 11400000, guid: 5b47ee89eb6819c4497d2a16c399e3b7, type: 2}
+  - {fileID: 11400000, guid: 230b758d131b8684cbb327a5ca2b57f2, type: 2}
+  - {fileID: 11400000, guid: c926e380eeaa8dd49a266a29036a40eb, type: 2}
+  - {fileID: 11400000, guid: 4bcec4b5c0ea0bf4cb958f560640310c, type: 2}
+  - {fileID: 11400000, guid: c927bdc0cb8c1ec4fb3a00caa4297933, type: 2}
+  currentWave: 3
+  skipGold: 0
