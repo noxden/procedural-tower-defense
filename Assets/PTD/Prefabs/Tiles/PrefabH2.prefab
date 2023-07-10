@@ -29,6 +29,14 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1875039135079221115}
+  - {fileID: 2094046219358955248}
+  - {fileID: 4728464879176605341}
+  - {fileID: 1023521921936612906}
+  - {fileID: 8131302809399982826}
+  - {fileID: 606717713452881776}
+  - {fileID: 2397090736068996465}
+  - {fileID: 6092534216541138221}
+  - {fileID: 8868105623674339800}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -160,3 +168,659 @@ MonoBehaviour:
   m_Area: 1
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
+--- !u!1001 &2839029592176324368
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 9047960287265548995}
+    m_Modifications:
+    - target: {fileID: 6285976040742155378, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_Name
+      value: mushroom-magical-amanita-mature (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6285976040742155378, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6628502838794275134, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.9743
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+--- !u!4 &8868105623674339800 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+  m_PrefabInstance: {fileID: 2839029592176324368}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4717554394111854648
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 9047960287265548995}
+    m_Modifications:
+    - target: {fileID: 6285976040742155378, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_Name
+      value: mushroom-magical-amanita-mature
+      objectReference: {fileID: 0}
+    - target: {fileID: 6285976040742155378, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6628502838794275134, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.011
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.9743
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.974
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+--- !u!4 &2094046219358955248 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+  m_PrefabInstance: {fileID: 4717554394111854648}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5673887245162197670
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 9047960287265548995}
+    m_Modifications:
+    - target: {fileID: 3832090617687085814, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_Name
+      value: mushroom-magical-amanita-baby (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3832090617687085814, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4174621130886590378, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.977
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.129
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+--- !u!4 &8131302809399982826 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+  m_PrefabInstance: {fileID: 5673887245162197670}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5927813020224221410
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 9047960287265548995}
+    m_Modifications:
+    - target: {fileID: 6285976040742155378, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_Name
+      value: mushroom-magical-amanita-mature (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6285976040742155378, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6628502838794275134, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.39898002
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.9743
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.052756
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+--- !u!4 &1023521921936612906 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+  m_PrefabInstance: {fileID: 5927813020224221410}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6060978411234851256
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 9047960287265548995}
+    m_Modifications:
+    - target: {fileID: 6285976040742155378, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_Name
+      value: mushroom-magical-amanita-mature (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6285976040742155378, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6628502838794275134, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.13057104
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.9743
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.969664
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+--- !u!4 &606717713452881776 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+  m_PrefabInstance: {fileID: 6060978411234851256}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7703553563190895969
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 9047960287265548995}
+    m_Modifications:
+    - target: {fileID: 3832090617687085814, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_Name
+      value: mushroom-magical-amanita-baby (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3832090617687085814, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4174621130886590378, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.1754801
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.977
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.066704
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+--- !u!4 &6092534216541138221 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+  m_PrefabInstance: {fileID: 7703553563190895969}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &9021756900034249657
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 9047960287265548995}
+    m_Modifications:
+    - target: {fileID: 6285976040742155378, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_Name
+      value: mushroom-magical-amanita-mature (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6285976040742155378, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6628502838794275134, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.006
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.9743
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+--- !u!4 &2397090736068996465 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6662958323437743816, guid: a629a3959f8b3c24e90fb06d496c5cd6, type: 3}
+  m_PrefabInstance: {fileID: 9021756900034249657}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &9222073997960910545
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 9047960287265548995}
+    m_Modifications:
+    - target: {fileID: 3832090617687085814, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_Name
+      value: mushroom-magical-amanita-baby
+      objectReference: {fileID: 0}
+    - target: {fileID: 3832090617687085814, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4174621130886590378, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2917
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.043
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.977
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.326
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+--- !u!4 &4728464879176605341 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4496143502218414156, guid: 33fd26760d9e0744882bcc652ba86ae0, type: 3}
+  m_PrefabInstance: {fileID: 9222073997960910545}
+  m_PrefabAsset: {fileID: 0}
