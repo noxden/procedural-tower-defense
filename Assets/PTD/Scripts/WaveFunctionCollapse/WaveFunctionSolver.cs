@@ -53,6 +53,8 @@ public class WaveFunctionSolver : MonoBehaviour
         Dictionary<Vector2Int, Node> nodeDictionary = NodeManager.instance.nodeGrid;
         foreach (var entry in nodeDictionary)
             uncollapsedNodes.Add(entry.Value);
+
+        stepDelayInSeconds = 1f / (GenerationHandler.instance.gridSize.x * GenerationHandler.instance.gridSize.y);
     }
 
     private IEnumerator Solve(bool solveInstantly)
