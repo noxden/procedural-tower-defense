@@ -11,6 +11,7 @@ public class EnemyObject : MonoBehaviour
     [SerializeField] private FinanceManagerScriptableObject financeManager;
     [SerializeField] private LayerMask castleLayer;
     [SerializeField] private Enemy enemy;
+    private float originalSpeed;
     private float AGENT_DISTANCE_TO_WAYPOINT = 0.1f;
     private Vector3 WAYPOINT_HEIGHT_DIFFERENCE = new Vector3(0, 4, 0);
     private NavMeshAgent agent;
@@ -25,6 +26,7 @@ public class EnemyObject : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         agent.speed = enemy.speed;
+        originalSpeed = enemy.speed;
 
         if (waveManager.navigationPath != null)
             SetNextDestination();
@@ -78,6 +80,19 @@ public class EnemyObject : MonoBehaviour
         {
             Die();
         }
+    }
+
+    public void Slow(float percentAmount, float seconds)
+    {
+        agent.speed = (100 - percentAmount) / 100 * originalSpeed;
+        StopCoroutine(Defrost(seconds));
+        StartCoroutine(Defrost(seconds));
+    }
+
+    private IEnumerator Defrost(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        agent.speed = originalSpeed;
     }
 
     public void Die()

@@ -11,6 +11,7 @@ public class Tower : ScriptableObject
     public float damage;
     public float range;
     public float secondsPerAttack;
+    public float projectileSpeed;
     public List<PtdEnums.TileType> buildableHeights = new List<PtdEnums.TileType>();
     [HideInInspector] public float attackCooldown;
 
