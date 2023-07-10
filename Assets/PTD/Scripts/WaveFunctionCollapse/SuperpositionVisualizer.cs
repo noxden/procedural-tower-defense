@@ -13,12 +13,16 @@ using UnityEngine;
 public class SuperpositionVisualizer : MonoBehaviour
 {
     //# Private Variables 
+    private static GameObject prefab;
     private Transform tileVisualizerGroup;
     private List<GameObject> tileVisualizations = new List<GameObject>();
 
     //# Monobehaviour Events 
     private void Start()
     {
+        if (prefab == null)
+            prefab = Resources.Load<GameObject>("VisualizerPrefab");
+
         tileVisualizerGroup = new GameObject("Superposition Visualizer").transform;
         tileVisualizerGroup.transform.SetParent(this.transform, false);
 
@@ -49,9 +53,11 @@ public class SuperpositionVisualizer : MonoBehaviour
     //# Private Methods 
     private void Intitialize()
     {
-        GameObject tileVisualization = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        tileVisualization.transform.SetParent(parent: tileVisualizerGroup, worldPositionStays: false);
-        tileVisualization.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+        // GameObject tileVisualization = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        // tileVisualization.transform.SetParent(parent: tileVisualizerGroup, worldPositionStays: false);
+        // tileVisualization.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+        
+        GameObject tileVisualization = Instantiate(prefab, tileVisualizerGroup, false);
 
         // List<Tile> allTiles = NodeManager.instance.allTiles;
 
