@@ -65,7 +65,7 @@ public class TowerShopDisplay : MonoBehaviour, IDragHandler, IBeginDragHandler, 
             Ray ray = mainCamera.ScreenPointToRay(eventData.position);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, layerMask))
+            if (Physics.Raycast(ray, out hit, maxDistance:float.MaxValue, layerMask))
             {
                 TileInformation tileInformation = hit.collider.GetComponent<TileInformation>();
                 if (tileInformation == null)
