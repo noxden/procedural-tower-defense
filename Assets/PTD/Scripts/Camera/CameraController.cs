@@ -13,7 +13,7 @@ public class CameraController : MonoBehaviour
     public float rotationSpeed = 20f;
     public float zoomSpeed = 0.02f;
     [Space(10)]
-    public float minZoomDistance = 10f;
+    public float minZoomDistance = 5f;
     public float maxZoomDistance = 30f;
 
     private float currentZoomLevel { get => camera.orthographicSize / minZoomDistance; }
@@ -45,7 +45,7 @@ public class CameraController : MonoBehaviour
             return;
 
         Vector3 movementDirection = anchor.transform.forward * inputVector.y + anchor.transform.right * inputVector.x;
-        anchor.transform.position += (movementDirection * movementSpeed * currentZoomLevel) * Time.unscaledDeltaTime;
+        anchor.transform.position += (movementDirection * movementSpeed * (currentZoomLevel / 2)) * Time.unscaledDeltaTime;
     }
 
     private void Rotate(Vector2 inputVector)
@@ -80,7 +80,7 @@ public class CameraController : MonoBehaviour
 
         anchor.transform.position = new Vector3(gridCenter.x, anchor.transform.position.y, gridCenter.y);
 
-        maxZoomDistance = (Mathf.Max(newGridSize.x + newGridSize.y, 0.000001f) / 2) * 1.5f;
+        maxZoomDistance = (Mathf.Max(newGridSize.x + newGridSize.y, 0.000001f) / 2) * 1.7f;
         zoomSpeed = (1f / 120f) * 0.2f * (maxZoomDistance - minZoomDistance);
         camera.orthographicSize = maxZoomDistance;
     }

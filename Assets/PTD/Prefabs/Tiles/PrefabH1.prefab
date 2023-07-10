@@ -111,9 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fd9ab4f393410f4ea22aebfa431f2de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveManager: {fileID: 11400000, guid: 784693da0e6d8a94d8034b12c672a79c, type: 2}
   tileType: 0
-  isCornerPiece: 0
 --- !u!114 &2856880474430204900
 MonoBehaviour:
   m_ObjectHideFlags: 0
