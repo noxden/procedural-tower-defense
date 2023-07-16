@@ -18,12 +18,8 @@ public class GenerationHandler : MonoBehaviour
         get => m_gridSize;
         set
         {
-            m_gridSize = value;
-
-            m_startPositionIndex.x = Mathf.Clamp(startPositionIndex.x, 0, gridSize.x - 1);
-            m_startPositionIndex.y = Mathf.Clamp(startPositionIndex.y, 0, gridSize.y - 1);
-            m_endPositionIndex.x = Mathf.Clamp(endPositionIndex.x, 0, gridSize.x - 1);
-            m_endPositionIndex.y = Mathf.Clamp(endPositionIndex.y, 0, gridSize.y - 1);
+            m_gridSize = new Vector2Int(Mathf.Clamp(value.x, 1, 999), Mathf.Clamp(value.y, 1, 999));
+            ClampStartEndPos(m_gridSize);
 
             OnGridSizeChanged?.Invoke(gridSize);
         }
@@ -35,11 +31,6 @@ public class GenerationHandler : MonoBehaviour
         get => m_startPositionIndex;
         set
         {
-            Vector2Int modifiedValue = value;
-
-            // modifiedValue.x = Mathf.Clamp(modifiedValue.x, 0, gridSize.x - 1);
-            // modifiedValue.y = Mathf.Clamp(modifiedValue.y, 0, gridSize.y - 1);
-
             m_startPositionIndex = value;
             OnStartPositionChanged?.Invoke(value);
         }
@@ -51,11 +42,6 @@ public class GenerationHandler : MonoBehaviour
         get => m_endPositionIndex;
         set
         {
-            Vector2Int modifiedValue = value;
-
-            // modifiedValue.x = Mathf.Clamp(modifiedValue.x, 0, gridSize.x - 1);
-            // modifiedValue.y = Mathf.Clamp(modifiedValue.y, 0, gridSize.y - 1);
-
             m_endPositionIndex = value;
             OnEndPositionChanged?.Invoke(value);
         }
@@ -67,29 +53,9 @@ public class GenerationHandler : MonoBehaviour
         get => m_pathLength;
         set
         {
-            int modifiedValue = value;
-
-            int shortestDistance = (Mathf.Abs(endPositionIndex.x - startPositionIndex.x) + Mathf.Abs(endPositionIndex.y - startPositionIndex.y)) + 1;
-            if (modifiedValue < shortestDistance)
-            {
-                modifiedValue = shortestDistance;
-                Debug.LogWarning("Path length is too short, setting to shortest distance");
-            }
-
-            if (modifiedValue % 2 != shortestDistance % 2)
-            {
-                modifiedValue++;
-                Debug.LogWarning("Path cannot end, setting it to an " + (shortestDistance % 2 == 0 ? "even" : "uneven") + " number");
-            }
-
-            if (modifiedValue > gridSize.x * gridSize.y)
-            {
-                modifiedValue = gridSize.x * gridSize.y;
-                Debug.LogWarning("Path length is too long, setting to max length");
-            };
-
-            m_pathLength = modifiedValue;
-            OnPathLengthChanged?.Invoke(modifiedValue);
+            int clampedPathLength = ClampPathLength(value);
+            m_pathLength = clampedPathLength;
+            OnPathLengthChanged?.Invoke(clampedPathLength);
         }
     }
 
@@ -185,40 +151,58 @@ public class GenerationHandler : MonoBehaviour
         pathGenerator.OnPathGenerated.RemoveListener(GenerateTilemap);
     }
 
-    private void OnValidate()
+    private void ClampStartEndPos(Vector2Int newGridSize)   //< This method has been introduced to clean up the gridSize property field.
     {
         //> Ensure positions are within the gridsize
-        m_startPositionIndex.x = Mathf.Clamp(startPositionIndex.x, 0, gridSize.x - 1);
-        m_startPositionIndex.y = Mathf.Clamp(startPositionIndex.y, 0, gridSize.y - 1);
+        m_startPositionIndex.x = Mathf.Clamp(startPositionIndex.x, 0, Mathf.Max(0, newGridSize.x - 1));
+        m_startPositionIndex.y = Mathf.Clamp(startPositionIndex.y, 0, Mathf.Max(0, newGridSize.y - 1));
+        m_endPositionIndex.x = Mathf.Clamp(endPositionIndex.x, 0, Mathf.Max(0, newGridSize.x - 1));
+        m_endPositionIndex.y = Mathf.Clamp(endPositionIndex.y, 0, Mathf.Max(0, newGridSize.y - 1));
+    }
 
-        m_endPositionIndex.x = Mathf.Clamp(endPositionIndex.x, 0, gridSize.x - 1);
-        m_endPositionIndex.y = Mathf.Clamp(endPositionIndex.y, 0, gridSize.y - 1);
+    private int ClampPathLength(int newLength)
+    {
+        Vector2Int pathMinMax = GetPathMinMax();
+        int minLength = pathMinMax.x;   //< Just for better readability, I could've also just 
+        int maxLength = pathMinMax.y;   //  used the pathMinMax variable directly in the code below.
 
-        int shortestDistance = (Mathf.Abs(endPositionIndex.x - startPositionIndex.x) + Mathf.Abs(endPositionIndex.y - startPositionIndex.y)) + 1;
-
-        if (pathLength < shortestDistance)
+        if (newLength < minLength)
         {
-            pathLength = shortestDistance;
+            newLength = minLength;
             Debug.LogWarning("Path length is too short, setting to shortest distance");
         }
 
-        if (pathLength % 2 != shortestDistance % 2)
+        if (newLength > maxLength)
         {
-            pathLength++;
-            Debug.LogWarning("Path cannot end, setting it to an " + (shortestDistance % 2 == 0 ? "even" : "uneven") + " number");
-        }
-
-        if (pathLength > gridSize.x * gridSize.y)
-        {
-            pathLength = gridSize.x * gridSize.y;
+            newLength = maxLength;
             Debug.LogWarning("Path length is too long, setting to max length");
-        }
-    }
+        };
 
+        if (newLength % 2 != minLength % 2)
+        {
+            if (newLength == maxLength)
+                newLength--;
+            else
+                newLength++;
+            Debug.LogWarning("Path cannot end, setting it to an " + (minLength % 2 == 0 ? "even" : "uneven") + " number");
+        }
+
+        return newLength;
+    }
+    
     public Vector2Int GetPathMinMax()
     {
         int pathMin = (Mathf.Abs(endPositionIndex.x - startPositionIndex.x) + Mathf.Abs(endPositionIndex.y - startPositionIndex.y)) + 1;
         int pathMax = gridSize.x * gridSize.y;
         return new Vector2Int(pathMin, pathMax);
     }
+
+    private void OnValidate()
+    {
+        //> Modifying the values in the editor does not access the property fields to do that, thereby foregoing the validity-checks 
+        //  built into them. Hence, the code below needs to be run to call those checks "manually".
+        ClampStartEndPos(m_gridSize);
+        m_pathLength = ClampPathLength(m_pathLength);
+    }
+
 }
