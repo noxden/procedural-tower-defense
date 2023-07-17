@@ -1,5 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+//========================================================================
+// Darmstadt University of Applied Sciences, Expanded Realities
+// Course:      [Elective] Procedural Level Generation (Andreas Fuchs)
+// Group:       #5 (Procedural Tower Defense)
+// Script by:   Daniel Heilmann (771144)
+//========================================================================
+
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -23,7 +28,7 @@ public class GenerationSettingsButtonsDriver : MonoBehaviour
     [SerializeField] private SettingsSliderGroup pathLengthSliderGroup;
     [SerializeField] private Toggle generateInstantlyToggle;
 
-
+    //# Monobehaviour Methods 
     private void OnEnable()
     {
         gridSizeXField.onEndEdit.AddListener(ChangeGridSizeX);
@@ -77,20 +82,21 @@ public class GenerationSettingsButtonsDriver : MonoBehaviour
 
     private void Start()
     {
+        //> Configure input field settings
         gridSizeXField.characterLimit = 3;
         gridSizeYField.characterLimit = 3;
 
+        //> Set starting values
         ChangeGridSizeX("10");  //< Set starting size
         ChangeGridSizeY("10");
         ChangeGenerateInstantlyValue(false);
     }
 
-    //#> Slider to GenerationHandler 
+    //#> From Slider to GenerationHandler (Update values in GenerationHandler based on slider values) 
     private void ChangeGridSizeX(string inputText)
     {
         if (int.TryParse(inputText, out int value))
         {
-            Debug.Log($"Changed grid size x to {value}.");
             GenerationHandler.instance.gridSize = new Vector2Int(Mathf.Max(value, 2), GenerationHandler.instance.gridSize.y);
             startPosX.SetSliderMinMax(1, GenerationHandler.instance.gridSize.x);
             endPosX.SetSliderMinMax(1, GenerationHandler.instance.gridSize.x);
@@ -102,7 +108,6 @@ public class GenerationSettingsButtonsDriver : MonoBehaviour
     {
         if (int.TryParse(inputText, out int value))
         {
-            Debug.Log($"Changed grid size y to {value}.");
             GenerationHandler.instance.gridSize = new Vector2Int(GenerationHandler.instance.gridSize.x, Mathf.Max(value, 2));
             startPosY.SetSliderMinMax(1, GenerationHandler.instance.gridSize.y);
             endPosY.SetSliderMinMax(1, GenerationHandler.instance.gridSize.y);
@@ -114,36 +119,31 @@ public class GenerationSettingsButtonsDriver : MonoBehaviour
     private void ChangeStartPosX(float value)
     {
         GenerationHandler.instance.startPositionIndex = new Vector2Int(Mathf.FloorToInt(value) - 1, GenerationHandler.instance.startPositionIndex.y);
-        // startPosX.SetCurrentValue(value);
     }
     private void ChangeStartPosY(float value)
     {
         GenerationHandler.instance.startPositionIndex = new Vector2Int(GenerationHandler.instance.startPositionIndex.x, Mathf.FloorToInt(value) - 1);
-        // startPosY.SetCurrentValue(value);
     }
     private void ChangeEndPosX(float value)
     {
         GenerationHandler.instance.endPositionIndex = new Vector2Int(Mathf.FloorToInt(value) - 1, GenerationHandler.instance.endPositionIndex.y);
-        // endPosX.SetCurrentValue(value);
     }
     private void ChangeEndPosY(float value)
     {
         GenerationHandler.instance.endPositionIndex = new Vector2Int(GenerationHandler.instance.endPositionIndex.x, Mathf.FloorToInt(value) - 1);
-        // endPosY.SetCurrentValue(value);
     }
+
     private void ChangePathLength(float value)
     {
         GenerationHandler.instance.pathLength = Mathf.FloorToInt(value);
-        // pathLengthSliderGroup.SetCurrentValue(value);
     }
 
     private void ChangeGenerateInstantlyValue(bool value)
     {
         GenerationHandler.instance.generateInstantly = value;
-        // generateInstantlyToggle.isOn = value;
     }
 
-    //#> GenerationHandler to Slider 
+    //#> From GenerationHandler to Slider (Visualize GenerationHandler's values whenever they are updated) 
     private void UpdateGridCurrent(Vector2Int newGridSize)
     {
         gridSizeXField.text = newGridSize.x.ToString();
@@ -159,11 +159,11 @@ public class GenerationSettingsButtonsDriver : MonoBehaviour
         endPosX.DisplayCurrentValue(value.x + 1);
         endPosY.DisplayCurrentValue(value.y + 1);
     }
+
     private void UpdatePathLength(float value)
     {
         pathLengthSliderGroup.DisplayCurrentValue(value);
     }
-
     private void RecalculatePathSliderMin(Vector2Int value)
     {
         int minLength = GenerationHandler.instance.GetPathMinMax().x;

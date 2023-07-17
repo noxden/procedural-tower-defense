@@ -2,10 +2,9 @@
 // Darmstadt University of Applied Sciences, Expanded Realities
 // Course:      [Elective] Procedural Level Generation (Andreas Fuchs)
 // Group:       #5 (Procedural Tower Defense)
-// Script by:   Daniel Heilmann (771144)
+// Script by:   Daniel Heilmann (771144), Jan Rau (769214)
 //========================================================================
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -13,7 +12,7 @@ using UnityEngine.Events;
 
 public class Node : MonoBehaviour
 {
-    //# Public Variables 
+    //# Public Fields 
     public int entropy { get => potentialTiles.Count; }  //< The entropy of a node, previously named "numberOfRemainingPotentialTiles"
     public Vector2Int gridPosition
     {
@@ -67,9 +66,8 @@ public class Node : MonoBehaviour
     }
 
     //# Public Methods 
-    /// <summary>
-    /// This function causes one of the potential tiles to be instantiated, thereby collapsing the superposition. It returns true if collapse was successful, false if entropy was 0.
-    /// </summary>
+    /// <summary> This function causes one of the potential tiles to be instantiated, thereby collapsing the superposition. </summary>
+    /// <returns> Returns true if collapse was successful, false if entropy was 0. </returns>
     public bool Collapse()
     {
         if (entropy == 1)
@@ -85,13 +83,11 @@ public class Node : MonoBehaviour
             Debug.LogError($"Tile {this.name} does not have any potential tiles left.");
             return false;
         }
-        RemoveNodePositionVisualizer();    //< Only remove visualizer if collapsing was successful
+        RemoveNodePositionVisualizer(); //< Only remove visualizer if collapsing was successful
         return true;
     }
 
-    /// <summary>
-    /// Returns true if potentialTiles were reduced by limiter, false if not.
-    /// </summary>
+    /// <returns> Returns true if potentialTiles were reduced by limiter, false if not. </returns>
     public bool ReducePotentialTilesBySocketCompatibility(HashSet<Socket> compatibleSockets, Vector2Int socketSide)
     {
         List<Tile> reducedPotentialTiles = new List<Tile>(potentialTiles);
@@ -134,7 +130,6 @@ public class Node : MonoBehaviour
             if (entry.isPath != this.isPath)
                 reducedPotentialTiles.Remove(entry);
         }
-
         potentialTiles = reducedPotentialTiles;
     }
 
@@ -151,11 +146,9 @@ public class Node : MonoBehaviour
             }
             if (!isTileCompatible)
             {
-                // Debug.Log($"[LimitByPathDirection] [{name}] Removing tile {tile} due to incompatibility.");
                 reducedPotentialTiles.Remove(tile);
             }
         }
-
         potentialTiles = reducedPotentialTiles;
     }
 
@@ -205,7 +198,6 @@ public class Node : MonoBehaviour
                 return false;
             }
         }
-
         return false;
     }
 }

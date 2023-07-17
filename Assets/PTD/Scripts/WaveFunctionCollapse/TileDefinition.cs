@@ -33,9 +33,10 @@ public class TileDefinition : ScriptableObject
     [SerializeField] private List<Socket> addToAllSides;
     [SerializeField] private List<Socket> removeFromAllSides;
 
+    //# Public Methods 
     public static TileDefinition CreateRotatedVariant(TileDefinition inputDefinition, int rotationIterations)
     {
-        TileDefinition outputDefinition = ScriptableObject.CreateInstance<TileDefinition>();
+        TileDefinition outputDefinition = ScriptableObject.CreateInstance<TileDefinition>();    //< Creates a copy of the inputDefinition
         outputDefinition.name = inputDefinition.name;
         outputDefinition.prefab = inputDefinition.prefab;
 
@@ -44,7 +45,7 @@ public class TileDefinition : ScriptableObject
         outputDefinition.southSockets = new List<Socket>(inputDefinition.southSockets);
         outputDefinition.westSockets = new List<Socket>(inputDefinition.westSockets);
 
-        for (int i = 0; i < rotationIterations; i++)
+        for (int i = 0; i < rotationIterations; i++)    //< Rotates the sockets on the copy for "i" times. i = 2 represents a rotation of 180 degrees
         {
             List<Socket> buffer = new List<Socket>(outputDefinition.northSockets);
             outputDefinition.northSockets = new List<Socket>(outputDefinition.westSockets);
@@ -56,7 +57,6 @@ public class TileDefinition : ScriptableObject
         return outputDefinition;
     }
 
-    //# Public Methods 
     public void ApplyBulkChanges()
     {
         if (addToAllSides.Count != 0)
@@ -78,6 +78,7 @@ public class TileDefinition : ScriptableObject
         removeFromAllSides.Clear();
     }
 
+    //# Private Methods 
     /// <summary>
     /// Tries to add tile to list, returning false if the list already contains the tile.
     /// </summary>

@@ -2,10 +2,14 @@
 // Darmstadt University of Applied Sciences, Expanded Realities
 // Course:      [Elective] Procedural Level Generation (Andreas Fuchs)
 // Group:       #5 (Procedural Tower Defense)
-// Script by:   Jan Rau, Daniel Heilmann
+// Script by:   Jan Rau (769214), Daniel Heilmann (771144)
+//========================================================================
+//   Additional Notes:
+// This script is based on Jan's original PathGenerator, but has been 
+// heavily modified by Daniel to integrate it into & adapt it to 
+// the rest of the level generation system.
 //========================================================================
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,12 +51,15 @@ public class PathGenerator : MonoBehaviour
         Start();
     }
 
+    //> This method can be called from the outside and insures that any running path generation is stopped before starting anew.
     public void Generate(bool generateInstantly = true)
     {
         StopAllCoroutines();
         StartCoroutine(GeneratePath(generateInstantly));
     }
 
+    //> Creates a backup of the current grid and saves it as a PathNode array. This is necessary for the backtracking to work (I think).
+    //  (Comment written by Daniel as Jan did not provide any further documentation.)
     private void CloneGrid()
     {
         gridBackup = new PathNode[gridSize.x, gridSize.y];
@@ -88,9 +95,11 @@ public class PathGenerator : MonoBehaviour
                 if (currentPath.Count == 1)
                 {
                     Debug.Log("No path found");
-                    yield break;
+                    yield break;    //< Unfortunately, we could not find a way to automatically restart the path generator when it fails.
                 }
 
+                //> If the current possible directions are 0, but the algorithm hasn't backtracked back to the start, go back one more node 
+                //  in the path and then check the possible path directions again.
                 currentNode.isPath = false;
                 currentNode.possiblePathDirections = gridBackup[currentNode.gridPosition.x, currentNode.gridPosition.y].possibleDirections;
                 currentPath.Remove(currentNode);
@@ -120,21 +129,18 @@ public class PathGenerator : MonoBehaviour
         yield return null;
 
         currentPath[currentPath.Count - 1].isPath = true;   //! Quick fix for issue where the endnode would not have its isPath variable set accordingly.
-        // Debug.Log($"Path generated from {(currentGrid.TryGetValue(startPositionIndex, out Node startNode) ? "" : "")}{startNode.name} to {(currentGrid.TryGetValue(endPositionIndex, out Node endNode) ? "" : "")}{endNode.name}.");
         Debug.Log($"Path is generated!");
         path = currentPath;
 
         UpdateAllNodesBasedOnPathValue();
-
         OverwritePotentialTilesOfStartAndEndNodes();
-
         UpdateNodesInPathBasedOnPathDirection();
 
         waveManager.SetNavigationPath(path);
-
         OnPathGenerated.Invoke();
     }
 
+    /// <summary> Goes through all nodes in the nodeGrid to update their potential tiles based on if they are a path node or not. </summary>
     private void UpdateAllNodesBasedOnPathValue()
     {
         Dictionary<Vector2Int, Node> nodeGrid = NodeManager.instance.nodeGrid;
@@ -145,24 +151,28 @@ public class PathGenerator : MonoBehaviour
         }
     }
 
+    /// <summary> Overwrites the potentialTiles of the node at path index 0 with the tiles in the startTiles list 
+    /// and the potentialTiles of the node at the last path index with the tiles in the endTiles list. </summary>
     private void OverwritePotentialTilesOfStartAndEndNodes()
     {
         path[0].potentialTiles = NodeManager.startTiles;
         path[path.Count - 1].potentialTiles = NodeManager.endTiles;
     }
 
+    /// <summary> Goes through all nodes in the path list to update their potential tiles based on their path direction. </summary>
     private void UpdateNodesInPathBasedOnPathDirection()
     {
         int pathIndex = 0;
-        foreach (Node node in path)     //< Did this as for loop before, but the foreach loop is much more readable.
+        foreach (Node node in path)  //< Implemented this as for loop before, but the foreach loop is much more readable.
         {
             if (pathIndex > 0)
             {
                 Vector2Int direction = path[pathIndex - 1].gridPosition - node.gridPosition;
                 node.pathDirection.Add(direction);
             }
-            if (pathIndex < path.Count - 1)     //< Because max index is always List.Count-1, so when pathIndex is at path.Count-2, the "path[pathIndex + 1]" below will get the node at path.Count-1, which is the final node.
-            {
+            if (pathIndex < path.Count - 1)   //< Because max index is always List.Count-1, so when pathIndex is at path.Count-2, 
+            {                                 //  the "path[pathIndex + 1]" below will get the node at path.Count-1, which is the final node.
+
                 Vector2Int direction = path[pathIndex + 1].gridPosition - node.gridPosition;
                 node.pathDirection.Add(direction);
             }

@@ -1,4 +1,10 @@
-using System.Collections;
+//========================================================================
+// Darmstadt University of Applied Sciences, Expanded Realities
+// Course:      [Elective] Procedural Level Generation (Andreas Fuchs)
+// Group:       #5 (Procedural Tower Defense)
+// Script by:   Daniel Heilmann (771144)
+//========================================================================
+
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -14,7 +20,8 @@ public class Tile
     public List<Socket> southSockets;
     public List<Socket> westSockets;
     public int rotationVariantIdentifier;
-    public bool isPath;    //< Is set based on result of GeneratePathDirection()
+    public bool isPath;    //< Is set automatically based on result of GeneratePathDirection()
+    private List<Vector2Int> m_pathDirection;
     public List<Vector2Int> pathDirection
     {
         get
@@ -25,7 +32,6 @@ public class Tile
             return m_pathDirection;
         }
     }
-    private List<Vector2Int> m_pathDirection;
     private GameObject instantiatedPrefab;
 
     /// <summary>
@@ -71,7 +77,7 @@ public class Tile
     {
         switch (tileSide)
         {
-            case Vector2Int v when v.Equals(Vector2Int.up):
+            case Vector2Int v when v.Equals(Vector2Int.up):     //< This is a really cool way to make switch cases accept Vector shorthands.
                 return northSockets;
             case Vector2Int v when v.Equals(Vector2Int.right):
                 return eastSockets;
@@ -86,7 +92,7 @@ public class Tile
     }
 
     //# Private Methods 
-    private void GeneratePathDirection()
+    private void GeneratePathDirection()    //< Sets pathDirection list automatically based on where this tile has path sockets.
     {
         m_pathDirection = new List<Vector2Int>();
         if (northSockets.Contains(Socket.p2) || northSockets.Contains(Socket.p2_3) || northSockets.Contains(Socket.p3))
