@@ -5,7 +5,6 @@
 // Script by:   Jan Rau, Daniel Heilmann
 //========================================================================
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
