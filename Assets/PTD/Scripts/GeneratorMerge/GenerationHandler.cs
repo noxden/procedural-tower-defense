@@ -1,71 +1,84 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 // TODO: Implement different generation calls as async -> Await cast and so on
 public class GenerationHandler : MonoBehaviour
 {
-    public static GenerationHandler instance { get; set; }
+    public static GenerationHandler instance { get; private set; }
 
-    [SerializeField] private GameEventManagerScriptableObject gameEventManager;
+    [SerializeField] private GameEventManagerScriptableObject gameEventManager; //< Added by Jan
 
-    [Header("Generation Settings")]
-    public bool generateInstantly = false;
+    [Header("Generation Settings")] public bool generateInstantly;
 
-    [SerializeField] private Vector2Int m_gridSize = Vector2Int.zero;
+    [FormerlySerializedAs("m_gridSize")] [SerializeField]
+    private Vector2Int mGridSize = Vector2Int.zero;
+
     public Vector2Int gridSize
     {
-        get => m_gridSize;
+        get => mGridSize;
         set
         {
-            m_gridSize = new Vector2Int(Mathf.Clamp(value.x, 1, 999), Mathf.Clamp(value.y, 1, 999));
-            ClampStartEndPos(m_gridSize);
+            mGridSize = new Vector2Int(Mathf.Clamp(value.x, 1, 999), Mathf.Clamp(value.y, 1, 999));
+            ClampStartEndPos(mGridSize);
 
             OnGridSizeChanged?.Invoke(gridSize);
         }
     }
 
-    [SerializeField] private Vector2Int m_startPositionIndex;
+    [FormerlySerializedAs("m_startPositionIndex")] [SerializeField]
+    private Vector2Int mStartPositionIndex;
+
     public Vector2Int startPositionIndex
     {
-        get => m_startPositionIndex;
+        get => mStartPositionIndex;
         set
         {
-            m_startPositionIndex = value;
+            mStartPositionIndex = value;
             OnStartPositionChanged?.Invoke(value);
         }
     }
 
-    [SerializeField] private Vector2Int m_endPositionIndex;
+    [FormerlySerializedAs("m_endPositionIndex")] [SerializeField]
+    private Vector2Int mEndPositionIndex;
+
     public Vector2Int endPositionIndex
     {
-        get => m_endPositionIndex;
+        get => mEndPositionIndex;
         set
         {
-            m_endPositionIndex = value;
+            mEndPositionIndex = value;
             OnEndPositionChanged?.Invoke(value);
         }
     }
 
-    private int m_pathLength;
+    private int mPathLength;
+
     public int pathLength
     {
-        get => m_pathLength;
+        get => mPathLength;
         set
         {
             int clampedPathLength = ClampPathLength(value);
-            m_pathLength = clampedPathLength;
+            mPathLength = clampedPathLength;
             OnPathLengthChanged?.Invoke(clampedPathLength);
         }
     }
 
-    private bool m_isLevelGenerated = false;
+    private bool mIsLevelGenerated;
+
     public bool isLevelGenerated
     {
-        get => m_isLevelGenerated;
-        set { m_isLevelGenerated = value; OnLevelGeneratedStateChanged?.Invoke(value); }
+        get => mIsLevelGenerated;
+        set
+        {
+            mIsLevelGenerated = value;
+            OnLevelGeneratedStateChanged?.Invoke(value);
+        }
     }
-    private bool isRegenerating = false;
+
+    private bool isRegenerating;
 
     //# Private variables 
     //> Are required to be public to allow access to GenerationHandlerEditor
@@ -73,11 +86,11 @@ public class GenerationHandler : MonoBehaviour
     public PathGenerator pathGenerator { get; private set; }
     public WaveFunctionSolver waveFunctionSolver { get; private set; }
 
-    public static UnityEvent<bool> OnLevelGeneratedStateChanged = new UnityEvent<bool>();
-    public static UnityEvent<Vector2Int> OnGridSizeChanged = new UnityEvent<Vector2Int>();
-    public static UnityEvent<Vector2Int> OnStartPositionChanged = new UnityEvent<Vector2Int>();
-    public static UnityEvent<Vector2Int> OnEndPositionChanged = new UnityEvent<Vector2Int>();
-    public static UnityEvent<float> OnPathLengthChanged = new UnityEvent<float>();
+    public static readonly UnityEvent<bool> OnLevelGeneratedStateChanged = new UnityEvent<bool>();
+    public static readonly UnityEvent<Vector2Int> OnGridSizeChanged = new UnityEvent<Vector2Int>();
+    public static readonly UnityEvent<Vector2Int> OnStartPositionChanged = new UnityEvent<Vector2Int>();
+    public static readonly UnityEvent<Vector2Int> OnEndPositionChanged = new UnityEvent<Vector2Int>();
+    public static readonly UnityEvent<float> OnPathLengthChanged = new UnityEvent<float>();
 
     private void Awake()
     {
@@ -100,7 +113,7 @@ public class GenerationHandler : MonoBehaviour
 
     private void OnDisable() => gameEventManager.generateMapEvent.RemoveListener(RegenerateLevel);
 
-    public void RegenerateLevel()
+    private void RegenerateLevel()
     {
         if (isRegenerating)
             return;
@@ -124,16 +137,16 @@ public class GenerationHandler : MonoBehaviour
     public void GenerateLevel()
     {
         GeneratePath();
-        PathGenerator.OnPathGenerated.AddListener(GenerateTilemap); //< So that if the path generates successfully, its event calls GenerateTilemap.
-                                                                    //  This way the landscape is only generated if the path generated successfully.
+        PathGenerator.onPathGenerated.AddListener(GenerateTilemap); //< So that if the path generates successfully, its event calls GenerateTilemap.
+        //  This way the landscape is only generated if the path generated successfully.
     }
 
-    public void GeneratePath()
+    private void GeneratePath()
     {
         Debug.Log($"[Generator] Starting path generation.");
 
-        pathGenerator.Generate(true);
-        isRegenerating = false;
+        pathGenerator.Generate(); //< Always generate path instantly, as showing it stepwise can lead to the path generator taking ages.
+        isRegenerating = false; //< If path generator fails, GenerateTilemap is never called, hence isRegenerating needs to be set to false here already.
     }
 
     public void GenerateTilemap()
@@ -142,23 +155,23 @@ public class GenerationHandler : MonoBehaviour
         waveFunctionSolver.StartSolve(generateInstantly);
 
         isLevelGenerated = true;
-        PathGenerator.OnPathGenerated.RemoveListener(GenerateTilemap);
+        PathGenerator.onPathGenerated.RemoveListener(GenerateTilemap);
     }
 
-    private void ClampStartEndPos(Vector2Int newGridSize)   //< This method has been introduced to clean up the gridSize property field.
+    private void ClampStartEndPos(Vector2Int newGridSize) //< This method has been introduced to clean up the gridSize property field.
     {
         //> Ensure positions are within the gridsize
-        m_startPositionIndex.x = Mathf.Clamp(startPositionIndex.x, 0, Mathf.Max(0, newGridSize.x - 1));
-        m_startPositionIndex.y = Mathf.Clamp(startPositionIndex.y, 0, Mathf.Max(0, newGridSize.y - 1));
-        m_endPositionIndex.x = Mathf.Clamp(endPositionIndex.x, 0, Mathf.Max(0, newGridSize.x - 1));
-        m_endPositionIndex.y = Mathf.Clamp(endPositionIndex.y, 0, Mathf.Max(0, newGridSize.y - 1));
+        mStartPositionIndex.x = Mathf.Clamp(startPositionIndex.x, 0, Mathf.Max(0, newGridSize.x - 1));
+        mStartPositionIndex.y = Mathf.Clamp(startPositionIndex.y, 0, Mathf.Max(0, newGridSize.y - 1));
+        mEndPositionIndex.x = Mathf.Clamp(endPositionIndex.x, 0, Mathf.Max(0, newGridSize.x - 1));
+        mEndPositionIndex.y = Mathf.Clamp(endPositionIndex.y, 0, Mathf.Max(0, newGridSize.y - 1));
     }
 
     private int ClampPathLength(int newLength)
     {
         Vector2Int pathMinMax = GetPathMinMax();
-        int minLength = pathMinMax.x;   //< Just for better readability, I could've also just 
-        int maxLength = pathMinMax.y;   //  used the pathMinMax variable directly in the code below.
+        int minLength = pathMinMax.x; //< Just for better readability, I could've also just 
+        int maxLength = pathMinMax.y; //  used the pathMinMax variable directly in the code below.
 
         if (newLength < minLength)
         {
@@ -170,16 +183,14 @@ public class GenerationHandler : MonoBehaviour
         {
             newLength = maxLength;
             Debug.LogWarning("Path length is too long, setting to max length");
-        };
-
-        if (newLength % 2 != minLength % 2)
-        {
-            if (newLength == maxLength)
-                newLength--;
-            else
-                newLength++;
-            Debug.LogWarning("Path cannot end, setting it to an " + (minLength % 2 == 0 ? "even" : "uneven") + " number");
         }
+
+        if (newLength % 2 == minLength % 2) return newLength;
+        if (newLength == maxLength)
+            newLength--;
+        else
+            newLength++;
+        Debug.LogWarning("Path cannot end, setting it to an " + (minLength % 2 == 0 ? "even" : "uneven") + " number");
 
         return newLength;
     }
@@ -195,8 +206,7 @@ public class GenerationHandler : MonoBehaviour
     {
         //> Modifying the values in the editor does not access the property fields to do that, thereby foregoing the validity-checks 
         //  built into them. Hence, the code below needs to be run to call those checks "manually".
-        ClampStartEndPos(m_gridSize);
-        m_pathLength = ClampPathLength(m_pathLength);
+        ClampStartEndPos(mGridSize);
+        mPathLength = ClampPathLength(mPathLength);
     }
-
 }

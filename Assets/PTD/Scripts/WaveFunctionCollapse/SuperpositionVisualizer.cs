@@ -5,28 +5,27 @@
 // Script by:   Daniel Heilmann (771144)
 //========================================================================
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 //! Just a temporary band-aid solution, not a permanent fix!
 public class SuperpositionVisualizer : MonoBehaviour
 {
     //# Private Variables 
-    private static GameObject prefab;
+    private static GameObject _prefab;
+
     private Transform tileVisualizerGroup;
-    private List<GameObject> tileVisualizations = new List<GameObject>();
+    //private List<GameObject> tileVisualizations = new List<GameObject>();
 
     //# Monobehaviour Events 
     private void Start()
     {
-        if (prefab == null)
-            prefab = Resources.Load<GameObject>("VisualizerPrefab");
+        if (_prefab == null)
+            _prefab = Resources.Load<GameObject>("VisualizerPrefab");
 
         tileVisualizerGroup = new GameObject("Superposition Visualizer").transform;
         tileVisualizerGroup.transform.SetParent(this.transform, false);
 
-        Intitialize();
+        Initialize();
 
         // OnPotentialTilesUpdatedInNode(GetComponent<Node>().potentialTiles);
     }
@@ -51,13 +50,10 @@ public class SuperpositionVisualizer : MonoBehaviour
     }
 
     //# Private Methods 
-    private void Intitialize()
+    private void Initialize()
     {
-        // GameObject tileVisualization = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        // tileVisualization.transform.SetParent(parent: tileVisualizerGroup, worldPositionStays: false);
-        // tileVisualization.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-        
-        GameObject tileVisualization = Instantiate(prefab, tileVisualizerGroup, false);
+        //! Just a temporary band-aid solution, not a permanent fix!
+        Instantiate(_prefab, tileVisualizerGroup, false);
 
         // List<Tile> allTiles = NodeManager.instance.allTiles;
 

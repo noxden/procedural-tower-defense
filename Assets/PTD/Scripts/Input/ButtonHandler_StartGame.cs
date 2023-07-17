@@ -10,13 +10,7 @@ public class ButtonHandler_StartGame : MonoBehaviour
 
     private void OnEnable() => GenerationHandler.OnLevelGeneratedStateChanged.AddListener(UpdateButtonState);
     private void OnDisable() => GenerationHandler.OnLevelGeneratedStateChanged.RemoveListener(UpdateButtonState);
-    private void Awake()
-    {
-        button = GetComponent<Button>();
-    }
+    private void Awake() => button = GetComponent<Button>();
 
-    private void UpdateButtonState(bool newState)
-    {
-        button.interactable = newState;
-    }
+    private void UpdateButtonState(bool newState) => button.interactable = newState;
 }

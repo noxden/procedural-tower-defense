@@ -5,50 +5,52 @@
 // Script by:   Daniel Heilmann (771144)
 //========================================================================
 
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class Node : MonoBehaviour
 {
-    //# Public Variables 
-    public int entropy { get => potentialTiles.Count; }  //< The entropy of a node, previously named "numberOfRemainingPotentialTiles"
-    private Vector2Int? m_gridPosition;
+    //# Public Fields 
+    public int entropy => potentialTiles.Count; //< The entropy of a node, previously named "numberOfRemainingPotentialTiles"
+
+    private Vector2Int? mGridPosition;
+
     public Vector2Int gridPosition
     {
-        get
-        {
-            return m_gridPosition.Value;
-        }
+        get => mGridPosition ?? default;
         set
         {
-            if (m_gridPosition.HasValue)
-                UnregisterFromManager();   //< To basically "move" this node on the grid from one position...
-            m_gridPosition = value;
-            RegisterInManager();           // ...to another.
+            if (mGridPosition.HasValue)
+                UnregisterFromManager(); //< To basically "move" this node on the grid from one position...
+            mGridPosition = value;
+            RegisterInManager(); // ...to another.
             name = $"Node {value}";
         }
     }
-    [SerializeField] private List<Tile> m_potentialTiles;  //< Defines this node's superposition
+
+    [FormerlySerializedAs("m_potentialTiles")] [SerializeField]
+    private List<Tile> mPotentialTiles; //< Defines this node's superposition
+
     public List<Tile> potentialTiles
     {
-        get
-        {
-            return m_potentialTiles;
-        }
+        get => mPotentialTiles;
         set
         {
-            m_potentialTiles = value;
-            OnPotentialTilesUpdated?.Invoke(potentialTiles);
+            mPotentialTiles = value;
+            onPotentialTilesUpdated?.Invoke(potentialTiles);
         }
     }
-    public UnityEvent<List<Tile>> OnPotentialTilesUpdated { get; } = new UnityEvent<List<Tile>>();
+
+    private UnityEvent<List<Tile>> onPotentialTilesUpdated { get; } = new UnityEvent<List<Tile>>();
 
     //# Path Generation variables 
     public List<Vector2Int> possiblePathDirections = new List<Vector2Int>(); //< Used during path generation to limit random walk
-    public bool isPath = false;
+    public bool isPath;
     public List<Vector2Int> pathDirection = new List<Vector2Int>(); //< Used after path generation to define which sides should have path sockets
 
     //# Monobehaviour Methods 
@@ -75,7 +77,7 @@ public class Node : MonoBehaviour
         else if (entropy > 1)
         {
             Tile randomlyChosenTile = potentialTiles[Random.Range(0, potentialTiles.Count)];
-            potentialTiles.RemoveAll(x => x != randomlyChosenTile);  //< Removes every entry from potentialTiles list except for the randomlyChosenTile
+            potentialTiles.RemoveAll(x => x != randomlyChosenTile); //< Removes every entry from potentialTiles list except for the randomlyChosenTile
             randomlyChosenTile.InstantiatePrefab(this.transform);
         }
         else
@@ -83,7 +85,8 @@ public class Node : MonoBehaviour
             Debug.LogError($"Tile {this.name} does not have any potential tiles left.");
             return false;
         }
-        RemoveNodePositionVisualizer();    //< Only remove visualizer if collapsing was successful
+
+        RemoveNodePositionVisualizer(); //< Only remove visualizer if collapsing was successful
         return true;
     }
 
@@ -143,6 +146,7 @@ public class Node : MonoBehaviour
                 if (!tile.pathDirection.Contains(direction))
                     isTileCompatible = false;
             }
+
             if (!isTileCompatible)
                 reducedPotentialTiles.Remove(tile);
         }
@@ -151,7 +155,7 @@ public class Node : MonoBehaviour
     }
 
     //# Private Methods 
-    private void RegisterInManager() => NodeManager.instance.RegisterNode(this, gridPosition);  //< Nodes assign their spot in the nodeGrid themselves.
+    private void RegisterInManager() => NodeManager.instance.RegisterNode(this, gridPosition); //< Nodes assign their spot in the nodeGrid themselves.
     private void UnregisterFromManager() => NodeManager.instance.UnregisterNode(this);
 
     private void CreateNodePositionVisualizer() => gameObject.AddComponent<SuperpositionVisualizer>();
@@ -180,9 +184,10 @@ public class Node : MonoBehaviour
     {
         if (pathDirection.Count == 2)
         {
-            float directionSqrMagnitude = (pathDirection[0] + pathDirection[1]).sqrMagnitude;   //< Calculation-based approach to the original implementation.
-            return directionSqrMagnitude == 2;  //< If both directions pointed in opposite directions, sqrMagnitude would be 0.
-                                                //  If both pointed in the same direction, it would be 4.
+            float directionSqrMagnitude = (pathDirection[0] + pathDirection[1]).sqrMagnitude; //< Calculation-based approach to the original implementation.
+            return Math.Abs(directionSqrMagnitude - 2.0f) < 0.1f;
+            //< If both directions pointed in opposite directions, sqrMagnitude would be 0.
+            //  If both pointed in the same direction, it would be 4.
 
             // if (pathDirection.Contains(new Vector2Int(1, 0)) && pathDirection.Contains(new Vector2Int(0, 1)))
             // {

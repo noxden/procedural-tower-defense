@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -21,13 +22,13 @@ public class PathGenerator : MonoBehaviour
     private Vector2Int startPositionIndex;
     private Vector2Int endPositionIndex;
     private int pathLength;
-    [SerializeField] private float stepDelayInSeconds = 0f;
+    [SerializeField] private float stepDelayInSeconds;
 
     private PathNode[,] gridBackup;
     private Dictionary<Vector2Int, Node> currentGrid;
     [SerializeField] private List<Node> path = new List<Node>();
     private List<Node> currentPath;
-    public static UnityEvent OnPathGenerated { get; } = new UnityEvent();
+    public static UnityEvent onPathGenerated { get; } = new UnityEvent();
 
     private void Start()
     {
@@ -61,10 +62,9 @@ public class PathGenerator : MonoBehaviour
             for (int y = 0; y < gridSize.y; y++)
             {
                 Vector2Int currentGridPos = new Vector2Int(x, y);
-                Node originalNode = null;
-                currentGrid.TryGetValue(currentGridPos, out originalNode);
+                currentGrid.TryGetValue(currentGridPos, out Node originalNode);
                 PathNode clonedNode = CreatePathNodeFromNode(originalNode);
-                clonedNode.visited = originalNode.isPath;
+                if (originalNode != null) clonedNode.visited = originalNode.isPath;
                 gridBackup[x, y] = clonedNode;
             }
         }
@@ -75,52 +75,58 @@ public class PathGenerator : MonoBehaviour
         CloneGrid();
 
         currentPath = new List<Node>();
-        Node currentNode = null;
-        currentGrid.TryGetValue(startPositionIndex, out currentNode);
+        currentGrid.TryGetValue(startPositionIndex, out Node currentNode);
 
-        currentNode.isPath = true;
-        currentPath.Add(currentNode);
-
-        while (currentPath.Count != pathLength || currentPath[currentPath.Count - 1].gridPosition != endPositionIndex)
+        if (currentNode != null)
         {
-            if (currentNode.possiblePathDirections.Count == 0)
+            currentNode.isPath = true;
+            currentPath.Add(currentNode);
+
+            while (currentPath.Count != pathLength || currentPath[^1].gridPosition != endPositionIndex)
             {
-                if (currentPath.Count == 1)
+                if (currentNode.possiblePathDirections.Count == 0)
                 {
-                    Debug.Log("No path found");
-                    yield break;
+                    if (currentPath.Count == 1)
+                    {
+                        Debug.Log("No path found");
+                        yield break; //< Unfortunately, we could not find a way to automatically restart the path generator when it fails.
+                    }
+
+                    //> If the current possible directions are 0, but the algorithm hasn't backtracked back to the start, go back one more node 
+                    //  in the path and then check the possible path directions again.
+                    currentNode.isPath = false;
+                    currentNode.possiblePathDirections = gridBackup[currentNode.gridPosition.x, currentNode.gridPosition.y].possibleDirections;
+                    currentPath.Remove(currentNode);
+
+                    currentNode = currentPath[^1];
+                }
+                else
+                {
+                    Vector2Int direction = currentNode.possiblePathDirections[Random.Range(0, currentNode.possiblePathDirections.Count)];
+                    currentNode.possiblePathDirections.Remove(direction);
+
+                    currentGrid.TryGetValue(new Vector2Int((currentNode.gridPosition.x + direction.x), (currentNode.gridPosition.y + direction.y)), out Node nextNode);
+                    if (nextNode != null)
+                    {
+                        nextNode.possiblePathDirections.Remove(-direction);
+
+                        if (!CanVisitNode(nextNode))
+                            continue;
+
+                        currentNode.isPath = true;
+                        currentPath.Add(nextNode);
+                        currentNode = nextNode;
+                    }
                 }
 
-                currentNode.isPath = false;
-                currentNode.possiblePathDirections = gridBackup[currentNode.gridPosition.x, currentNode.gridPosition.y].possibleDirections;
-                currentPath.Remove(currentNode);
-
-                currentNode = currentPath[currentPath.Count - 1];
+                if (!generateInstantly)
+                    yield return new WaitForSeconds(stepDelayInSeconds);
             }
-            else
-            {
-                Vector2Int direction = currentNode.possiblePathDirections[UnityEngine.Random.Range(0, currentNode.possiblePathDirections.Count)];
-                currentNode.possiblePathDirections.Remove(direction);
-
-                Node nextNode = null;
-                currentGrid.TryGetValue(new Vector2Int((currentNode.gridPosition.x + direction.x), (currentNode.gridPosition.y + direction.y)), out nextNode);
-                nextNode.possiblePathDirections.Remove(-direction);
-
-                if (!CanVisitNode(nextNode, currentPath))
-                {
-                    continue;
-                }
-                currentNode.isPath = true;
-                currentPath.Add(nextNode);
-                currentNode = nextNode;
-            }
-            if (!generateInstantly)
-                yield return new WaitForSeconds(stepDelayInSeconds);
         }
+
         yield return null;
-        
-        currentPath[currentPath.Count - 1].isPath = true;   //! Quick fix for issue where the endnode would not have its isPath variable set accordingly.
-        // Debug.Log($"Path generated from {(currentGrid.TryGetValue(startPositionIndex, out Node startNode) ? "" : "")}{startNode.name} to {(currentGrid.TryGetValue(endPositionIndex, out Node endNode) ? "" : "")}{endNode.name}.");
+
+        currentPath[^1].isPath = true; //! Quick fix for issue where the endnode would not have its isPath variable set accordingly.
         Debug.Log($"Path is generated!");
         path = currentPath;
 
@@ -131,18 +137,14 @@ public class PathGenerator : MonoBehaviour
         UpdateNodesInPathBasedOnPathDirection();
 
         waveManager.SetNavigationPath(path);
-
-        OnPathGenerated.Invoke();
+        onPathGenerated.Invoke();
     }
 
     private void UpdateAllNodesBasedOnPathValue()
     {
         Dictionary<Vector2Int, Node> nodeGrid = NodeManager.instance.nodeGrid;
-        foreach (var keyValuePair in nodeGrid)
-        {
-            Node node = keyValuePair.Value;
+        foreach (Node node in nodeGrid.Select(keyValuePair => keyValuePair.Value))
             node.ReducePotentialTilesByPathFlag();
-        }
     }
 
     private void OverwritePotentialTilesOfStartAndEndNodes()
@@ -154,33 +156,31 @@ public class PathGenerator : MonoBehaviour
     private void UpdateNodesInPathBasedOnPathDirection()
     {
         int pathIndex = 0;
-        foreach (Node node in path)     //< Did this as for loop before, but the foreach loop is much more readable.
+        foreach (Node node in path) //< Implemented this as for loop before, but the foreach loop is much more readable.
         {
             if (pathIndex > 0)
             {
                 Vector2Int direction = path[pathIndex - 1].gridPosition - node.gridPosition;
                 node.pathDirection.Add(direction);
             }
-            if (pathIndex < path.Count - 1)     //< Because max index is always List.Count-1, so when pathIndex is at path.Count-2, the "path[pathIndex + 1]" below will get the node at path.Count-1, which is the final node.
+
+            if (pathIndex < path.Count - 1) //< Because max index is always List.Count-1, so when pathIndex is at path.Count-2, 
             {
+                //  the "path[pathIndex + 1]" below will get the node at path.Count-1, which is the final node.
+
                 Vector2Int direction = path[pathIndex + 1].gridPosition - node.gridPosition;
                 node.pathDirection.Add(direction);
             }
+
             node.ReducePotentialTilesByPathDirection();
 
             pathIndex++;
         }
     }
 
-    private bool CanVisitNode(Node nextNode, List<Node> currentPath)
+    private bool CanVisitNode(Node nextNode)
     {
-        if (HasVisitedNode(nextNode))
-            return false;
-
-        if (!CanReachEnd(nextNode, currentPath))
-            return false;
-
-        return true;
+        return !HasVisitedNode(nextNode) && CanReachEnd(nextNode);
     }
 
     private bool HasVisitedNode(Node nextNode)
@@ -188,15 +188,12 @@ public class PathGenerator : MonoBehaviour
         return nextNode.isPath;
     }
 
-    private bool CanReachEnd(Node nextNode, List<Node> currentPath)
+    private bool CanReachEnd(Node nextNode)
     {
         int shortestDistance = (Mathf.Abs(endPositionIndex.x - nextNode.gridPosition.x) + Mathf.Abs(endPositionIndex.y - nextNode.gridPosition.y));
-        int pathLengthleft = pathLength - (currentPath.Count + 1);
+        int pathLengthLeft = pathLength - (currentPath.Count + 1);
 
-        if (shortestDistance <= pathLengthleft)
-            return true;
-
-        return false;
+        return shortestDistance <= pathLengthLeft;
     }
 
     private PathNode CreatePathNodeFromNode(Node node)
@@ -205,6 +202,7 @@ public class PathGenerator : MonoBehaviour
     }
 
     #region Editor
+
     private void OnDrawGizmos()
     {
         Vector3 gizmoScale = new Vector3(1f, 0.5f, 1f);
@@ -212,24 +210,23 @@ public class PathGenerator : MonoBehaviour
         if (currentGrid == null)
             return;
 
-        foreach (var dictionaryEntry in currentGrid)
+        foreach (Node node in currentGrid.Select(dictionaryEntry => dictionaryEntry.Value))
         {
-            Node node = dictionaryEntry.Value;
             Gizmos.color = node.isPath ? Color.red : Color.gray;
-            Gizmos.DrawCube(new Vector3(node.gameObject.transform.position.x, gizmoHeight, node.gameObject.transform.position.z), gizmoScale);
+            Vector3 position = node.gameObject.transform.position;
+            Gizmos.DrawCube(new Vector3(position.x, gizmoHeight, position.z), gizmoScale);
         }
 
-        if (currentPath != null)
+        if (currentPath == null) return;
+        for (int i = 0; i < currentPath.Count; i++)
         {
-            for (int i = 0; i < currentPath.Count; i++)
-            {
-                if (currentPath[i] == null)
-                    return;
-                float greyScale = (float)i / currentPath.Count;
-                Gizmos.color = new Color(0, greyScale, 0, 1f);
-                Gizmos.DrawCube(new Vector3(currentPath[i].gameObject.transform.position.x, gizmoHeight, currentPath[i].gameObject.transform.position.z), gizmoScale);
-            }
+            if (currentPath[i] == null)
+                return;
+            float greyScale = (float)i / currentPath.Count;
+            Gizmos.color = new Color(0, greyScale, 0, 1f);
+            Gizmos.DrawCube(new Vector3(currentPath[i].gameObject.transform.position.x, gizmoHeight, currentPath[i].gameObject.transform.position.z), gizmoScale);
         }
     }
+
     #endregion
 }

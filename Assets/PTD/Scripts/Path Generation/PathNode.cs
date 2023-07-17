@@ -4,17 +4,11 @@ using UnityEngine;
 
 public class PathNode
 {
-    public int posX;
-    public int posY;
+    private readonly int posX;
+    private readonly int posY;
     public bool visited = false;
 
-    public List<Vector2Int> possibleDirections = new List<Vector2Int>
-    {
-            new Vector2Int(0, 1),
-            new Vector2Int(0, -1),
-            new Vector2Int(-1, 0),
-            new Vector2Int(1, 0)
-            };
+    public readonly List<Vector2Int> possibleDirections;
 
     public PathNode(int posX, int posY, List<Vector2Int> possibleDirections)
     {
@@ -30,6 +24,5 @@ public class PathNode
         this.possibleDirections = possibleDirections;
     }
 
-    public Vector2 Position { get { return new Vector2(posX, posY); } }
-
+    public Vector2 position => new(posX, posY);
 }
