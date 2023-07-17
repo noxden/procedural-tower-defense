@@ -39,6 +39,8 @@ public class PathGenerator : MonoBehaviour
         currentGrid = NodeManager.instance.nodeGrid;
     }
 
+    #region Public Methods
+
     [ContextMenu("Reinitialize")]
     public void Reinitialize()
     {
@@ -52,6 +54,10 @@ public class PathGenerator : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(GeneratePath(generateInstantly));
     }
+    
+    #endregion
+    
+    #region Private Methods
 
     private void CloneGrid()
     {
@@ -130,16 +136,13 @@ public class PathGenerator : MonoBehaviour
         path = currentPath;
 
         UpdateAllNodesBasedOnPathValue();
-
         OverwritePotentialTilesOfStartAndEndNodes();
-
         UpdateNodesInPathBasedOnPathDirection();
-
         waveManager.SetNavigationPath(path);
         onPathGenerated.Invoke();
     }
 
-    private void UpdateAllNodesBasedOnPathValue()
+    private static void UpdateAllNodesBasedOnPathValue()
     {
         Dictionary<Vector2Int, Node> nodeGrid = NodeManager.instance.nodeGrid;
         foreach (Node node in nodeGrid.Select(keyValuePair => keyValuePair.Value))
@@ -154,38 +157,30 @@ public class PathGenerator : MonoBehaviour
 
     private void UpdateNodesInPathBasedOnPathDirection()
     {
-        int pathIndex = 0;
+        int currentIndex = 0;
         foreach (Node node in path) //< Implemented this as for loop before, but the foreach loop is much more readable.
         {
-            if (pathIndex > 0)
+            if (currentIndex > 0) //< For every node but the one at path index 0 (so the first path node), do the following...
             {
-                Vector2Int direction = path[pathIndex - 1].gridPosition - node.gridPosition;
+                Vector2Int direction = path[currentIndex - 1].gridPosition - node.gridPosition;
                 node.pathDirection.Add(direction);
             }
 
-            if (pathIndex < path.Count - 1) //< Because max index is always List.Count-1, so when pathIndex is at path.Count-2, 
+            int lastIndex = path.Count - 1; //< To make the if clause below more readable
+            if (currentIndex < lastIndex) //< For every node but the one at the last path index (so the last path node), do the following...
             {
-                //  the "path[pathIndex + 1]" below will get the node at path.Count-1, which is the final node.
-
-                Vector2Int direction = path[pathIndex + 1].gridPosition - node.gridPosition;
+                Vector2Int direction = path[currentIndex + 1].gridPosition - node.gridPosition;
                 node.pathDirection.Add(direction);
             }
 
             node.ReducePotentialTilesByPathDirection();
-
-            pathIndex++;
+            currentIndex++;
         }
     }
 
-    private bool CanVisitNode(Node nextNode)
-    {
-        return !HasVisitedNode(nextNode) && CanReachEnd(nextNode);
-    }
+    private bool CanVisitNode(Node nextNode) => !HasVisitedNode(nextNode) && CanReachEnd(nextNode);
 
-    private bool HasVisitedNode(Node nextNode)
-    {
-        return nextNode.isPath;
-    }
+    private static bool HasVisitedNode(Node nextNode) => nextNode.isPath;
 
     private bool CanReachEnd(Node nextNode)
     {
@@ -195,17 +190,16 @@ public class PathGenerator : MonoBehaviour
         return shortestDistance <= pathLengthLeft;
     }
 
-    private PathNode CreatePathNodeFromNode(Node node)
-    {
-        return new PathNode(node.gridPosition, node.possiblePathDirections);
-    }
+    private static PathNode CreatePathNodeFromNode(Node node) => new(node.gridPosition, node.possiblePathDirections);
+
+    #endregion
 
     #region Editor
 
     private void OnDrawGizmos()
     {
         Vector3 gizmoScale = new Vector3(1f, 0.5f, 1f);
-        float gizmoHeight = 0f;
+        const float gizmoHeight = 0f;
         if (currentGrid == null)
             return;
 

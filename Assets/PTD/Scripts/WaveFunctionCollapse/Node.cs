@@ -15,20 +15,21 @@ using Random = UnityEngine.Random;
 
 public class Node : MonoBehaviour
 {
-    //# Public Fields 
+    #region Variables and Properties
+
     public int entropy => potentialTiles.Count; //< The entropy of a node, previously named "numberOfRemainingPotentialTiles"
 
     private Vector2Int? mGridPosition;
 
     public Vector2Int gridPosition
     {
-        get => mGridPosition ?? default;
+        get => mGridPosition ?? default;  //< If mGridPosition != null, return it. Otherwise return default
         set
         {
             if (mGridPosition.HasValue)
                 UnregisterFromManager(); //< To basically "move" this node on the grid from one position...
             mGridPosition = value;
-            RegisterInManager(); // ...to another.
+            RegisterInManager();         // ...to another.
             name = $"Node {value}";
         }
     }
@@ -52,7 +53,9 @@ public class Node : MonoBehaviour
     public List<Vector2Int> possiblePathDirections = new List<Vector2Int>(); //< Used during path generation to limit random walk
     public bool isPath;
     public List<Vector2Int> pathDirection = new List<Vector2Int>(); //< Used after path generation to define which sides should have path sockets
-
+    
+    #endregion
+    
     //# Monobehaviour Methods 
     private void Start()
     {
@@ -66,10 +69,10 @@ public class Node : MonoBehaviour
         UnregisterFromManager();
     }
 
-    //# Public Methods 
-    /// <summary>
-    /// This function causes one of the potential tiles to be instantiated, thereby collapsing the superposition. It returns true if collapse was successful, false if entropy was 0.
-    /// </summary>
+    #region Public Methods
+
+    /// <summary> This function causes one of the potential tiles to be instantiated, thereby collapsing the superposition. </summary>
+    /// <returns> Returns true if collapse was successful, false if entropy was 0. </returns>
     public bool Collapse()
     {
         if (entropy == 1)
@@ -90,9 +93,7 @@ public class Node : MonoBehaviour
         return true;
     }
 
-    /// <summary>
-    /// Returns true if potentialTiles were reduced by limiter, false if not.
-    /// </summary>
+    /// <summary> Returns true if potentialTiles were reduced by limiter, false if not. </summary>
     public bool ReducePotentialTilesBySocketCompatibility(HashSet<Socket> compatibleSockets, Vector2Int socketSide)
     {
         List<Tile> reducedPotentialTiles = new List<Tile>(potentialTiles);
@@ -154,7 +155,11 @@ public class Node : MonoBehaviour
         potentialTiles = reducedPotentialTiles;
     }
 
-    //# Private Methods 
+    #endregion
+
+
+    #region Private Methods
+
     private void RegisterInManager() => NodeManager.instance.RegisterNode(this, gridPosition); //< Nodes assign their spot in the nodeGrid themselves.
     private void UnregisterFromManager() => NodeManager.instance.UnregisterNode(this);
 
@@ -176,10 +181,11 @@ public class Node : MonoBehaviour
             possiblePathDirections.Add(Vector2Int.up);
     }
 
+    #endregion
+
     //> This part was added by Jan to define points where navigation destinations would need to 
     //  be generated in order to make enemies path / walk straight from one corner to the next.
     //> Daniel then refactored it to take up less space and processing power.
-    //  The commented-out lines below are the original implementation.
     public bool IsCornerPiece()
     {
         if (pathDirection.Count == 2)
@@ -188,6 +194,8 @@ public class Node : MonoBehaviour
             return Math.Abs(directionSqrMagnitude - 2.0f) < 0.1f;
             //< If both directions pointed in opposite directions, sqrMagnitude would be 0.
             //  If both pointed in the same direction, it would be 4.
+
+            #region Original (disabled) Implementation
 
             // if (pathDirection.Contains(new Vector2Int(1, 0)) && pathDirection.Contains(new Vector2Int(0, 1)))
             // {
@@ -209,6 +217,8 @@ public class Node : MonoBehaviour
             // {
             //     return false;
             // }
+
+            #endregion
         }
 
         return false;

@@ -10,6 +10,9 @@ public class GenerationHandler : MonoBehaviour
 
     [SerializeField] private GameEventManagerScriptableObject gameEventManager; //< Added by Jan
 
+
+    #region Variables and Properties
+
     [Header("Generation Settings")] public bool generateInstantly;
 
     [FormerlySerializedAs("m_gridSize")] [SerializeField]
@@ -80,17 +83,28 @@ public class GenerationHandler : MonoBehaviour
 
     private bool isRegenerating;
 
-    //# Private variables 
+    #endregion
+
+    #region References to the Generator instances
+
     //> Are required to be public to allow access to GenerationHandlerEditor
     public NodeManager nodeManager { get; private set; }
     public PathGenerator pathGenerator { get; private set; }
     public WaveFunctionSolver waveFunctionSolver { get; private set; }
+
+    #endregion
+
+    #region Generation Events
 
     public static readonly UnityEvent<bool> OnLevelGeneratedStateChanged = new UnityEvent<bool>();
     public static readonly UnityEvent<Vector2Int> OnGridSizeChanged = new UnityEvent<Vector2Int>();
     public static readonly UnityEvent<Vector2Int> OnStartPositionChanged = new UnityEvent<Vector2Int>();
     public static readonly UnityEvent<Vector2Int> OnEndPositionChanged = new UnityEvent<Vector2Int>();
     public static readonly UnityEvent<float> OnPathLengthChanged = new UnityEvent<float>();
+
+    #endregion
+
+    #region Monobehaviour Methods
 
     private void Awake()
     {
@@ -113,6 +127,10 @@ public class GenerationHandler : MonoBehaviour
 
     private void OnDisable() => gameEventManager.generateMapEvent.RemoveListener(RegenerateLevel);
 
+    #endregion
+
+    #region Generation Methods
+
     private void RegenerateLevel()
     {
         if (isRegenerating)
@@ -134,7 +152,7 @@ public class GenerationHandler : MonoBehaviour
         GenerateLevel();
     }
 
-    public void GenerateLevel()
+    public void GenerateLevel() //< Only public to allow GenerationHandlerEditor access (for custom inspector button)
     {
         GeneratePath();
         PathGenerator.onPathGenerated.AddListener(GenerateTilemap); //< So that if the path generates successfully, its event calls GenerateTilemap.
@@ -149,7 +167,7 @@ public class GenerationHandler : MonoBehaviour
         isRegenerating = false; //< If path generator fails, GenerateTilemap is never called, hence isRegenerating needs to be set to false here already.
     }
 
-    public void GenerateTilemap()
+    public void GenerateTilemap() //< Only public to allow GenerationHandlerEditor access (for custom inspector button)
     {
         Debug.Log($"[Generator] Starting tilemap generation.");
         waveFunctionSolver.StartSolve(generateInstantly);
@@ -158,9 +176,13 @@ public class GenerationHandler : MonoBehaviour
         PathGenerator.onPathGenerated.RemoveListener(GenerateTilemap);
     }
 
+    #endregion
+
+    #region Methods for clamping values
+
     private void ClampStartEndPos(Vector2Int newGridSize) //< This method has been introduced to clean up the gridSize property field.
     {
-        //> Ensure positions are within the gridsize
+        //> Ensure positions are within the gridSize
         mStartPositionIndex.x = Mathf.Clamp(startPositionIndex.x, 0, Mathf.Max(0, newGridSize.x - 1));
         mStartPositionIndex.y = Mathf.Clamp(startPositionIndex.y, 0, Mathf.Max(0, newGridSize.y - 1));
         mEndPositionIndex.x = Mathf.Clamp(endPositionIndex.x, 0, Mathf.Max(0, newGridSize.x - 1));
@@ -194,6 +216,8 @@ public class GenerationHandler : MonoBehaviour
 
         return newLength;
     }
+
+    #endregion
 
     public Vector2Int GetPathMinMax()
     {

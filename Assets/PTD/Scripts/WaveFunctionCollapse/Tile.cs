@@ -1,12 +1,18 @@
-using System.Collections;
+//========================================================================
+// Darmstadt University of Applied Sciences, Expanded Realities
+// Course:      [Elective] Procedural Level Generation (Andreas Fuchs)
+// Group:       #5 (Procedural Tower Defense)
+// Script by:   Daniel Heilmann (771144)
+//========================================================================
+
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-using Object = UnityEngine.Object;
 
-[Serializable]
+[System.Serializable]
 public class Tile
 {
+    #region Variables and Properties
+
     public string name;
     public TileTag tag;
     public GameObject prefab;
@@ -31,9 +37,11 @@ public class Tile
 
     private GameObject instantiatedPrefab;
 
-    /// <summary>
-    /// Construct Tile from TileDefinition.
-    /// </summary>
+    #endregion
+
+    #region Constructors
+
+    /// <summary> Construct Tile from TileDefinition. </summary>
     public Tile(TileDefinition definition, int rotationIterations = 0)
     {
         this.tag = definition.optionalTileTag;
@@ -47,9 +55,7 @@ public class Tile
         GeneratePathDirection();
     }
 
-    /// <summary>
-    /// Construct Tile from scratch.
-    /// </summary>
+    /// <summary> Construct Tile from scratch. </summary>
     public Tile(GameObject prefab, IEnumerable<Socket> northSockets, IEnumerable<Socket> eastSockets, IEnumerable<Socket> southSockets, IEnumerable<Socket> westSockets,
         TileTag tileTag = TileTag.None, int amountRotatedClockwise = 0)
     {
@@ -63,6 +69,8 @@ public class Tile
         this.name = $"Tile({prefab.name}){(amountRotatedClockwise == 0 ? "" : $"_r{amountRotatedClockwise}")}";
         GeneratePathDirection();
     }
+
+    #endregion
 
     public void InstantiatePrefab(Transform parentTransform)
     {

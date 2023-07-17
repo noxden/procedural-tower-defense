@@ -7,7 +7,6 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [DefaultExecutionOrder(2)]
@@ -22,15 +21,10 @@ public class WaveFunctionSolver : MonoBehaviour
 
     [Tooltip("For visualization purposes only."), SerializeField]
     private List<Node> uncollapsedNodes = new List<Node>();
-
-    //# Monobehaviour Methods 
+    
     private void Start() => Reinitialize();
 
-    public void StartSolve(bool instantly)
-    {
-        StopAllCoroutines();
-        StartCoroutine(Solve(solveInstantly: instantly));
-    }
+    #region Public Methods
 
     [ContextMenu("Reinitialize")]
     public void Reinitialize()
@@ -39,8 +33,17 @@ public class WaveFunctionSolver : MonoBehaviour
         uncollapsedNodes.Clear();
         Initialize();
     }
+    
+    public void StartSolve(bool instantly)
+    {
+        StopAllCoroutines();
+        StartCoroutine(Solve(solveInstantly: instantly));
+    }
 
-    //# Private Methods 
+    #endregion
+
+    #region Private Methods
+
     private void Initialize()
     {
         Dictionary<Vector2Int, Node> nodeDictionary = NodeManager.instance.nodeGrid;
@@ -62,7 +65,7 @@ public class WaveFunctionSolver : MonoBehaviour
         Debug.Log($"Wave Function is collapsed!");
     }
 
-    public void Iterate()
+    public void Iterate() //< Only public to allow GenerationHandlerEditor access (for custom inspector button)
     {
         Node node = GetNodeWithLowestEntropy();
         CollapseNode(node);
@@ -73,8 +76,9 @@ public class WaveFunctionSolver : MonoBehaviour
     {
         if (!node.Collapse())
             Debug.LogError($"Could not collapse {node.name} properly!");
-        uncollapsedNodes.Remove(node); //< Needs to be called even if node could not be collapsed, otherwise the while-loop 
-        //  in Solve() will go on indefinitely, causing the game to freeze.
+
+        //> Needs to be called even if node could not be collapsed, otherwise the while-loop in Solve() will go on indefinitely, causing the game to freeze.
+        uncollapsedNodes.Remove(node);
     }
 
     // TODO: Currently, there is a lot of recursion present in the propagation. This can be improved.
@@ -94,8 +98,12 @@ public class WaveFunctionSolver : MonoBehaviour
 
                 //> Generate a list of all sockets on the side of "nodeToPropagateFrom" in the direction of "direction"
                 HashSet<Socket> allSocketsOnSide = new HashSet<Socket>();
-                foreach (Socket socket in nodeToPropagateFrom.potentialTiles.Select(tile => tile.GetSocketsOnSide(direction)).SelectMany(socketsOnSide => socketsOnSide))
-                    allSocketsOnSide.Add(socket);
+                foreach (Tile tile in nodeToPropagateFrom.potentialTiles)
+                {
+                    List<Socket> socketsOnSide = tile.GetSocketsOnSide(direction);
+                    foreach (Socket socket in socketsOnSide)
+                        allSocketsOnSide.Add(socket);
+                }
                 // Debug.Log($"All valid tiles in direction {direction} of {nodeToPropagateFrom.name} are: {string.Join(", ", allValidTilesInDirection)}");
 
                 //> Apply the list generated above as a limiting factor (removing any tiles that don't match the generated socket list)
@@ -115,8 +123,11 @@ public class WaveFunctionSolver : MonoBehaviour
             {
                 Node nodeWithLowestEntropy = uncollapsedNodes[(Random.Range(0, uncollapsedNodes.Count))];
                 //< Randomization prevents system from always solving the grid from Node (0,0).
-                foreach (var nodeToCompare in uncollapsedNodes.Where(nodeToCompare => nodeToCompare.entropy < nodeWithLowestEntropy.entropy))
-                    nodeWithLowestEntropy = nodeToCompare;
+                foreach (Node nodeToCompare in uncollapsedNodes)
+                {
+                    if (nodeToCompare.entropy < nodeWithLowestEntropy.entropy)
+                        nodeWithLowestEntropy = nodeToCompare;
+                }
 
                 return nodeWithLowestEntropy;
             }
@@ -126,4 +137,6 @@ public class WaveFunctionSolver : MonoBehaviour
                 return null; //< Should never occur, as system only iterates for as long as there are entries in uncollapsedNodes
         }
     }
+
+    #endregion
 }

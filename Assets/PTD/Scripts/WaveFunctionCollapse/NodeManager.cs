@@ -13,7 +13,7 @@ public class NodeManager : MonoBehaviour
     //# Public Variables 
     public static NodeManager instance { get; private set; }
     public Dictionary<Vector2Int, Node> nodeGrid { get; private set; }
-    private static List<Tile> _allTiles;
+    private static List<Tile> allTiles;
     public static List<Tile> startTiles;
     public static List<Tile> endTiles;
 
@@ -23,7 +23,8 @@ public class NodeManager : MonoBehaviour
     public readonly float tileSpacerThickness = 0.0f; //< To add a gap between tiles
     private GameObject nodeGridGameObject;
 
-    //# Monobehaviour Events 
+    #region Monobehaviour Methods
+
     private void Awake()
     {
         if (instance == null)
@@ -40,7 +41,10 @@ public class NodeManager : MonoBehaviour
         GenerateNodeGrid();
     }
 
-    //# Public Methods 
+    #endregion
+
+    #region Public Methods
+
     /// <summary>
     /// Tries to add node and returns false if it was not possible.
     /// </summary>
@@ -73,7 +77,10 @@ public class NodeManager : MonoBehaviour
         GetComponent<PathGenerator>().Reinitialize();
     }
 
-    //# Private Methods 
+    #endregion
+
+    #region Private Methods
+
     private void GenerateNodeGrid()
     {
         nodeGrid = new Dictionary<Vector2Int, Node>();
@@ -88,50 +95,47 @@ public class NodeManager : MonoBehaviour
                 nodeGO.transform.localPosition = new Vector3(x * (tileExtends.x + tileSpacerThickness), 0, y * (tileExtends.y + tileSpacerThickness));
                 Node newNode = nodeGO.AddComponent<Node>();
 
-                newNode.potentialTiles = new List<Tile>(_allTiles); //< Fill this node's potential tiles
+                newNode.potentialTiles = new List<Tile>(allTiles); //< Fill this node's potential tiles
                 newNode.gridPosition = new Vector2Int(x, y);
             }
         }
     }
 
-    private void FetchAllTilesFromResourcesFolder()
+    private static void FetchAllTilesFromResourcesFolder()
     {
         TileDefinition[] allTileDefinitions = Resources.LoadAll<TileDefinition>("Tiles");
         if (allTileDefinitions.Length == 0) //< Skip constructing tiles if no tile definitions could be located.
             return;
 
-        _allTiles = new List<Tile>();
+        allTiles = new List<Tile>();
         startTiles = new List<Tile>();
         endTiles = new List<Tile>();
         foreach (TileDefinition definition in allTileDefinitions)
         {
-            List<Tile> listToAddTo;
-            switch (definition.optionalTileTag) //< Decide which list to add to
+            List<Tile> listToAddTo = definition.optionalTileTag switch //< Decide which list to add to
             {
-                case TileTag.StartTile:
-                    listToAddTo = startTiles;
-                    break;
-                case TileTag.EndTile:
-                    listToAddTo = endTiles;
-                    break;
-                default:
-                    listToAddTo = _allTiles;
-                    break;
-            }
+                TileTag.StartTile => startTiles,
+                TileTag.EndTile => endTiles,
+                _ => allTiles //< If this TileDefinition has no special tag, choose _allTiles as list to add to.
+            };
 
             listToAddTo.Add(new Tile(definition)); //< Add Tile constructed from tileDefinition
 
-            if (definition.generateRotatedVariants) //< Only generate rotated variants if generateRotatedVariants is true
-            {
-                listToAddTo.Add(new Tile(TileDefinition.CreateRotatedVariant(definition, 1), 1)); //< Add tile variant that is rotated by 90 degrees
+            if (!definition.generateRotatedVariants) //< Only generate rotated variants if generateRotatedVariants is true, otherwise end the method here
+                continue;
 
-                if (!definition.isMirrorable) //< Only generate rotated variants for 180 and 270 degrees if tile is not mirrorable,
-                {
-                    //  as otherwise those would just be duplicates of 0 and 90 degree variants respectively.
-                    for (int i = 2; i <= 3; i++)
-                        listToAddTo.Add(new Tile(TileDefinition.CreateRotatedVariant(definition, i), i));
-                }
-            }
+            //> Add tile variant that is rotated by 90 degrees
+            listToAddTo.Add(new Tile(TileDefinition.CreateRotatedVariant(definition, 1), 1));
+
+            //> If tile is mirrorable, there is no need to generate rotated variants for 180 and 270 degrees,
+            //  as those would just be duplicates of 0 and 90 degree variants respectively.
+            if (definition.isMirrorable)
+                continue;
+
+            for (int i = 2; i <= 3; i++)
+                listToAddTo.Add(new Tile(TileDefinition.CreateRotatedVariant(definition, i), i));
         }
     }
+
+    #endregion
 }

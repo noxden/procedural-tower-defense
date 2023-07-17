@@ -6,7 +6,6 @@
 //========================================================================
 
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public enum Socket
@@ -34,6 +33,8 @@ public enum TileTag
 [CreateAssetMenu(fileName = "TileDefinition", menuName = "Wave Function Collapse/TileDefinition")]
 public class TileDefinition : ScriptableObject
 {
+    #region Variables and Properties
+
     [Header("Tile Variant Generation Settings")]
     public bool generateRotatedVariants;
 
@@ -46,10 +47,11 @@ public class TileDefinition : ScriptableObject
     public List<Socket> westSockets;
     public TileTag optionalTileTag;
 
-    [Header("In-Editor Socket Bulk-Setup"), Space(10)] [SerializeField]
-    private List<Socket> addToAllSides;
-
+    [Header("In-Editor Socket Bulk-Setup"), Space(10)] 
+    [SerializeField] private List<Socket> addToAllSides;
     [SerializeField] private List<Socket> removeFromAllSides;
+
+    #endregion
 
     public static TileDefinition CreateRotatedVariant(TileDefinition inputDefinition, int rotationIterations)
     {
@@ -75,7 +77,8 @@ public class TileDefinition : ScriptableObject
         return outputDefinition;
     }
 
-    //# Public Methods 
+    #region Methods to allow bulk-editing TileDefinition Sockets in Editor
+
     public void ApplyBulkChanges()
     {
         if (addToAllSides.Count != 0)
@@ -99,9 +102,8 @@ public class TileDefinition : ScriptableObject
         removeFromAllSides.Clear();
     }
 
-    /// <summary>
-    /// Tries to add tile to list, returning false if the list already contains the tile.
-    /// </summary>
+    /// <summary> Tries to add (multiple) sockets to socket list. </summary>
+    /// <returns> False if the list already contains at least one of those sockets. </returns>
     private static bool TryAddSocketsToList(List<Socket> sockets, ICollection<Socket> list)
     {
         bool success = true;
@@ -116,11 +118,19 @@ public class TileDefinition : ScriptableObject
         return success;
     }
 
-    /// <summary>
-    /// Tries to remove tile from list, returning false if the list does not contain the tile.
-    /// </summary>
+    /// <summary> Tries to remove (multiple) sockets from socket list. </summary>
+    /// <returns> False if at least one of the sockets is not contained in the list, true if all tiles were removed successfully. </returns>
     private static bool TryRemoveSocketsFromList(IEnumerable<Socket> sockets, ICollection<Socket> list)
     {
-        return sockets.Where(list.Remove).Any();
+        var success = true;
+        foreach (Socket socket in sockets)
+        {
+            if (!list.Remove(socket))
+                success = false;
+        }
+
+        return success;
     }
+
+    #endregion
 }
