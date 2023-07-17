@@ -388,6 +388,7 @@ GameObject:
   - component: {fileID: 606182038}
   - component: {fileID: 606182037}
   - component: {fileID: 606182040}
+  - component: {fileID: 606182042}
   m_Layer: 0
   m_Name: Terrain Generator
   m_TagString: Untagged
@@ -465,9 +466,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameEventManager: {fileID: 11400000, guid: 04fcedceab7d3644ea1465290ee8a1fb, type: 2}
   generateInstantly: 1
-  m_gridSize: {x: 10, y: 10}
-  m_startPositionIndex: {x: 1, y: 1}
-  m_endPositionIndex: {x: 9, y: 9}
+  mGridSize: {x: 10, y: 10}
+  mStartPositionIndex: {x: 1, y: 1}
+  mEndPositionIndex: {x: 9, y: 9}
+--- !u!114 &606182042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606182036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1527829223f860d42897151dd8b40c45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  warningManager: {fileID: 11400000, guid: 4d102776eec12be4082bcfe8cac0730e, type: 2}
 --- !u!1 &1180129765
 GameObject:
   m_ObjectHideFlags: 0

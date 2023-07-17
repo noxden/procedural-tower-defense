@@ -28,6 +28,7 @@ public class PathGenerator : MonoBehaviour
     [SerializeField] private List<Node> path = new List<Node>();
     private List<Node> currentPath;
     public static UnityEvent onPathGenerated { get; } = new UnityEvent();
+    public static UnityEvent onPathFailed { get; } = new UnityEvent();
 
     private void Start()
     {
@@ -94,6 +95,7 @@ public class PathGenerator : MonoBehaviour
                     if (currentPath.Count == 1)
                     {
                         Debug.Log("No path found");
+                        onPathFailed.Invoke();
                         yield break; //< Unfortunately, we could not find a way to automatically restart the path generator when it fails.
                     }
 
