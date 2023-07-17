@@ -1,13 +1,20 @@
+//========================================================================
+// Darmstadt University of Applied Sciences, Expanded Realities
+// Course:      [Elective] Procedural Level Generation (Andreas Fuchs)
+// Group:       #5 (Procedural Tower Defense)
+// Script by:   Daniel Heilmann (771144)
+//========================================================================
+
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-// TODO: Implement different generation calls as async -> Await cast and so on
+// TODO: Implement generation calls as async tasks
 public class GenerationHandler : MonoBehaviour
 {
     public static GenerationHandler instance { get; set; }
 
-    [SerializeField] private GameEventManagerScriptableObject gameEventManager;
+    [SerializeField] private GameEventManagerScriptableObject gameEventManager;  //< Added by Jan
 
     [Header("Generation Settings")]
     public bool generateInstantly = false;
@@ -102,7 +109,7 @@ public class GenerationHandler : MonoBehaviour
     private bool isRegenerating = false;
 
     //# Private variables 
-    //> Are required to be public to allow access to GenerationHandlerEditor
+    //> The following 3 fields are required to be public to allow access to GenerationHandlerEditor
     public NodeManager nodeManager { get; private set; }
     public PathGenerator pathGenerator { get; private set; }
     public WaveFunctionSolver waveFunctionSolver { get; private set; }
@@ -155,7 +162,6 @@ public class GenerationHandler : MonoBehaviour
 
         nodeManager.Regenerate();
         yield return new WaitForSecondsRealtime(0.0001f);
-
         GenerateLevel();
     }
 
@@ -169,8 +175,8 @@ public class GenerationHandler : MonoBehaviour
     {
         Debug.Log($"[Generator] Starting path generation.");
 
-        pathGenerator.Generate(true);
-        isRegenerating = false;
+        pathGenerator.Generate(true);   //< Always generate path instantly, as showing it stepwise can lead to the path generator taking ages.
+        isRegenerating = false;  //< If path generator fails, GenerateTilemap is never called, hence isRegenerating needs to be set to false here already.
     }
 
     public void GenerateTilemap()

@@ -14,16 +14,16 @@ public class NodeManager : MonoBehaviour
     //# Public Variables 
     public static NodeManager instance { get; set; }
     public Dictionary<Vector2Int, Node> nodeGrid { get; private set; }
-    private static List<Tile> allTiles; //< Would be static if that did not prevent adding the tiles in the editor 
+    private static List<Tile> allTiles;
     public static List<Tile> startTiles;
     public static List<Tile> endTiles;
 
     //# Private Variables 
     private Vector2Int nodeGridSize;  //< Number of tiles in x/z axis
     public readonly Vector2 tileExtends = new Vector2(3, 3);    //< in Meters
-    public readonly float tileSpacerThickness = 0.0f;
+    public readonly float tileSpacerThickness = 0.0f;   //< To add a gap between tiles
 
-    //# Monobehaviour Events 
+    //# Monobehaviour Methods 
     private void Awake()
     {
         if (instance == null)
