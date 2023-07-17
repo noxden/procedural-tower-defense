@@ -23,7 +23,6 @@ public class Tile
     public int rotationVariantIdentifier;
     public bool isPath; //< Is set automatically based on result of GeneratePathDirection()
     private List<Vector2Int> mPathDirection;
-
     public List<Vector2Int> pathDirection
     {
         get

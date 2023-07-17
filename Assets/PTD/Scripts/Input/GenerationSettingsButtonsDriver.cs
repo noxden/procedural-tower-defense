@@ -1,5 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+//========================================================================
+// Darmstadt University of Applied Sciences, Expanded Realities
+// Course:      [Elective] Procedural Level Generation (Andreas Fuchs)
+// Group:       #5 (Procedural Tower Defense)
+// Script by:   Daniel Heilmann (771144)
+//========================================================================
+
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -27,7 +32,7 @@ public class GenerationSettingsButtonsDriver : MonoBehaviour
 
     [SerializeField] private Toggle generateInstantlyToggle;
 
-
+    //# Monobehaviour Methods 
     private void OnEnable()
     {
         gridSizeXField.onEndEdit.AddListener(ChangeGridSizeX);
@@ -82,6 +87,7 @@ public class GenerationSettingsButtonsDriver : MonoBehaviour
 
     private void Start()
     {
+        //> Configure input field settings
         gridSizeXField.characterLimit = 3;
         gridSizeYField.characterLimit = 3;
 
@@ -95,7 +101,7 @@ public class GenerationSettingsButtonsDriver : MonoBehaviour
         ChangeGenerateInstantlyValue(false);
     }
 
-    //#> Slider to GenerationHandler 
+    //#> From Slider to GenerationHandler (Update values in GenerationHandler based on slider values) 
     private void ChangeGridSizeX(string inputText)
     {
         if (!int.TryParse(inputText, out int value)) return;

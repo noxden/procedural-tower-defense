@@ -2,7 +2,12 @@
 // Darmstadt University of Applied Sciences, Expanded Realities
 // Course:      [Elective] Procedural Level Generation (Andreas Fuchs)
 // Group:       #5 (Procedural Tower Defense)
-// Script by:   Jan Rau, Daniel Heilmann
+// Script by:   Jan Rau (769214), Daniel Heilmann (771144)
+//========================================================================
+//   Additional Notes:
+// This script is based on Jan's original PathGenerator, but has been 
+// heavily modified by Daniel to integrate it into & adapt it to 
+// the rest of the level generation system.
 //========================================================================
 
 using System.Collections;
@@ -50,6 +55,7 @@ public class PathGenerator : MonoBehaviour
         Start();
     }
 
+    //> This method can be called from the outside and insures that any running path generation is stopped before starting anew.
     public void Generate(bool generateInstantly = true)
     {
         StopAllCoroutines();
@@ -60,6 +66,8 @@ public class PathGenerator : MonoBehaviour
     
     #region Private Methods
 
+    //> Creates a backup of the current grid and saves it as a PathNode array. This is necessary for the backtracking to work (I think).
+    //  (Comment written by Daniel as Jan did not provide any further documentation.)
     private void CloneGrid()
     {
         gridBackup = new PathNode[gridSize.x, gridSize.y];
@@ -144,6 +152,7 @@ public class PathGenerator : MonoBehaviour
         onPathGenerated.Invoke();
     }
 
+    /// <summary> Goes through all nodes in the nodeGrid to update their potential tiles based on if they are a path node or not. </summary>
     private static void UpdateAllNodesBasedOnPathValue()
     {
         Dictionary<Vector2Int, Node> nodeGrid = NodeManager.instance.nodeGrid;
@@ -151,12 +160,15 @@ public class PathGenerator : MonoBehaviour
             node.ReducePotentialTilesByPathFlag();
     }
 
+    /// <summary> Overwrites the potentialTiles of the node at path index 0 with the tiles in the startTiles list 
+    /// and the potentialTiles of the node at the last path index with the tiles in the endTiles list. </summary>
     private void OverwritePotentialTilesOfStartAndEndNodes()
     {
         path[0].potentialTiles = NodeManager.startTiles;
         path[^1].potentialTiles = NodeManager.endTiles;
     }
 
+    /// <summary> Goes through all nodes in the path list to update their potential tiles based on their path direction. </summary>
     private void UpdateNodesInPathBasedOnPathDirection()
     {
         int currentIndex = 0;

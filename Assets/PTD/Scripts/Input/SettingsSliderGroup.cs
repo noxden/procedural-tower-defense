@@ -5,7 +5,6 @@
 // Script by:   Daniel Heilmann (771144)
 //========================================================================
 
-using System.Globalization;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -35,8 +34,8 @@ public class SettingsSliderGroup : MonoBehaviour
 
     public void DisplayCurrentValue(float newValue)
     {
-        slider.value = newValue; //< So that moving the slider of the GenerationHandler's custom inspector also moves the in-game slider.
-        currentValueField.text = newValue.ToString(CultureInfo.InvariantCulture);
+        slider.value = newValue;    //< So that moving the slider of the GenerationHandler's custom inspector also moves the in-game slider.
+        currentValueField.text = newValue.ToString();
     }
 
     public void SetSliderMinMax(int min, int max)

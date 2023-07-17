@@ -1,9 +1,16 @@
+//========================================================================
+// Darmstadt University of Applied Sciences, Expanded Realities
+// Course:      [Elective] Procedural Level Generation (Andreas Fuchs)
+// Group:       #5 (Procedural Tower Defense)
+// Script by:   Daniel Heilmann (771144)
+//========================================================================
+
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-// TODO: Implement different generation calls as async -> Await cast and so on
+// TODO: Implement generation calls as async tasks
 public class GenerationHandler : MonoBehaviour
 {
     public static GenerationHandler instance { get; private set; }
@@ -87,7 +94,7 @@ public class GenerationHandler : MonoBehaviour
 
     #region References to the Generator instances
 
-    //> Are required to be public to allow access to GenerationHandlerEditor
+    //> The following 3 fields are required to be public to allow access to GenerationHandlerEditor
     public NodeManager nodeManager { get; private set; }
     public PathGenerator pathGenerator { get; private set; }
     public WaveFunctionSolver waveFunctionSolver { get; private set; }
@@ -148,7 +155,6 @@ public class GenerationHandler : MonoBehaviour
         //  due to one of the methods in ResetGrid() taking longer than expected and thereby preventing variables from being assigned properly if not waited for.
         //> I could not figure out how else to implement this without using async tasks, and my attempt at implementing async tasks did not work out at all :(
         yield return new WaitForSecondsRealtime(0.0001f);
-
         GenerateLevel();
     }
 

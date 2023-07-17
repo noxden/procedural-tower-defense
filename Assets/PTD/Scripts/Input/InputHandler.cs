@@ -1,9 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
+//========================================================================
+// Darmstadt University of Applied Sciences, Expanded Realities
+// Course:      [Elective] Procedural Level Generation (Andreas Fuchs)
+// Group:       #5 (Procedural Tower Defense)
+// Script by:   Daniel Heilmann (771144)
+//========================================================================
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
 
+/// <summary> Handles input of the assigned InputActionAsset. Intended for handling the inputs used to move, rotate and zoom the camera. </summary>
 public class InputHandler : MonoBehaviour
 {
     public InputActionAsset actionAsset;

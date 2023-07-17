@@ -16,7 +16,6 @@ public class WaveFunctionSolver : MonoBehaviour
     [SerializeField] private float stepDelayInSeconds;
 
     private bool isCollapsed => uncollapsedNodes.Count == 0;
-
     private readonly List<Vector2Int> directionsToPropagateTo = new List<Vector2Int> { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
 
     [Tooltip("For visualization purposes only."), SerializeField]
@@ -72,6 +71,7 @@ public class WaveFunctionSolver : MonoBehaviour
         Propagate(node);
     }
 
+    // TODO: Improve the implementation of this method to fix the issue stated in the comment below. 
     private void CollapseNode(Node node)
     {
         if (!node.Collapse())

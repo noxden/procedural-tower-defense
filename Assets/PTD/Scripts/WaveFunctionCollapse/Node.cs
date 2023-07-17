@@ -2,10 +2,9 @@
 // Darmstadt University of Applied Sciences, Expanded Realities
 // Course:      [Elective] Procedural Level Generation (Andreas Fuchs)
 // Group:       #5 (Procedural Tower Defense)
-// Script by:   Daniel Heilmann (771144)
+// Script by:   Daniel Heilmann (771144), Jan Rau (769214)
 //========================================================================
 
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -93,7 +92,7 @@ public class Node : MonoBehaviour
         return true;
     }
 
-    /// <summary> Returns true if potentialTiles were reduced by limiter, false if not. </summary>
+    /// <returns> Returns true if potentialTiles were reduced by limiter, false if not. </returns>
     public bool ReducePotentialTilesBySocketCompatibility(HashSet<Socket> compatibleSockets, Vector2Int socketSide)
     {
         List<Tile> reducedPotentialTiles = new List<Tile>(potentialTiles);
@@ -130,7 +129,6 @@ public class Node : MonoBehaviour
             if (entry.isPath != this.isPath)
                 reducedPotentialTiles.Remove(entry);
         }
-
         potentialTiles = reducedPotentialTiles;
     }
 
@@ -151,7 +149,6 @@ public class Node : MonoBehaviour
             if (!isTileCompatible)
                 reducedPotentialTiles.Remove(tile);
         }
-
         potentialTiles = reducedPotentialTiles;
     }
 
@@ -220,7 +217,6 @@ public class Node : MonoBehaviour
 
             #endregion
         }
-
         return false;
     }
 }

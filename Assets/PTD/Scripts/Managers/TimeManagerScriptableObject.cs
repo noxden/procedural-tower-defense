@@ -1,7 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+//========================================================================
+// Darmstadt University of Applied Sciences, Expanded Realities
+// Course:      [Elective] Procedural Level Generation (Andreas Fuchs)
+// Group:       #5 (Procedural Tower Defense)
+// Script by:   Jan Rau (769214)
+//========================================================================
+
 using UnityEngine;
-using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "Time Manager", menuName = "ScriptableObjects/Managers/Time Manager")]
 public class TimeManagerScriptableObject : ScriptableObject
