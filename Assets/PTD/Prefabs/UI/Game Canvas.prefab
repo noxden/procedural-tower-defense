@@ -2251,6 +2251,7 @@ GameObject:
   - component: {fileID: 4111354993499845360}
   - component: {fileID: 8043534179252084010}
   - component: {fileID: 9219139748762602109}
+  - component: {fileID: 779210915882779344}
   m_Layer: 5
   m_Name: Menu button
   m_TagString: Untagged
@@ -2361,9 +2362,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: 04fcedceab7d3644ea1465290ee8a1fb, type: 2}
-        m_TargetAssemblyTypeName: GameEventManagerScriptableObject, Assembly-CSharp
-        m_MethodName: OpenMainMenu
+      - m_Target: {fileID: 779210915882779344}
+        m_TargetAssemblyTypeName: SceneChangeHandler, Assembly-CSharp
+        m_MethodName: Restart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2373,6 +2374,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &779210915882779344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5939899941638790730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e989783e2e1ae6b49b73449dfbf70773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6071278861191772924
 GameObject:
   m_ObjectHideFlags: 0
