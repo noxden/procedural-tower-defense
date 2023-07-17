@@ -27,7 +27,7 @@ public class PathGenerator : MonoBehaviour
     private Dictionary<Vector2Int, Node> currentGrid;
     [SerializeField] private List<Node> path = new List<Node>();
     private List<Node> currentPath;
-    public UnityEvent OnPathGenerated { get; } = new UnityEvent();
+    public static UnityEvent OnPathGenerated { get; } = new UnityEvent();
 
     private void Start()
     {
@@ -63,7 +63,7 @@ public class PathGenerator : MonoBehaviour
                 Vector2Int currentGridPos = new Vector2Int(x, y);
                 Node originalNode = null;
                 currentGrid.TryGetValue(currentGridPos, out originalNode);
-                PathNode clonedNode = NodeToPathNode(originalNode);
+                PathNode clonedNode = CreatePathNodeFromNode(originalNode);
                 clonedNode.visited = originalNode.isPath;
                 gridBackup[x, y] = clonedNode;
             }
@@ -118,7 +118,7 @@ public class PathGenerator : MonoBehaviour
                 yield return new WaitForSeconds(stepDelayInSeconds);
         }
         yield return null;
-
+        
         currentPath[currentPath.Count - 1].isPath = true;   //! Quick fix for issue where the endnode would not have its isPath variable set accordingly.
         // Debug.Log($"Path generated from {(currentGrid.TryGetValue(startPositionIndex, out Node startNode) ? "" : "")}{startNode.name} to {(currentGrid.TryGetValue(endPositionIndex, out Node endNode) ? "" : "")}{endNode.name}.");
         Debug.Log($"Path is generated!");
@@ -148,7 +148,7 @@ public class PathGenerator : MonoBehaviour
     private void OverwritePotentialTilesOfStartAndEndNodes()
     {
         path[0].potentialTiles = NodeManager.startTiles;
-        path[path.Count - 1].potentialTiles = NodeManager.endTiles;
+        path[^1].potentialTiles = NodeManager.endTiles;
     }
 
     private void UpdateNodesInPathBasedOnPathDirection()
@@ -199,7 +199,7 @@ public class PathGenerator : MonoBehaviour
         return false;
     }
 
-    private PathNode NodeToPathNode(Node node)
+    private PathNode CreatePathNodeFromNode(Node node)
     {
         return new PathNode(node.gridPosition, node.possiblePathDirections);
     }

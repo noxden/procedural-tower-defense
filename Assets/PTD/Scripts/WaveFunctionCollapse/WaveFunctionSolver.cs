@@ -21,22 +21,13 @@ public class WaveFunctionSolver : MonoBehaviour
     [Tooltip("For visualization purposes only."), SerializeField]
     private List<Node> uncollapsedNodes = new List<Node>();
 
-    //# Monobehaviour Events 
-    private void Start()
-    {
-        Initialize();
-    }
+    //# Monobehaviour Methods 
+    private void Start() => Reinitialize();
 
-    public void SolveInstantly()
+    public void StartSolve(bool instantly)
     {
         StopAllCoroutines();
-        StartCoroutine(Solve(solveInstantly: true));
-    }
-
-    public void SolveStepwise()
-    {
-        StopAllCoroutines();
-        StartCoroutine(Solve(solveInstantly: false));
+        StartCoroutine(Solve(solveInstantly: instantly));
     }
 
     [ContextMenu("Reinitialize")]
@@ -44,7 +35,7 @@ public class WaveFunctionSolver : MonoBehaviour
     {
         StopAllCoroutines();
         uncollapsedNodes.Clear();
-        Start();
+        Initialize();
     }
 
     //# Private Methods 

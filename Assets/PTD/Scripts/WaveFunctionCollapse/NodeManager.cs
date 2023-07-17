@@ -21,7 +21,8 @@ public class NodeManager : MonoBehaviour
     //# Private Variables 
     private Vector2Int nodeGridSize;  //< Number of tiles in x/z axis
     public readonly Vector2 tileExtends = new Vector2(3, 3);    //< in Meters
-    public readonly float tileSpacerThickness = 0.0f;
+    public readonly float tileSpacerThickness = 0.0f;   //< To add a gap between tiles
+    private GameObject nodeGridGameObject = null;
 
     //# Monobehaviour Events 
     private void Awake()
@@ -30,33 +31,27 @@ public class NodeManager : MonoBehaviour
             instance = this;
         else
             Destroy(this);
+
+        FetchAllTilesFromResourcesFolder();
     }
 
     private void Start()
     {
         nodeGridSize = GenerationHandler.instance.gridSize;
-        FetchAllTilesFromResourcesFolder();
         GenerateNodeGrid();
-    }
-
-    [ContextMenu("Regenerate")]
-    public void Regenerate()
-    {
-        StopAllCoroutines();
-        StartCoroutine(RegenerateNodeGrid());
     }
 
     //# Public Methods 
     /// <summary>
     /// Tries to add node and returns false if it was not possible.
     /// </summary>
-    public bool RegisterNode(Vector2Int position, Node node)
+    public bool RegisterNode(Node node, Vector2Int position)
     {
         bool success = nodeGrid.TryAdd(position, node);
         if (!success) Debug.LogError($"NodeGrid already carries an entry for position \"{position}\". Adding new node \"{node.name}\" failed.", node);
         return success;
     }
-    public void UnregisterNode(Vector2Int position) => nodeGrid.Remove(position);
+    public void UnregisterNode(Node node) => nodeGrid.Remove(node.gridPosition);
 
     public Node GetNodeByPosition(Vector2Int position)
     {
@@ -65,18 +60,31 @@ public class NodeManager : MonoBehaviour
         return node;
     }
 
+    [ContextMenu("Reset Grid")]
+    public void ResetGrid()
+    {
+        DestroyImmediate(nodeGridGameObject);
+        nodeGrid = null;
+
+        nodeGridSize = GenerationHandler.instance.gridSize;
+        GenerateNodeGrid();
+
+        GetComponent<WaveFunctionSolver>().Reinitialize();
+        GetComponent<PathGenerator>().Reinitialize();
+    }
+
     //# Private Methods 
     private void GenerateNodeGrid()
     {
         nodeGrid = new Dictionary<Vector2Int, Node>();
-        GameObject nodeGridGO = new GameObject(name: "Node Grid");
+        nodeGridGameObject = new GameObject(name: "Node Grid");
 
-        for (int x = 0; x < nodeGridSize.x; x++)  //< gridOffset could already be applied here, but it would probably just make the for-loop more calculation-heavy.
+        for (int x = 0; x < nodeGridSize.x; x++)
         {
             for (int y = 0; y < nodeGridSize.y; y++)
             {
                 GameObject nodeGO = new GameObject();
-                nodeGO.transform.SetParent(nodeGridGO.transform);
+                nodeGO.transform.SetParent(nodeGridGameObject.transform);
                 nodeGO.transform.localPosition = new Vector3(x * (tileExtends.x + tileSpacerThickness), 0, y * (tileExtends.y + tileSpacerThickness));
                 Node newNode = nodeGO.AddComponent<Node>();
 
@@ -84,19 +92,6 @@ public class NodeManager : MonoBehaviour
                 newNode.gridPosition = new Vector2Int(x, y);
             }
         }
-    }
-
-    private IEnumerator RegenerateNodeGrid()
-    {
-        Destroy(GameObject.Find("Node Grid"));
-        yield return new WaitForEndOfFrame();   //< Requires this brief wait time to work properly, that's why this is called as an IEnumerator. I dunno why that's necessary.
-        nodeGrid.Clear();
-
-        nodeGridSize = GenerationHandler.instance.gridSize;
-        GenerateNodeGrid();
-
-        GetComponent<WaveFunctionSolver>().Reinitialize();
-        GetComponent<PathGenerator>().Reinitialize();
     }
 
     private void FetchAllTilesFromResourcesFolder()
@@ -111,7 +106,7 @@ public class NodeManager : MonoBehaviour
         foreach (TileDefinition definition in allTileDefinitions)
         {
             List<Tile> listToAddTo;
-            switch (definition.optionalTileTag)
+            switch (definition.optionalTileTag)  //< Decide which list to add to
             {
                 case TileTag.StartTile:
                     listToAddTo = startTiles;
@@ -124,17 +119,17 @@ public class NodeManager : MonoBehaviour
                     break;
             }
 
-            listToAddTo.Add(new Tile(definition));
-            if (!definition.generateRotatedVariants)
-                continue;
+            listToAddTo.Add(new Tile(definition));  //< Add Tile constructed from tileDefinition
 
-            listToAddTo.Add(new Tile(TileDefinition.CreateRotatedVariant(definition, 1), 1));
-            if (definition.isMirrorable)
-                continue;
-
-            for (int i = 2; i <= 3; i++)
+            if (definition.generateRotatedVariants)  //< Only generate rotated variants if generateRotatedVariants is true
             {
-                listToAddTo.Add(new Tile(TileDefinition.CreateRotatedVariant(definition, i), i));
+                listToAddTo.Add(new Tile(TileDefinition.CreateRotatedVariant(definition, 1), 1));   //< Add tile variant that is rotated by 90 degrees
+
+                if (!definition.isMirrorable)  //< Only generate rotated variants for 180 and 270 degrees if tile is not mirrorable,
+                {                              //  as otherwise those would just be duplicates of 0 and 90 degree variants respectively.
+                    for (int i = 2; i <= 3; i++)
+                        listToAddTo.Add(new Tile(TileDefinition.CreateRotatedVariant(definition, i), i));
+                }
             }
         }
     }

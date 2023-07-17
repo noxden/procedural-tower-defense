@@ -96,30 +96,26 @@ public class GenerationHandler : MonoBehaviour
         isLevelGenerated = false;
     }
 
-    private void OnEnable()
-    {
-        gameEventManager.generateMapEvent.AddListener(RegenerateLevel);
-    }
+    private void OnEnable() => gameEventManager.generateMapEvent.AddListener(RegenerateLevel);
 
-    private void OnDisable()
-    {
-        gameEventManager.generateMapEvent.RemoveListener(RegenerateLevel);
-    }
+    private void OnDisable() => gameEventManager.generateMapEvent.RemoveListener(RegenerateLevel);
 
     public void RegenerateLevel()
     {
         if (isRegenerating)
             return;
 
+        isRegenerating = true;
         StartCoroutine(RegenerateNextLevel());
     }
 
     private IEnumerator RegenerateNextLevel()
     {
         isLevelGenerated = false;
-        isRegenerating = true;
-
-        nodeManager.Regenerate();
+        nodeManager.ResetGrid();
+        //> Requires a brief wait time here to work properly, that's why this method is called as an IEnumerator. I dunno why that's necessary. It's probably
+        //  due to one of the methods in ResetGrid() taking longer than expected and thereby preventing variables from being assigned properly if not waited for.
+        //> I could not figure out how else to implement this without using async tasks, and my attempt at implementing async tasks did not work out at all :(
         yield return new WaitForSecondsRealtime(0.0001f);
 
         GenerateLevel();
@@ -128,7 +124,8 @@ public class GenerationHandler : MonoBehaviour
     public void GenerateLevel()
     {
         GeneratePath();
-        pathGenerator.OnPathGenerated.AddListener(GenerateTilemap);
+        PathGenerator.OnPathGenerated.AddListener(GenerateTilemap); //< So that if the path generates successfully, its event calls GenerateTilemap.
+                                                                    //  This way the landscape is only generated if the path generated successfully.
     }
 
     public void GeneratePath()
@@ -142,13 +139,10 @@ public class GenerationHandler : MonoBehaviour
     public void GenerateTilemap()
     {
         Debug.Log($"[Generator] Starting tilemap generation.");
-        if (generateInstantly)
-            waveFunctionSolver.SolveInstantly();
-        else
-            waveFunctionSolver.SolveStepwise();
+        waveFunctionSolver.StartSolve(generateInstantly);
 
         isLevelGenerated = true;
-        pathGenerator.OnPathGenerated.RemoveListener(GenerateTilemap);
+        PathGenerator.OnPathGenerated.RemoveListener(GenerateTilemap);
     }
 
     private void ClampStartEndPos(Vector2Int newGridSize)   //< This method has been introduced to clean up the gridSize property field.
@@ -189,7 +183,7 @@ public class GenerationHandler : MonoBehaviour
 
         return newLength;
     }
-    
+
     public Vector2Int GetPathMinMax()
     {
         int pathMin = (Mathf.Abs(endPositionIndex.x - startPositionIndex.x) + Mathf.Abs(endPositionIndex.y - startPositionIndex.y)) + 1;

@@ -18,14 +18,14 @@ public class GenerationHandlerEditor : Editor
         }
         if (GUILayout.Button("Reset Level"))
         {
-            handler.nodeManager.Regenerate();
+            handler.nodeManager.ResetGrid();
         }
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Generate Path"))
         {
-            handler.pathGenerator.Generate(generateInstantly: false);
+            handler.pathGenerator.Generate(generateInstantly: false);   //< To visualize path generation when pressing the "Generate Path" button.
         }
         if (GUILayout.Button("Generate Tilemap"))
         {
@@ -40,6 +40,7 @@ public class GenerationHandlerEditor : Editor
 
         base.OnInspectorGUI();
 
-        handler.pathLength = EditorGUILayout.IntSlider("Path Length", handler.pathLength, (Mathf.Abs(handler.endPositionIndex.x - handler.startPositionIndex.x) + Mathf.Abs(handler.endPositionIndex.y - handler.startPositionIndex.y)) + 1, handler.gridSize.x * handler.gridSize.y);
+        Vector2Int pathMinMax = handler.GetPathMinMax();
+        handler.pathLength = EditorGUILayout.IntSlider("Path Length", handler.pathLength, pathMinMax.x, pathMinMax.y);
     }
 }

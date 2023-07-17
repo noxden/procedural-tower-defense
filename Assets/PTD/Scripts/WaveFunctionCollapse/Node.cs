@@ -15,46 +15,43 @@ public class Node : MonoBehaviour
 {
     //# Public Variables 
     public int entropy { get => potentialTiles.Count; }  //< The entropy of a node, previously named "numberOfRemainingPotentialTiles"
+    private Vector2Int? m_gridPosition;
     public Vector2Int gridPosition
     {
         get
         {
-            return _gridPosition.Value;
+            return m_gridPosition.Value;
         }
         set
         {
-            if (_gridPosition.HasValue)
-                UnregisterFromManager();
-            _gridPosition = value;
-            name = $"Node {gridPosition}";
-            RegisterInManager();
+            if (m_gridPosition.HasValue)
+                UnregisterFromManager();   //< To basically "move" this node on the grid from one position...
+            m_gridPosition = value;
+            RegisterInManager();           // ...to another.
+            name = $"Node {value}";
         }
     }
-    public UnityEvent<List<Tile>> OnPotentialTilesUpdated { get; } = new UnityEvent<List<Tile>>();
+    [SerializeField] private List<Tile> m_potentialTiles;  //< Defines this node's superposition
     public List<Tile> potentialTiles
     {
         get
         {
-            return _potentialTiles;
+            return m_potentialTiles;
         }
         set
         {
-            _potentialTiles = value;
+            m_potentialTiles = value;
             OnPotentialTilesUpdated?.Invoke(potentialTiles);
         }
     }
+    public UnityEvent<List<Tile>> OnPotentialTilesUpdated { get; } = new UnityEvent<List<Tile>>();
 
     //# Path Generation variables 
-    public List<Vector2Int> possiblePathDirections = new List<Vector2Int>();
+    public List<Vector2Int> possiblePathDirections = new List<Vector2Int>(); //< Used during path generation to limit random walk
     public bool isPath = false;
-    public List<Vector2Int> pathDirection = new List<Vector2Int>();
+    public List<Vector2Int> pathDirection = new List<Vector2Int>(); //< Used after path generation to define which sides should have path sockets
 
-    //# Private Variables 
-    [SerializeField] private List<Tile> _potentialTiles;  //< Defines this node's superposition
-    private Vector2Int? _gridPosition;
-    private GameObject debugVisualizer;
-
-    //# Monobehaviour Events 
+    //# Monobehaviour Methods 
     private void Start()
     {
         CreateNodePositionVisualizer();
@@ -63,6 +60,7 @@ public class Node : MonoBehaviour
 
     private void OnDestroy()
     {
+        RemoveNodePositionVisualizer();
         UnregisterFromManager();
     }
 
@@ -77,7 +75,7 @@ public class Node : MonoBehaviour
         else if (entropy > 1)
         {
             Tile randomlyChosenTile = potentialTiles[Random.Range(0, potentialTiles.Count)];
-            potentialTiles.RemoveAll(x => x != randomlyChosenTile);  //< Removes every entry but randomlyChosenTile from potentialTiles list
+            potentialTiles.RemoveAll(x => x != randomlyChosenTile);  //< Removes every entry from potentialTiles list except for the randomlyChosenTile
             randomlyChosenTile.InstantiatePrefab(this.transform);
         }
         else
@@ -102,23 +100,16 @@ public class Node : MonoBehaviour
             List<Socket> socketsOnSide = tile.GetSocketsOnSide(socketSide);
             foreach (Socket socket in socketsOnSide)
             {
-                if (compatibleSockets.Contains(socket)) //< If at least one of the tiles sockets matches the required sockets on that side, this tile is compatible.
-                {
+                if (compatibleSockets.Contains(socket)) //< If at least one of the tile's sockets matches the required sockets on that side, this tile is compatible.
                     isTileCompatible = true;
-                }
             }
 
             if (!isTileCompatible)
-            {
                 reducedPotentialTiles.Remove(tile);
-                // Debug.Log($"Removing {tile.prefab.name} from potentialTiles in {this.name}, as its sockets (({string.Join(", ", socketsOnSide)})) were incompatible with {NodeManager.instance.GetNodeByPosition(this.gridPosition + socketSide).name}'s sockets ({string.Join(", ", compatibleSockets)})'", this.gameObject);
-            }
         }
 
         if (reducedPotentialTiles.SequenceEqual(potentialTiles))
-        {
             return false;
-        }
         else
         {
             potentialTiles = reducedPotentialTiles;
@@ -126,6 +117,7 @@ public class Node : MonoBehaviour
         }
     }
 
+    /// <summary> Filters out potential tiles that do not match the node's isPath value. </summary>
     public void ReducePotentialTilesByPathFlag()
     {
         List<Tile> reducedPotentialTiles = new List<Tile>(potentialTiles);
@@ -138,11 +130,13 @@ public class Node : MonoBehaviour
         potentialTiles = reducedPotentialTiles;
     }
 
+    /// <summary> Filters out potential tiles that do not match the node's pathDirections. </summary>
     public void ReducePotentialTilesByPathDirection()
     {
         List<Tile> reducedPotentialTiles = new List<Tile>(potentialTiles);
         foreach (Tile tile in potentialTiles)
         {
+            //> If any of the node's path directions is not present in the tile's pathDirection, remove the tile
             bool isTileCompatible = true;
             foreach (Vector2Int direction in pathDirection)
             {
@@ -150,60 +144,66 @@ public class Node : MonoBehaviour
                     isTileCompatible = false;
             }
             if (!isTileCompatible)
-            {
-                // Debug.Log($"[LimitByPathDirection] [{name}] Removing tile {tile} due to incompatibility.");
                 reducedPotentialTiles.Remove(tile);
-            }
         }
 
         potentialTiles = reducedPotentialTiles;
     }
 
     //# Private Methods 
-    private void RegisterInManager() => NodeManager.instance.RegisterNode(gridPosition, this);
-
-    private void UnregisterFromManager() => NodeManager.instance.UnregisterNode(gridPosition);
+    private void RegisterInManager() => NodeManager.instance.RegisterNode(this, gridPosition);  //< Nodes assign their spot in the nodeGrid themselves.
+    private void UnregisterFromManager() => NodeManager.instance.UnregisterNode(this);
 
     private void CreateNodePositionVisualizer() => gameObject.AddComponent<SuperpositionVisualizer>();
+    private void RemoveNodePositionVisualizer() => gameObject.GetComponent<SuperpositionVisualizer>()?.Remove();
 
-    private void RemoveNodePositionVisualizer() => gameObject.GetComponent<SuperpositionVisualizer>().Remove();
-
+    //> This method was originally part of Jan's path generation nodes. It sets the node's possible path 
+    //  directions before running the path generator based on where it is in the nodeGrid.
+    //  This way for example, "left" is not a valid direction if this node is on the left edge of the map.
     private void InitializePossiblePathDirections()
     {
         if (gridPosition.x != 0)
-            possiblePathDirections.Add(new Vector2Int(-1, 0));
+            possiblePathDirections.Add(Vector2Int.left);
         if (gridPosition.x != GenerationHandler.instance.gridSize.x - 1)
-            possiblePathDirections.Add(new Vector2Int(1, 0));
+            possiblePathDirections.Add(Vector2Int.right);
         if (gridPosition.y != 0)
-            possiblePathDirections.Add(new Vector2Int(0, -1));
+            possiblePathDirections.Add(Vector2Int.down);
         if (gridPosition.y != GenerationHandler.instance.gridSize.y - 1)
-            possiblePathDirections.Add(new Vector2Int(0, 1));
+            possiblePathDirections.Add(Vector2Int.up);
     }
 
+    //> This part was added by Jan to define points where navigation destinations would need to 
+    //  be generated in order to make enemies path / walk straight from one corner to the next.
+    //> Daniel then refactored it to take up less space and processing power.
+    //  The commented-out lines below are the original implementation.
     public bool IsCornerPiece()
     {
-        if(pathDirection.Count == 2)
+        if (pathDirection.Count == 2)
         {
-            if(pathDirection.Contains(new Vector2Int(1, 0)) && pathDirection.Contains(new Vector2Int(0, 1)))
-            {
-                return true;
-            }
-            else if (pathDirection.Contains(new Vector2Int(-1, 0)) && pathDirection.Contains(new Vector2Int(0, 1)))
-            {
-                return true;
-            }
-            else if (pathDirection.Contains(new Vector2Int(1, 0)) && pathDirection.Contains(new Vector2Int(0, -1)))
-            {
-                return true;
-            }
-            else if (pathDirection.Contains(new Vector2Int(-1, 0)) && pathDirection.Contains(new Vector2Int(0, -1)))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            float directionSqrMagnitude = (pathDirection[0] + pathDirection[1]).sqrMagnitude;   //< Calculation-based approach to the original implementation.
+            return directionSqrMagnitude == 2;  //< If both directions pointed in opposite directions, sqrMagnitude would be 0.
+                                                //  If both pointed in the same direction, it would be 4.
+
+            // if (pathDirection.Contains(new Vector2Int(1, 0)) && pathDirection.Contains(new Vector2Int(0, 1)))
+            // {
+            //     return true;
+            // }
+            // else if (pathDirection.Contains(new Vector2Int(-1, 0)) && pathDirection.Contains(new Vector2Int(0, 1)))
+            // {
+            //     return true;
+            // }
+            // else if (pathDirection.Contains(new Vector2Int(1, 0)) && pathDirection.Contains(new Vector2Int(0, -1)))
+            // {
+            //     return true;
+            // }
+            // else if (pathDirection.Contains(new Vector2Int(-1, 0)) && pathDirection.Contains(new Vector2Int(0, -1)))
+            // {
+            //     return true;
+            // }
+            // else
+            // {
+            //     return false;
+            // }
         }
 
         return false;

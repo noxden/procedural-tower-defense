@@ -60,7 +60,7 @@ public class Tile
         GeneratePathDirection();
     }
 
-    public virtual void InstantiatePrefab(Transform parentTransform)
+    public void InstantiatePrefab(Transform parentTransform)
     {
         instantiatedPrefab = GameObject.Instantiate(prefab, parentTransform, false);
         if (rotationVariantIdentifier != 0)

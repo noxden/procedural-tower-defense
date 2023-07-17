@@ -38,6 +38,7 @@ public class TileDefinition : ScriptableObject
         TileDefinition outputDefinition = ScriptableObject.CreateInstance<TileDefinition>();
         outputDefinition.name = inputDefinition.name;
         outputDefinition.prefab = inputDefinition.prefab;
+        outputDefinition.optionalTileTag = inputDefinition.optionalTileTag;
 
         outputDefinition.northSockets = new List<Socket>(inputDefinition.northSockets);
         outputDefinition.eastSockets = new List<Socket>(inputDefinition.eastSockets);

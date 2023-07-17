@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-[DefaultExecutionOrder(2)]
+[DefaultExecutionOrder(3)]
 public class GenerationSettingsButtonsDriver : MonoBehaviour
 {
     [Header("Grid Size Fields")]
@@ -82,6 +82,10 @@ public class GenerationSettingsButtonsDriver : MonoBehaviour
 
         ChangeGridSizeX("10");  //< Set starting size
         ChangeGridSizeY("10");
+        ChangeStartPosX(1);
+        ChangeStartPosY(1);
+        ChangeEndPosX(GenerationHandler.instance.gridSize.x);  //< So that you can just press the "Generate Map" button right after game start 
+        ChangeEndPosY(GenerationHandler.instance.gridSize.y);  //  and the path start and end positions are already set to be able to generate a path.
         ChangeGenerateInstantlyValue(false);
     }
 
@@ -95,7 +99,7 @@ public class GenerationSettingsButtonsDriver : MonoBehaviour
             startPosX.SetSliderMinMax(1, GenerationHandler.instance.gridSize.x);
             endPosX.SetSliderMinMax(1, GenerationHandler.instance.gridSize.x);
 
-            NodeManager.instance.Regenerate();
+            NodeManager.instance.ResetGrid();
         }
     }
     private void ChangeGridSizeY(string inputText)
@@ -107,7 +111,7 @@ public class GenerationSettingsButtonsDriver : MonoBehaviour
             startPosY.SetSliderMinMax(1, GenerationHandler.instance.gridSize.y);
             endPosY.SetSliderMinMax(1, GenerationHandler.instance.gridSize.y);
 
-            NodeManager.instance.Regenerate();
+            NodeManager.instance.ResetGrid();
         }
     }
 
@@ -171,6 +175,7 @@ public class GenerationSettingsButtonsDriver : MonoBehaviour
     }
     private void RecalculatePathSliderMax(Vector2Int newGridSize)
     {
-        pathLengthSliderGroup.SetSliderMax(newGridSize.x * newGridSize.y);
+        int maxLength = GenerationHandler.instance.GetPathMinMax().y;
+        pathLengthSliderGroup.SetSliderMax(maxLength);
     }
 }
