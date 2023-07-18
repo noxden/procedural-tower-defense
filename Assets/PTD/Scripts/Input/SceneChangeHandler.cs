@@ -6,18 +6,13 @@
 //========================================================================
 
 using UnityEngine;
-using UnityEditor;
+using UnityEngine.SceneManagement;
 
-[CustomEditor(typeof(TileDefinition))]
-public class TileDefinitionEditor : Editor
+public class SceneChangeHandler : MonoBehaviour
 {
-    public override void OnInspectorGUI()
+    public static void Restart()
     {
-        var handler = target as TileDefinition;
-
-        base.OnInspectorGUI();
-
-        if (!GUILayout.Button("Apply Bulk Add / Remove")) return;
-        if (handler != null) handler.ApplyBulkChanges();
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadSceneAsync(currentScene.buildIndex);
     }
 }

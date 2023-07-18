@@ -13,38 +13,35 @@ public class GenerationHandlerEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        GenerationHandler handler = target as GenerationHandler;
+        var handler = target as GenerationHandler;
 
         GUILayout.BeginVertical();
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Generate All"))
-        {
-            handler.GenerateLevel();
-        }
+            if (handler != null)
+                handler.GenerateLevel();
         if (GUILayout.Button("Reset Level"))
-        {
-            handler.nodeManager.Regenerate();
-        }
+            if (handler != null)
+                handler.nodeManager.ResetGrid();
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Generate Path"))
-        {
-            handler.pathGenerator.Generate(generateInstantly: false);
-        }
+            if (handler != null)
+                handler.pathGenerator.Generate(generateInstantly: false); //< To visualize path generation when pressing the "Generate Path" button.
         if (GUILayout.Button("Generate Tilemap"))
-        {
-            handler.GenerateTilemap();
-        }
+            if (handler != null)
+                handler.GenerateTilemap();
         if (GUILayout.Button("Iterate Tilemap"))
-        {
-            handler.waveFunctionSolver.Iterate();
-        }
+            if (handler != null)
+                handler.waveFunctionSolver.Iterate();
         GUILayout.EndHorizontal();
         GUILayout.EndVertical();
 
         base.OnInspectorGUI();
 
-        handler.pathLength = EditorGUILayout.IntSlider("Path Length", handler.pathLength, (Mathf.Abs(handler.endPositionIndex.x - handler.startPositionIndex.x) + Mathf.Abs(handler.endPositionIndex.y - handler.startPositionIndex.y)) + 1, handler.gridSize.x * handler.gridSize.y);
+        if (handler == null) return;
+        Vector2Int pathMinMax = handler.GetPathMinMax();
+        handler.pathLength = EditorGUILayout.IntSlider("Path Length", handler.pathLength, pathMinMax.x, pathMinMax.y);
     }
 }

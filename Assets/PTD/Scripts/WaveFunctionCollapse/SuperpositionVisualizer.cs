@@ -13,26 +13,26 @@
 // different height-tiles.
 //========================================================================
 
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SuperpositionVisualizer : MonoBehaviour
 {
     //# Private Variables 
-    private static GameObject prefab;
+    private static GameObject _prefab;
+
     private Transform tileVisualizerGroup;
-    private List<GameObject> tileVisualizations = new List<GameObject>();
+    //private List<GameObject> tileVisualizations = new List<GameObject>();
 
     //# Monobehaviour Methods 
     private void Start()
     {
-        if (prefab == null)
-            prefab = Resources.Load<GameObject>("VisualizerPrefab");
+        if (_prefab == null)
+            _prefab = Resources.Load<GameObject>("VisualizerPrefab");
 
         tileVisualizerGroup = new GameObject("Superposition Visualizer").transform;
         tileVisualizerGroup.transform.SetParent(this.transform, false);
 
-        Intitialize();
+        Initialize();
 
         // OnPotentialTilesUpdatedInNode(GetComponent<Node>().potentialTiles);
     }
@@ -57,10 +57,10 @@ public class SuperpositionVisualizer : MonoBehaviour
     }
 
     //# Private Methods 
-    private void Intitialize()
+    private void Initialize()
     {
         //! Just a temporary band-aid solution, not a permanent fix!
-        GameObject tileVisualization = Instantiate(prefab, tileVisualizerGroup, false);
+        Instantiate(_prefab, tileVisualizerGroup, false);
 
         //> Visualize each of the four height-tiles
         // List<Tile> allTiles = NodeManager.instance.allTiles;

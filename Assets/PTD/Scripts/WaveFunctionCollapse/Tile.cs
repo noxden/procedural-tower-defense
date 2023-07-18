@@ -7,11 +7,12 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
-[Serializable]
+[System.Serializable]
 public class Tile
 {
+    #region Variables and Properties
+
     public string name;
     public TileTag tag;
     public GameObject prefab;
@@ -20,23 +21,26 @@ public class Tile
     public List<Socket> southSockets;
     public List<Socket> westSockets;
     public int rotationVariantIdentifier;
-    public bool isPath;    //< Is set automatically based on result of GeneratePathDirection()
-    private List<Vector2Int> m_pathDirection;
+    public bool isPath; //< Is set automatically based on result of GeneratePathDirection()
+    private List<Vector2Int> mPathDirection;
     public List<Vector2Int> pathDirection
     {
         get
         {
-            if (m_pathDirection == null)
+            if (mPathDirection == null)
                 GeneratePathDirection();
 
-            return m_pathDirection;
+            return mPathDirection;
         }
     }
+
     private GameObject instantiatedPrefab;
 
-    /// <summary>
-    /// Construct Tile from TileDefinition.
-    /// </summary>
+    #endregion
+
+    #region Constructors
+
+    /// <summary> Construct Tile from TileDefinition. </summary>
     public Tile(TileDefinition definition, int rotationIterations = 0)
     {
         this.tag = definition.optionalTileTag;
@@ -50,10 +54,9 @@ public class Tile
         GeneratePathDirection();
     }
 
-    /// <summary>
-    /// Construct Tile from scratch.
-    /// </summary>
-    public Tile(GameObject prefab, List<Socket> northSockets, List<Socket> eastSockets, List<Socket> southSockets, List<Socket> westSockets, TileTag tileTag = TileTag.None, int amountRotatedClockwise = 0)
+    /// <summary> Construct Tile from scratch. </summary>
+    public Tile(GameObject prefab, IEnumerable<Socket> northSockets, IEnumerable<Socket> eastSockets, IEnumerable<Socket> southSockets, IEnumerable<Socket> westSockets,
+        TileTag tileTag = TileTag.None, int amountRotatedClockwise = 0)
     {
         this.tag = tileTag;
         this.prefab = prefab;
@@ -66,9 +69,11 @@ public class Tile
         GeneratePathDirection();
     }
 
-    public virtual void InstantiatePrefab(Transform parentTransform)
+    #endregion
+
+    public void InstantiatePrefab(Transform parentTransform)
     {
-        instantiatedPrefab = GameObject.Instantiate(prefab, parentTransform, false);
+        instantiatedPrefab = Object.Instantiate(prefab, parentTransform, false);
         if (rotationVariantIdentifier != 0)
             instantiatedPrefab.transform.Rotate(0f, 90f * rotationVariantIdentifier, 0f, Space.Self);
     }
@@ -77,13 +82,13 @@ public class Tile
     {
         switch (tileSide)
         {
-            case Vector2Int v when v.Equals(Vector2Int.up):     //< This is a really cool way to make switch cases accept Vector shorthands.
+            case var v when v.Equals(Vector2Int.up): //< This is a really cool way to make switch cases accept Vector shorthands.
                 return northSockets;
-            case Vector2Int v when v.Equals(Vector2Int.right):
+            case var v when v.Equals(Vector2Int.right):
                 return eastSockets;
-            case Vector2Int v when v.Equals(Vector2Int.down):
+            case var v when v.Equals(Vector2Int.down):
                 return southSockets;
-            case Vector2Int v when v.Equals(Vector2Int.left):
+            case var v when v.Equals(Vector2Int.left):
                 return westSockets;
             default:
                 Debug.LogError($"{tileSide} is not registered as a valid side.");
@@ -92,19 +97,19 @@ public class Tile
     }
 
     //# Private Methods 
-    private void GeneratePathDirection()    //< Sets pathDirection list automatically based on where this tile has path sockets.
+    private void GeneratePathDirection() //< Sets pathDirection list automatically based on where this tile has path sockets.
     {
-        m_pathDirection = new List<Vector2Int>();
+        mPathDirection = new List<Vector2Int>();
         if (northSockets.Contains(Socket.p2) || northSockets.Contains(Socket.p2_3) || northSockets.Contains(Socket.p3))
-            m_pathDirection.Add(Vector2Int.up);
+            mPathDirection.Add(Vector2Int.up);
         if (eastSockets.Contains(Socket.p2) || eastSockets.Contains(Socket.p2_3) || eastSockets.Contains(Socket.p3))
-            m_pathDirection.Add(Vector2Int.right);
+            mPathDirection.Add(Vector2Int.right);
         if (southSockets.Contains(Socket.p2) || southSockets.Contains(Socket.p2_3) || southSockets.Contains(Socket.p3))
-            m_pathDirection.Add(Vector2Int.down);
+            mPathDirection.Add(Vector2Int.down);
         if (westSockets.Contains(Socket.p2) || westSockets.Contains(Socket.p2_3) || westSockets.Contains(Socket.p3))
-            m_pathDirection.Add(Vector2Int.left);
+            mPathDirection.Add(Vector2Int.left);
         // Debug.Log($"[Setup] Generated path directions of {this.name}.");
 
-        isPath = (m_pathDirection.Count > 0);
+        isPath = (mPathDirection.Count > 0);
     }
 }

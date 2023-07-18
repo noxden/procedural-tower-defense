@@ -13,44 +13,40 @@ using UnityEngine;
 public class WaveFunctionSolver : MonoBehaviour
 {
     //# Private Variables 
-    [SerializeField] private float stepDelayInSeconds = 0f;
-    private bool isCollapsed { get => uncollapsedNodes.Count == 0; }
-    private List<Vector2Int> directionsToPropagateTo = new List<Vector2Int> { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
+    [SerializeField] private float stepDelayInSeconds;
+
+    private bool isCollapsed => uncollapsedNodes.Count == 0;
+    private readonly List<Vector2Int> directionsToPropagateTo = new List<Vector2Int> { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
 
     [Tooltip("For visualization purposes only."), SerializeField]
     private List<Node> uncollapsedNodes = new List<Node>();
+    
+    private void Start() => Reinitialize();
 
-    //# Monobehaviour Methods 
-    private void Start()
-    {
-        Initialize();
-    }
-
-    public void SolveInstantly()
-    {
-        StopAllCoroutines();
-        StartCoroutine(Solve(solveInstantly: true));
-    }
-
-    public void SolveStepwise()
-    {
-        StopAllCoroutines();
-        StartCoroutine(Solve(solveInstantly: false));
-    }
+    #region Public Methods
 
     [ContextMenu("Reinitialize")]
     public void Reinitialize()
     {
         StopAllCoroutines();
         uncollapsedNodes.Clear();
-        Start();
+        Initialize();
+    }
+    
+    public void StartSolve(bool instantly)
+    {
+        StopAllCoroutines();
+        StartCoroutine(Solve(solveInstantly: instantly));
     }
 
-    //# Private Methods 
+    #endregion
+
+    #region Private Methods
+
     private void Initialize()
     {
         Dictionary<Vector2Int, Node> nodeDictionary = NodeManager.instance.nodeGrid;
-        foreach (var entry in nodeDictionary)
+        foreach (KeyValuePair<Vector2Int, Node> entry in nodeDictionary)
             uncollapsedNodes.Add(entry.Value);
 
         stepDelayInSeconds = 1f / (GenerationHandler.instance.gridSize.x * GenerationHandler.instance.gridSize.y);
@@ -68,7 +64,7 @@ public class WaveFunctionSolver : MonoBehaviour
         Debug.Log($"Wave Function is collapsed!");
     }
 
-    public void Iterate()
+    public void Iterate() //< Only public to allow GenerationHandlerEditor access (for custom inspector button)
     {
         Node node = GetNodeWithLowestEntropy();
         CollapseNode(node);
@@ -80,65 +76,67 @@ public class WaveFunctionSolver : MonoBehaviour
     {
         if (!node.Collapse())
             Debug.LogError($"Could not collapse {node.name} properly!");
-        uncollapsedNodes.Remove(node);  //< Needs to be called even if node could not be collapsed, otherwise the while-loop 
-                                        //  in Solve() will go on indefinitely, causing the game to freeze.
+
+        //> Needs to be called even if node could not be collapsed, otherwise the while-loop in Solve() will go on indefinitely, causing the game to freeze.
+        uncollapsedNodes.Remove(node);
     }
 
     // TODO: Currently, there is a lot of recursion present in the propagation. This can be improved.
     private void Propagate(Node sourceNode)
     {
         //> Set up propagation stack 
-        List<Node> nodesToPropagateFrom = new List<Node>();
-        nodesToPropagateFrom.Add(sourceNode);
-
+        List<Node> nodesToPropagateFrom = new List<Node> { sourceNode };
         while (nodesToPropagateFrom.Count > 0)
         {
             Node nodeToPropagateFrom = nodesToPropagateFrom[0];
 
             foreach (Vector2Int direction in directionsToPropagateTo)
             {
-                Node nodeToPropagateTo = NodeManager.instance.GetNodeByPosition(nodeToPropagateFrom.gridPosition + direction);  //< Gets node in given direction
-                if (nodeToPropagateTo != null)  //< Check if there even is a node in this direction, so that it only 
-                {                               //  generates the socketHashSet if there is a node to propagate it to
-                
-                    //> Generate a list of all sockets on the side of "nodeToPropagateFrom" in the direction of "direction"
-                    HashSet<Socket> allSocketsOnSide = new HashSet<Socket>();
-                    foreach (Tile tile in nodeToPropagateFrom.potentialTiles)
-                    {
-                        List<Socket> socketsOnSide = tile.GetSocketsOnSide(direction);
-                        foreach (Socket socket in socketsOnSide)
-                        {
-                            if (!allSocketsOnSide.Contains(socket))  //< Add socket only if list does not contain it already.
-                                allSocketsOnSide.Add(socket);
-                        }
-                    }
-                    // Debug.Log($"All valid tiles in direction {direction} of {nodeToPropagateFrom.name} are: {string.Join(", ", allValidTilesInDirection)}");
+                Node nodeToPropagateTo = NodeManager.instance.GetNodeByPosition(nodeToPropagateFrom.gridPosition + direction); //< Gets node in given direction
+                //> Check if there even is a node in this direction, so that it only generates the socketHashSet if there is a node to propagate it to
+                if (nodeToPropagateTo == null) continue;
 
-                    //> Apply the list generated above as a limiting factor (removing any tiles that don't match the generated socket list)
-                    if (nodeToPropagateTo.ReducePotentialTilesBySocketCompatibility(allSocketsOnSide, -direction))  //< If this reduction operation actually removed entries...
-                        nodesToPropagateFrom.Add(nodeToPropagateTo);                                                // ... add that node to the nodes to propagate from
+                //> Generate a list of all sockets on the side of "nodeToPropagateFrom" in the direction of "direction"
+                HashSet<Socket> allSocketsOnSide = new HashSet<Socket>();
+                foreach (Tile tile in nodeToPropagateFrom.potentialTiles)
+                {
+                    List<Socket> socketsOnSide = tile.GetSocketsOnSide(direction);
+                    foreach (Socket socket in socketsOnSide)
+                        allSocketsOnSide.Add(socket);
                 }
+                // Debug.Log($"All valid tiles in direction {direction} of {nodeToPropagateFrom.name} are: {string.Join(", ", allValidTilesInDirection)}");
+
+                //> Apply the list generated above as a limiting factor (removing any tiles that don't match the generated socket list)
+                if (nodeToPropagateTo.ReducePotentialTilesBySocketCompatibility(allSocketsOnSide, -direction)) //< If this reduction operation actually removed entries...
+                    nodesToPropagateFrom.Add(nodeToPropagateTo); // ... add that node to the nodes to propagate from
             }
 
-            nodesToPropagateFrom.Remove(nodeToPropagateFrom);   //< After finishing the propagation from this node, remove it from the list and move on to the next entry.
+            nodesToPropagateFrom.Remove(nodeToPropagateFrom); //< After finishing the propagation from this node, remove it from the list and move on to the next entry.
         }
     }
 
     private Node GetNodeWithLowestEntropy()
     {
-        if (uncollapsedNodes.Count > 1)
+        switch (uncollapsedNodes.Count)
         {
-            Node nodeWithLowestEntropy = uncollapsedNodes[(Random.Range(0, uncollapsedNodes.Count))];   //< Randomization prevents system from always solving the grid from Node (0,0).
-            foreach (Node nodeToCompare in uncollapsedNodes)
+            case > 1:
             {
-                if (nodeToCompare.entropy < nodeWithLowestEntropy.entropy)
-                    nodeWithLowestEntropy = nodeToCompare;
+                Node nodeWithLowestEntropy = uncollapsedNodes[(Random.Range(0, uncollapsedNodes.Count))];
+                //< Randomization prevents system from always solving the grid from Node (0,0).
+                foreach (Node nodeToCompare in uncollapsedNodes)
+                {
+                    if (nodeToCompare.entropy < nodeWithLowestEntropy.entropy)
+                        nodeWithLowestEntropy = nodeToCompare;
+                }
+
+                return nodeWithLowestEntropy;
             }
-            return nodeWithLowestEntropy;
+            case 1: //< No need to run the comparisons if there is only one node left to be collapsed
+                return uncollapsedNodes[0];
+            default:
+                return null; //< Should never occur, as system only iterates for as long as there are entries in uncollapsedNodes
         }
-        else if (uncollapsedNodes.Count == 1)   //< No need to run the comparisons if there is only one node left to be collapsed
-            return uncollapsedNodes[0];
-        else
-            return null;    //< Should never occur, as system only iterates for as long as there are entries in uncollapsedNodes
     }
+
+    #endregion
 }

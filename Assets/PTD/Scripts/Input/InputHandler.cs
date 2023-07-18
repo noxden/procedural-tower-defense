@@ -13,14 +13,14 @@ using UnityEngine.Events;
 public class InputHandler : MonoBehaviour
 {
     public InputActionAsset actionAsset;
-    
+
     private InputAction movementAction;
     private InputAction rotationAction;
     private InputAction zoomAction;
 
-    public static UnityAction<Vector2> OnMovementInput;
-    public static UnityAction<Vector2> OnRotationInput;
-    public static UnityAction<Vector2> OnZoomInput;
+    public static UnityAction<Vector2> onMovementInput;
+    public static UnityAction<Vector2> onRotationInput;
+    public static UnityAction<Vector2> onZoomInput;
 
     private void Awake()
     {
@@ -35,25 +35,27 @@ public class InputHandler : MonoBehaviour
         {
             Vector2 movementInput = movementAction.ReadValue<Vector2>();
             // Debug.Log($"[Conditional Update] movementInput: {movementInput}");
-            OnMovementInput.Invoke(movementInput);
+            onMovementInput.Invoke(movementInput);
         }
+
         if (rotationAction.inProgress)
         {
             Vector2 rotationInput = rotationAction.ReadValue<Vector2>();
             // Debug.Log($"[Conditional Update] rotationInput: {rotationInput}");
-            OnRotationInput.Invoke(rotationInput);
+            onRotationInput.Invoke(rotationInput);
         }
+
         if (zoomAction.inProgress)
         {
             Vector2 zoomInput = zoomAction.ReadValue<Vector2>();
             // Debug.Log($"[Conditional Update] zoomInput: {zoomInput}");
-            OnZoomInput.Invoke(zoomInput);
+            onZoomInput.Invoke(zoomInput);
         }
     }
 
     private void OnEnable() => EnableInput();
     private void OnDisable() => DisableInput();
 
-    public void EnableInput() => actionAsset?.Enable();
-    public void DisableInput() => actionAsset?.Disable();
+    private void EnableInput() => actionAsset.Enable();
+    private void DisableInput() => actionAsset.Disable();
 }
