@@ -2,7 +2,7 @@
 // Darmstadt University of Applied Sciences, Expanded Realities
 // Course:      [Elective] Procedural Level Generation (Andreas Fuchs)
 // Group:       #5 (Procedural Tower Defense)
-// Script by:   Amelie Birli (??????)
+// Script by:   Amelie Birli (769217)
 //========================================================================
 
 using UnityEngine;
@@ -39,17 +39,10 @@ sealed class WalkAnimation : MonoBehaviour
 
     float _time;
 
-    #endregion
-
-    #region MonoBehavour implementation
 
     void Update()
     {
-        // PRNG
-        
-
-        // Time parameter
-        
+ 
 
         // Hip target
         {
