@@ -28,7 +28,7 @@ public class SettingsSliderGroup : MonoBehaviour
     private void ReceiveSliderValueChange(float value)
     {
         if (currentValueField != null)
-            currentValueField.text = value.ToString(CultureInfo.InvariantCulture);
+            currentValueField.text = value.ToString();
         onSliderValueChanged?.Invoke(value);
     }
 

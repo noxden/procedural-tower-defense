@@ -28,7 +28,7 @@ public class LimbAnimator : MonoBehaviour
     [SerializeField] private int _smoothness = 1;
     [SerializeField] private float _raycastRange = 2;
     [SerializeField] private float _feetOffset = 0;
-    [SerializeField] private bool _Arms = false;
+    // [SerializeField] private bool _Arms = false;
 
     private int _nLimbs;
     private ProceduralLimb[] _limbs;

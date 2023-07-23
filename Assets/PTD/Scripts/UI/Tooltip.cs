@@ -24,8 +24,8 @@ public class Tooltip : MonoBehaviour
 
     private void Awake()
     {
-        tooltipSystem.showTooltipEvent.AddListener(Show);
-        tooltipSystem.hideTooltipEvent.AddListener(Hide);
+        tooltipSystem.showTooltipEvent?.AddListener(Show);
+        tooltipSystem.hideTooltipEvent?.AddListener(Hide);
     }
 
     //private void OnEnable()

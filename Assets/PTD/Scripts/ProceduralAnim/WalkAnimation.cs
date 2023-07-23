@@ -19,7 +19,7 @@ sealed class WalkAnimation : MonoBehaviour
     [SerializeField] Transform _footL = null;
     [SerializeField] Transform _footR = null;
     [Space]
-    [SerializeField] uint _seed = 100;
+    // [SerializeField] uint _seed = 100;
     [SerializeField, Range(0, 20)] float _walkSpeed = 10;
     [SerializeField, Range(0, 2)] float _armSwing = 0.5f;
     [SerializeField, Range(0, 0.5f)] float _stride = 0.12f;

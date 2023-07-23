@@ -153,8 +153,6 @@ public class Node : MonoBehaviour
     }
 
     #endregion
-
-
     #region Private Methods
 
     private void RegisterInManager() => NodeManager.instance.RegisterNode(this, gridPosition); //< Nodes assign their spot in the nodeGrid themselves.
@@ -188,7 +186,7 @@ public class Node : MonoBehaviour
         if (pathDirection.Count == 2)
         {
             float directionSqrMagnitude = (pathDirection[0] + pathDirection[1]).sqrMagnitude; //< Calculation-based approach to the original implementation.
-            return Math.Abs(directionSqrMagnitude - 2.0f) < 0.1f;
+            return Mathf.Abs(directionSqrMagnitude - 2.0f) < 0.1f;
             //< If both directions pointed in opposite directions, sqrMagnitude would be 0.
             //  If both pointed in the same direction, it would be 4.
 
